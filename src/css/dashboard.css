@@ -1,0 +1,259 @@
+.dash_first, .dash_seconde {
+  min-width: 360px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  margin: 0px 20px 20px 0px;
+  padding: 25px 21px 21px 21px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dash_third {
+  min-width: 360px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  margin: 0px 10px 20px 0px;
+  padding: 21px 21px 21px 21px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.chart {
+  min-width: 1370px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  margin: 0px 10px 0px 0px;
+  padding: 21px 21px 21px 21px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dash_first .title_icon, .dash_seconde .title_icon, .chart .title_icon {
+  content: url(../resource/images/icon_title.png);
+  width: 20px;
+  vertical-align: middle;
+  margin-bottom: 6px;
+}
+
+.dash_third .title_icon {
+  content: url(../resource/images/icon_notice.png);
+  width: 22px;
+  vertical-align: middle;
+  margin-bottom: 6px;
+}
+
+.title_name {
+  font: normal normal bold 20px/24px Pretendard;
+  letter-spacing: 0px;
+  color: #272B34;
+  margin: 0px 0px 20px 12px;
+  display: inline-block;
+}
+
+.notice_more {
+  font: normal normal normal 16px/30px Pretendard;
+  color: #A7A7A7;
+  float: right;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.notice_line {
+  height: 0px;
+  border: 1px solid #D2D2D2;
+  margin-bottom: 10px;
+}
+
+.status {
+  min-width: 240px;
+  height: 359px;
+  background: #F7F8FC 0% 0% no-repeat padding-box;
+}
+
+.dash_third>.status {
+  padding: 22px 27px 0px 12px;
+}
+
+.data_table {
+  min-width: 990px;
+  height: 100px;
+  border: 1px solid #D2D2D2;
+  display: flex;
+}
+
+.total_table {
+  min-width: 330px;
+  height: 100px;
+  background: transparent linear-gradient(290deg, #1D79E7 0%, #53BBD3 100%) 0% 0% no-repeat padding-box;
+  display: inline-block;
+  margin-left: 10px;
+  padding: 10px 20px 10px 10px;
+}
+
+.Chart_0000 {
+  height: 320px;
+  margin-top: 10px;
+}
+
+.calendar {
+  min-width: 90px;
+  height: 359px;
+  background: transparent linear-gradient(0deg, #1D79E7 0%, #53BBD3 100%) 0% 0% no-repeat padding-box;
+  padding-top: 89px;
+  display: block;
+}
+
+.calendar>span {
+  text-align: center;
+  font: normal normal bold 42px Pretendard;
+  color: #FFFFFF;
+  display: block;
+}
+
+.sales {
+  width: 100%;
+  height: 359px;
+  display: inline-block;
+  padding: 0px 20px 0px 20px;
+}
+
+.sales_data {
+  height: 89.8px;
+  border-bottom: 1px solid #D2D2D2;
+  letter-spacing: 0px;
+}
+
+.sales_data>div:first-child {
+  width: 35px;
+  font: normal normal normal 20px/89.8px Pretendard;
+  color: #303642;
+  float: left;
+}
+
+.sales_data>div:nth-child(2) {
+  font: normal normal bold 18px Pretendard;
+  color: #17262A;
+  text-align: right;
+  padding-top: 25px;
+}
+
+.sales_data>div:last-child {
+  font: normal normal normal 16px Pretendard;
+  color: #17262A;
+  text-align: right;
+  float: right;
+}
+
+.depo {
+  width: 100%;
+  height: 359px;
+  display: inline-block;
+  padding: 0px 20px 0px 20px;
+}
+
+.depo_data {
+  height: 120px;
+  border-bottom: 1px solid #D2D2D2;
+  letter-spacing: 0px;
+}
+
+.depo_data>div:first-child {
+  width: 35px;
+  font: normal normal normal 20px/120px Pretendard;
+  color: #303642;
+  float: left;
+}
+
+.depo_data>div:nth-child(2) {
+  font: normal normal bold 18px Pretendard;
+  color: #17262A;
+  text-align: right;
+  float: right;
+  padding-top: 50px;
+}
+
+.notice_data {
+  text-align: left;
+  font: normal normal normal 18px Pretendard;
+  margin-bottom: 10px;
+  letter-spacing: 0px;
+  color: #000000;
+  white-space: nowrap;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.chart_data {
+  width: 100%;
+  min-width: 330px;
+  max-width: 610px;
+  height: 80px;
+  border-right: 1px solid #D7D7D7;
+  margin-top: 10px;
+  padding: 0px 19.5px 0px 10.5px;
+}
+
+.chart_data:last-child {
+  border: none;
+}
+
+.chart_data>div:first-child {
+  min-width: 70px;
+  height: 80px;
+  background: #F7F8FC 0% 0% no-repeat padding-box;
+  float: left;
+  font: normal normal 500 20px/80px Pretendard;
+  letter-spacing: 0px;
+  color: #303642;
+  text-align: center;
+}
+
+.chart_data>div:nth-child(2) {
+  min-width: 300px;
+  text-align: right;
+  font: normal normal normal 20px Pretendard;
+  letter-spacing: 0px;
+  color: #A7A7A7;
+  margin-top: 10px;
+}
+
+.chart_data>div:last-child {
+  min-width: 300px;
+  text-align: right;
+  font: normal normal bold 26px Pretendard;
+  letter-spacing: 0px;
+  color: #303642;
+  margin-top: 10px;
+}
+
+.total_table>div:first-child {
+  width: 80px;
+  height: 80px;
+  background: #F7F8FC 0% 0% no-repeat padding-box;
+  float: left;
+  font: normal normal bold 20px/80px Pretendard;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #303642;
+}
+
+.total_table>div:nth-child(2) {
+  text-align: right;
+  font: normal normal normal 20px Pretendard;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  margin-top: 10px;
+}
+
+.total_table>div:last-child {
+  text-align: right;
+  font: normal normal bold 26px Pretendard;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  margin-top: 10px;
+}

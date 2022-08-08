@@ -1,0 +1,30 @@
+html,body,#root {
+    height: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* cursor: default; */
+}
+
+input {
+    cursor: revert;
+}
+
+.main_container {
+    height: 100%;
+    display: flex;
+}
+
+/* .sub_container {
+    width: 200px;
+    height: 100%;
+    position: absolute;
+    pointer-events: none; 
+  } */
+
+main {
+    padding: 10px;
+}

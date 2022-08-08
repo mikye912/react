@@ -1,0 +1,192 @@
+@import url(fonts/Roboto.css);
+@import url(fonts/Notosanskr.css);
+@import url(fonts/Pretendard.css);
+
+*{
+    opacity: 1;
+}
+
+.index_container {
+    display: flex;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+.index_img_container, .index_sign_container{
+    width: 50vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    vertical-align: middle;
+    justify-content: center;
+}
+
+/* 모바일 CSS 적용시 지우세요 */
+@media screen and (max-width : 945px) {
+    .index_container {
+        justify-content: center;
+    }
+    .index_img_container {
+        display: none;;
+    }
+}
+
+.index_img_container {
+    /* background: linear-gradient(#53BBD3,#2785E3); */
+    background-image: url(../resource/images/bg_login.png);
+}
+
+.index_logo img {
+    /* Layout Properties */
+    left: 1319px;
+    width: 258px;
+    height: 101px;
+    margin-bottom: 80px;
+    content: url(../resource/images/logo_login.png);
+}
+
+.index_signin {
+    cursor: default;
+     /* Layout Properties */
+     left: 1376px;
+     width: 128px;
+     height: 51px;
+     margin-bottom: 35px;
+}
+
+.index_signin span{
+    /* UI Properties */
+    text-align: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 42px;
+    line-height: 51px;
+    font-family: Roboto;
+    letter-spacing: 0px;
+    color: #3F3F3F;
+}
+
+.input_id, .input_pw {
+    /* Layout Properties */
+    left: 1210px;
+    width: 415px;
+    height: 77px;
+    /* UI Properties */
+    background: #F7F8FC 0% 0% no-repeat padding-box;
+    border-style: none;
+    border-radius: 2px;
+    font-size: 18px;
+}
+
+.input_id ::placeholder, .input_pw ::placeholder{
+   /* UI Properties */
+    text-align: left;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    font-family: Noto Sans CJK KR;
+    color: #A1A1A1;
+    letter-spacing: -1.2px;
+}
+
+.index_sign_input {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.index_sign_input input {
+    background-origin: content-box;
+    background-position-x: right;
+    background-position-y: center;
+    background-repeat: no-repeat; 
+    background-size: 24px 24px;
+    padding: 0 10px 0 10px;
+}
+
+.index_sign_input input:focus{
+    outline: none;
+}
+
+.index_input_id{
+    width: 460px;
+    height: 77px;
+    background: #F7F8FC 0% 0% no-repeat padding-box;
+    border-style: none;
+    border-radius: 2px;
+    margin-bottom: 20px;
+}
+
+.index_input_id img{
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    content: url(../resource/images/icon_id.png);
+}
+
+.index_input_pw{
+    width: 460px;
+    height: 77px;
+    background: #F7F8FC 0% 0% no-repeat padding-box;
+    border-style: none;
+    border-radius: 2px;
+    margin-bottom: 20px;
+}
+
+.index_input_pw img{
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    content: url(../resource/images/icon_pw.png);
+}
+
+.index_sign_input>span {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.index_sign_input button {
+   /* Layout Properties */
+    left: 1210px;
+    width: 460px;
+    height: 56px;
+    min-height: 56px;
+
+    /* UI Properties */
+    cursor: pointer;
+    background: transparent linear-gradient(0deg, #1D79E7 0%, #53BBD3 100%) 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+
+    text-align: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 31px;
+    font-family: Pretendard;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+
+    border-style: none;
+}
+
+.swal2-title{
+    font-size: 1.5em;
+}
+
+.swal2-icon{
+    width: 33px;
+    height: 33px;
+}
+
+/* 자동완성시 배경색 변경되는거 없앰 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s;
+    -webkit-text-fill-color: #3F3F3F !important;
+}
