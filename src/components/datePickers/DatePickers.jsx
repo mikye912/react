@@ -13,6 +13,7 @@ const DatePickers = () => {
     const [endDate, setEndDate] = useState(new Date());
     const _ = require('lodash');
     const dispatch = useDispatch();
+    /*년월 select선택*/
     const years = _.range(getYear(new Date()) - 1, getYear(new Date()) + 1, 1);
     const months = [
         "1",
@@ -28,15 +29,15 @@ const DatePickers = () => {
         "11",
         "12",
     ];
-    // ex) 20220805
-    const dateToString = (date) => {
-        return date.getFullYear()+(date.getMonth() + 1).toString().padStart(2, '0') + date.getDate().toString().padStart(2, '0')
-    }
 
-    dispatch(dateSearchSlice.actions.changeDateInputs({
-        sdate: dateToString(startDate),
-        edate: dateToString(startDate)
-    }))
+    useEffect(() => {
+        return () => {
+            dispatch(dateSearchSlice.actions.changeDateInputs({
+                sdate: dayjs(startDate).format('YYYYMMDD'),
+                edate: dayjs(endDate).format('YYYYMMDD')
+            }))
+        }
+    }, [])
 
     return (
         <>
