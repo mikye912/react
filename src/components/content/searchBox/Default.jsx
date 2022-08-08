@@ -1,6 +1,7 @@
 import { FaPlusCircle, FaSearch } from 'react-icons/fa';
 import Box from '@mui/material/Box';
 import DefaultForm from './DefaultForm';
+import { useSelector } from "react-redux";
 
 const data = [
     {
@@ -40,6 +41,8 @@ const data = [
     // }
 ]
 const Default = () => {
+    const date = useSelector((state) => state.dataSearch);
+    console.log(date);
 
     return (
         <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">

@@ -66,18 +66,20 @@ export const sidebarStateSlice = createSlice({
     }
 });
 
-export const dateSearchSlice = createSlice({
-    name: 'dateSearchSlice',
+export const dataSearchSlice = createSlice({
+    name: 'dataSearchSlice',
     initialState: {
         sdate: '',
         edate: ''
     },
     reducers: {
         changeDateInputs: (state, action) => {
-            return [...state, {
-                sdate: action.payload.sdate,
-                edate: action.payload.edate
-            }]
+            return action.payload
+        },
+        changeAppnoInputs: (state, action) => {
+            if(action.payload) {
+                state.appno = action.payload
+            }
         }
     }
 });

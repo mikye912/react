@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { uAuthSlice, contentSlice, selectTabSlice, sidebarStateSlice, dateSearchSlice } from "./slice"
+import { uAuthSlice, contentSlice, selectTabSlice, sidebarStateSlice, dataSearchSlice } from "./slice"
 
 const store = configureStore({
   reducer: {
@@ -7,7 +7,7 @@ const store = configureStore({
     content: contentSlice.reducer,
     selectTab: selectTabSlice.reducer,
     sidebarState: sidebarStateSlice.reducer,
-    dateSearch: dateSearchSlice.reducer,
+    dataSearch: dataSearchSlice.reducer,
   }
 })
 
