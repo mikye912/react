@@ -43,11 +43,11 @@ const TabBar = () => {
   }
 
   const moveScrollLeft = () => {
-    handleScrollBy.current.scrollBy(-200,0);
+    handleScrollBy.current.scrollBy({ left : -200, behavior : 'smooth' });
   }
 
   const moveScrollRight = () => {
-    handleScrollBy.current.scrollBy(200,0);
+    handleScrollBy.current.scrollBy({ left: 200, behavior: 'smooth' });
   }
 
   return (

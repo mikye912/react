@@ -6,50 +6,58 @@ import { useSelector } from "react-redux";
 const data = [
     {
         name: '승인일자',
-        type: 'date',
+        field:'APPDD',
+        type: 'DATE',
         default_yn: 'Y',
         sort: 1
     },
     {
         name: '승인번호',
-        type: 'text',
+        field: 'APPNO',
+        type: 'TEXT',
         default_yn: 'Y',
         sort: 2
     },
     {
         name: '환자진료번호',
-        type: 'text',
+        field: 'ADD_CID',
+        type: 'TEXT',
         default_yn: 'Y',
         sort: 3
     },
     {
         name: '수납자',
-        type: 'text',
+        field: 'ADD_CASHER',
+        type: 'TEXT',
         default_yn: 'Y',
         sort: 4
     },
-    // {
-    //     name: '승인구분',
-    //     type: 'check',
-    //     default_yn: 'N',
-    //     sort: 11,
-    //     subName: [
-    //         '전체거래',
-    //         '승인거래',
-    //         '취소거래'
-    //     ]
-    // }
+    /*
+    {
+        name: '승인구분',
+        type: 'check',
+        default_yn: 'N',
+        sort: 11,
+        subName: [
+            '전체거래',
+            '승인거래',
+            '취소거래'
+        ]
+    }
+    */
 ]
+
+
 const Default = () => {
-    const date = useSelector((state) => state.dataSearch);
-    console.log(date);
+    const search_data = useSelector((state) => state.dataSearch);
+    console.log("search_data",search_data)
 
     return (
         <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
             <Box className="search_form" gridColumn="span 8">
                 {data && data.map((data, index) => {
                     return (
-                        <DefaultForm key={index} type={data.type} name={data.name} />
+                        <DefaultForm key={index} type={data.type} name={data.name} field={data.field} />
                     )
                 })}
             </Box>

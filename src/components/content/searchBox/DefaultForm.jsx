@@ -1,4 +1,7 @@
+import { useRef } from 'react';
 import DatePickers from '../../datePickers/DatePickers';
+import { dataSearchSlice } from '../../../common/redux/slice';
+import { useDispatch } from "react-redux";
 
 const SearhForm = ({ children, name }) => {
     return (
@@ -11,18 +14,26 @@ const SearhForm = ({ children, name }) => {
     )
 }
 
-const DefaultForm = ({ type, name }) => {
+const DefaultForm = ({ type, name, field }) => {
+    const dispatch = useDispatch();
+    const inputRef = useRef();
 
-    if (type == 'date') {
+    const serachDispatch = () => {
+        dispatch(dataSearchSlice.actions.changeInputs({
+            [inputRef.current.name] : inputRef.current.value,
+        }));
+    }
+
+    if (type == 'DATE') {
         return (
             <SearhForm name={name}>
                 <DatePickers />
             </SearhForm>
         )
-    } else if (type == 'text') {
+    } else if (type == 'TEXT') {
         return (
             <SearhForm name={name}>
-                <input type="text" />
+                <input name={field} type="text" onChange={serachDispatch} ref={e => inputRef.current = e} />
             </SearhForm>
         );
     }

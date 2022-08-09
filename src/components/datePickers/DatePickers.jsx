@@ -31,10 +31,15 @@ const DatePickers = () => {
     ];
 
     useEffect(() => {
-        dispatch(dataSearchSlice.actions.changeDateInputs({
-            sdate: dayjs(startDate).format('YYYYMMDD'),
-            edate: dayjs(endDate).format('YYYYMMDD')
-        }))
+        // dispatch(dataSearchSlice.actions.changeDateInputs({
+        //     sdate: dayjs(startDate).format('YYYYMMDD'),
+        //     edate: dayjs(endDate).format('YYYYMMDD')
+        // }))
+
+        dispatch(dataSearchSlice.actions.changeInputs({
+            SDATE: dayjs(startDate).format('YYYYMMDD'),
+            EDATE: dayjs(startDate).format('YYYYMMDD'),
+        }));
     }, [startDate, endDate])
 
     return (

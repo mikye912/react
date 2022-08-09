@@ -66,19 +66,17 @@ export const sidebarStateSlice = createSlice({
     }
 });
 
+const initSearchState = new Object();
 export const dataSearchSlice = createSlice({
     name: 'dataSearchSlice',
-    initialState: {
-        sdate: '',
-        edate: ''
-    },
+    initialState: initSearchState,
     reducers: {
-        changeDateInputs: (state, action) => {
-            return action.payload
+        destroySearch: () => {
+            return initSearchState
         },
-        changeAppnoInputs: (state, action) => {
-            if(action.payload) {
-                state.appno = action.payload
+        changeInputs: (state, action) => {
+            return {
+                ...state, ...action.payload
             }
         }
     }

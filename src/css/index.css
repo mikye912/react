@@ -2,10 +2,6 @@
 @import url(fonts/Notosanskr.css);
 @import url(fonts/Pretendard.css);
 
-*{
-    opacity: 1;
-}
-
 .index_container {
     display: flex;
     position: fixed;

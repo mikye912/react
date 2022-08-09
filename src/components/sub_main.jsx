@@ -28,7 +28,7 @@ export default function Sub_main() {
       dispatch(uAuthSlice.actions.destroyAuth());
     }
   },[])
-
+// uDepart, uTid, uAcq 
   return (
     <div className="main_container">
       <UserContext.Provider value={{ uInfo, uMenu, uDepart, uTid, uAcq }}>
