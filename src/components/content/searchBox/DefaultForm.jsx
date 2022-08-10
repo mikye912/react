@@ -14,26 +14,28 @@ const SearhForm = ({ children, name }) => {
     )
 }
 
-const DefaultForm = ({ type, name, field }) => {
+const DefaultForm = ({ index, data, inputRef }) => {
+    /*
     const dispatch = useDispatch();
-    const inputRef = useRef();
-
+    
     const serachDispatch = () => {
         dispatch(dataSearchSlice.actions.changeInputs({
             [inputRef.current.name] : inputRef.current.value,
         }));
     }
-
-    if (type == 'DATE') {
+    */
+    
+// }
+    if (data.TYPE == 'DATE') {
         return (
-            <SearhForm name={name}>
-                <DatePickers />
+            <SearhForm name={data.NAME}>
+                <DatePickers inputRef={inputRef}/>
             </SearhForm>
         )
-    } else if (type == 'TEXT') {
+    } else if (data.TYPE == 'TEXT') {
         return (
-            <SearhForm name={name}>
-                <input name={field} type="text" onChange={serachDispatch} ref={e => inputRef.current = e} />
+            <SearhForm name={data.NAME}>
+                <input name={data.FIELD} type="text" ref={e => inputRef.current[index] = e} />
             </SearhForm>
         );
     }
