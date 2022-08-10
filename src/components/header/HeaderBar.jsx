@@ -4,7 +4,7 @@ import  axios  from 'axios';
 import FavoriteModal from "../modal/FavoriteModal";
 import { UserContext } from "../../context/userContext";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { contentSlice, selectTabSlice } from "../../common/redux/slice";
+import Slice, { contentSlice, selectTabSlice } from "../../common/redux/slice";
 
 const memGet = (userId) => {
   return axios.get('/api/sub_main/header/memGet', {
@@ -68,7 +68,7 @@ const HeaderBar = () => {
               className="header_userMenu"
               onClick={() => {
                 batch(()=>{
-                  dispatch(contentSlice.actions.addTabs({
+                  dispatch(Slice.contentSlice.actions.addTabs({
                     name : userMenus.PROGRAM_NAME, 
                     path : userMenus.SRC_LOCATION
                   }));
