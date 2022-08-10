@@ -73,9 +73,10 @@ export default function AuthLogin() {
                     const uAuth = {
                         uInfo : res.data["uInfo"],
                         uMenu : res.data["uMenu"],
-                        uDepart : res.data["uDepart"],
-                        uTid : res.data["uTid"],
-                        uAcq : res.data["uAcq"]
+                        uSearch : res.data["uSearch"],
+                        // uDepart : res.data["uDepart"],
+                        // uTid : res.data["uTid"],
+                        // uAcq : res.data["uAcq"]
                     }
                     dispatch(uAuthSlice.actions.setAuthStat(uAuth));
                     // 인증번호 생성 후 DB 처리
