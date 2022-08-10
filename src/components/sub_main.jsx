@@ -17,10 +17,10 @@ export default function Sub_main() {
   const dispatch = useDispatch();
   const uInfo = common.base64Dec(sessionStorage.getItem("uInfo")).split(':');
   const uMenu = common.base64Dec(sessionStorage.getItem("uMenu"));
-  const uDepart = common.base64Dec(sessionStorage.getItem("uDepart"));
-  const uTid = common.base64Dec(sessionStorage.getItem("uTid"));
-  const uAcq = common.base64Dec(sessionStorage.getItem("uAcq"));
-
+  const uSearch = common.base64Dec(sessionStorage.getItem("uSearch"));
+  //const uDepart = common.base64Dec(sessionStorage.getItem("uDepart"));
+  //const uTid = common.base64Dec(sessionStorage.getItem("uTid"));
+  //const uAcq = common.base64Dec(sessionStorage.getItem("uAcq"));
   const routes = useMemo(() => JSON.parse(uMenu), [uMenu]);
   console.log(routes);
   useEffect(()=>{
@@ -31,7 +31,7 @@ export default function Sub_main() {
 // uDepart, uTid, uAcq 
   return (
     <div className="main_container">
-      <UserContext.Provider value={{ uInfo, uMenu, uDepart, uTid, uAcq }}>
+      <UserContext.Provider value={{ uInfo, uMenu, uSearch }}>
         <SideBar routes={routes} />
         <HeaderBar />
         <TabBar />
