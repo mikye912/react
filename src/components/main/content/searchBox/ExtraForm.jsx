@@ -1,5 +1,6 @@
-const SearhForm = ({ children, name }) => {
+import { useRef } from 'react';
 
+const SearhForm = ({ children, name }) => {
     return (
         <div className='extra_search_div'>
             <div className='extra_search_name'>{name}</div>
@@ -10,32 +11,26 @@ const SearhForm = ({ children, name }) => {
     )
 }
 
-const ExtraForm = ({ data }) => {
-    // const dispatch = useDispatch();
-    // const inputRef = useRef();
-
-    // const serachDispatch = () => {
-    //     dispatch(dataSearchSlice.actions.changeInputs({
-    //         [inputRef.current.name]: inputRef.current.value,
-    //     }));
-    // }
-
+const ExtraForm = ({ i, data, inputRef }) => {
+    const labelRef = useRef([]);
+    
     if (data.TYPE == 'MULTICHECK') {
-        // return (
-        // )
+
     } else if (data.TYPE == 'CHECK') {
         return (
             <SearhForm name={data.NAME}>
-                {data && data.SUBDATA.map((SUBDATA) => {
-                    return(
-                        <label className='check_label'>
-                            <input type="checkBox" id={SUBDATA.VALUE} name={data.FIELD} value={SUBDATA.VALUE} />
+                {data && data.SUBDATA.map((SUBDATA, index) => {
+                    return (
+                        <label className='check_label' key={index}>
+                            <input type="checkBox" name={data.FIELD} id={SUBDATA.NAME} defalutvalue={SUBDATA.VALUE} ref={e => inputRef.current[i] = e} />
                             {SUBDATA.NAME}
                         </label>
                     )
                 })}
             </SearhForm>
         );
+    } else if (data.TYPE == 'SELECT') {
+
     }
 }
 

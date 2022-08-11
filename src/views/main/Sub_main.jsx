@@ -17,11 +17,12 @@ export default function Sub_main() {
   const dispatch = useDispatch();
   const uInfo = common.base64Dec(sessionStorage.getItem("uInfo")).split(':');
   const uMenu = common.base64Dec(sessionStorage.getItem("uMenu"));
-  const uSearch = common.base64Dec(sessionStorage.getItem("uSearch"));
+  const uSearch = JSON.parse(common.base64Dec(sessionStorage.getItem("uSearch")));
   //const uDepart = common.base64Dec(sessionStorage.getItem("uDepart"));
   //const uTid = common.base64Dec(sessionStorage.getItem("uTid"));
   //const uAcq = common.base64Dec(sessionStorage.getItem("uAcq"));
   const routes = useMemo(() => JSON.parse(uMenu), [uMenu]);
+
   console.log(routes);
   useEffect(()=>{
     return () => {

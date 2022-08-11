@@ -8,7 +8,7 @@ import { dataSearchSlice } from 'common/redux/slice';
 import 'css/react_datepicker.css';
 import dayjs from "dayjs";
 
-const DatePickers = ({ inputRef }) => {
+const DatePickers = ( ) => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const _ = require('lodash');

@@ -12,21 +12,10 @@ const SearhForm = ({ children, name }) => {
 }
 
 const DefaultForm = ({ index, data, inputRef }) => {
-    /*
-    const dispatch = useDispatch();
-    
-    const serachDispatch = () => {
-        dispatch(dataSearchSlice.actions.changeInputs({
-            [inputRef.current.name] : inputRef.current.value,
-        }));
-    }
-    */
-    
-// }
     if (data.TYPE == 'DATE') {
         return (
             <SearhForm name={data.NAME}>
-                <DatePickers inputRef={inputRef}/>
+                <DatePickers />
             </SearhForm>
         )
     } else if (data.TYPE == 'TEXT') {

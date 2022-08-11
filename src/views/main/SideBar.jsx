@@ -27,10 +27,10 @@ const SideBar = ({ routes }) => { //TRUE
   const handleOnclick = () => {
     window.location.reload();
   }
-
+  
   const onClickLogout = () => {
     sessionStorage.clear();
-    navigate('/');
+    window.location.href = '/';
   }
 
   const hoverToggle = () => {
