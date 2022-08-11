@@ -1,9 +1,9 @@
-import '../css/index.css'
-import AuthLogin from './login/AuthLogin';
-import AuthCert from './login/AuthCert';
+import 'css/index.css'
+import AuthLogin from 'components/login/AuthLogin';
+import AuthCert from 'components/login/AuthCert';
 import { useSelector } from 'react-redux';
 
-export default function Index() {
+export default function Login() {
     const uAuth = useSelector((state) => state.uAuth)
     return (
         <div className="index_container">

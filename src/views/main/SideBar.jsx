@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import React, { useState, memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import SidebarMenu from "./SidebarMenu";
+import SidebarMenu from "components/main/sidebar/SidebarMenu";
 import { batch, useDispatch } from "react-redux";
 import { contentSlice, selectTabSlice, sidebarStateSlice } from "../../common/redux/slice";
 

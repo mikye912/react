@@ -1,8 +1,8 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
-import ErrorPage from "../views/errorPage";
-import Sub_0000 from "../views/Sub_0000";
-import Sub_0201 from "../views/Sub_0201";
+import ErrorPage from "components/main/content/ErrorPage";
+import Sub_0000 from "components/main/content/sub0000/Sub_0000";
+import Sub_0201 from "components/main/content/sub0201/Sub_0201";
 import { useSelector } from "react-redux";
 
 const Content = () => {

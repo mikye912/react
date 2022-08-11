@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import Box from '@mui/material/Box';
-import Default from '../content/searchBox/Default';
-import Extra from '../content/searchBox/Extra';
-import '../../css/searchBox.css';
+import Default from '../searchBox/Default';
+import Extra from '../searchBox/Extra';
+import 'css/searchBox.css';
 
 const Sub_0201 = ({ index }) => {
   const selTab = useSelector((state) => state.selectTab);

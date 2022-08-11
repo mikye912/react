@@ -1,10 +1,10 @@
 import { memo, useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import  axios  from 'axios';
-import FavoriteModal from "../modal/FavoriteModal";
-import { UserContext } from "../../context/userContext";
+import FavoriteModal from "components/main/headerBar/FavoriteModal";
+import { UserContext } from "context/userContext";
 import { batch, useDispatch, useSelector } from "react-redux";
-import Slice, { contentSlice, selectTabSlice } from "../../common/redux/slice";
+import Slice, { contentSlice, selectTabSlice } from "common/redux/slice";
 
 const memGet = (userId) => {
   return axios.get('/api/sub_main/header/memGet', {

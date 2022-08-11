@@ -1,15 +1,15 @@
 import Box from '@mui/material/Box';
 import { useContext, useState, useEffect, memo } from "react";
 import axios from 'axios';
-import "../../css/dashboard.css";
-import Chart_0000 from "./down/main/Chart_0000";
-import Sales_0000 from "./down/main/Sales_0000";
-import Depo_0000 from "./down/main/Depo_0000";
-import Notice_0000 from "./down/main/Notice_0000";
-import common from "../../common/common";
+import "css/dashboard.css";
+import Chart_0000 from "./Chart_0000";
+import Sales_0000 from "./Sales_0000";
+import Depo_0000 from "./Depo_0000";
+import Notice_0000 from "./Notice_0000";
+import common from "common/common";
 import { CountUp } from 'use-count-up';
 import { useSelector } from "react-redux";
-import { UserContext } from "../../context/userContext";
+import { UserContext } from "context/userContext";
 
 const Sub_0000 = ({ index }) => {
   console.log('sub_0000 렌더링')

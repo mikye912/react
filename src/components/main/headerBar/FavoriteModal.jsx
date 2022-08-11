@@ -14,7 +14,7 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { FaTimes } from "react-icons/fa";
 import Swal from 'sweetalert2';
-import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../../context/userContext";
 import { useSelector } from "react-redux";
 
 function not(a, b) {

@@ -4,8 +4,8 @@ import { getYear, getMonth } from "date-fns";
 import { ko } from 'date-fns/esm/locale';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { dataSearchSlice } from '../../common/redux/slice';
-import '../../css/react_datepicker.css';
+import { dataSearchSlice } from 'common/redux/slice';
+import 'css/react_datepicker.css';
 import dayjs from "dayjs";
 
 const DatePickers = ({ inputRef }) => {

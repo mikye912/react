@@ -1,7 +1,4 @@
-import { useRef } from 'react';
-import DatePickers from '../../datePickers/DatePickers';
-import { dataSearchSlice } from '../../../common/redux/slice';
-import { useDispatch } from "react-redux";
+import DatePickers from './datePickers/DatePickers';
 
 const SearhForm = ({ children, name }) => {
     return (
