@@ -1,9 +1,9 @@
 import './App.css'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from './views/login/Login';
-import Sub_main from './views/main/Sub_main';
+import Login from 'Views/Login/Login';
+import Sub_main from 'Views/Main/Sub_main';
 import { Provider } from "react-redux";
-import store from "./common/redux/store";
+import store from "Common/Redux/store";
 
 function App() {
   return (
