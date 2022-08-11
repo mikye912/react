@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import Default from '../searchBox/Default';
 import Extra from '../searchBox/Extra';
 import 'css/searchBox.css';
+import { UserContext } from 'context/userContext';
+import {FaPlusCircle, FaSearch} from "react-icons/fa";
 
 const Sub_0201 = ({ index, content }) => {
   const search_data = useSelector((state) => state.dataSearch);
