@@ -50,7 +50,7 @@ export default function AuthLogin() {
             }
         }
 
-        axios.post('/api/login_process', {
+        axios.post('/api/login/AuthLogin', {
             userId: inputRef.current[0].value,
             userPw: common.base64Enc(inputRef.current[1].value)
         })
