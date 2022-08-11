@@ -1,4 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useDispatch } from "react-redux";
+import { dataSearchSlice } from 'common/redux/slice';
 
 const SearhForm = ({ children, name }) => {
     return (
@@ -12,21 +14,59 @@ const SearhForm = ({ children, name }) => {
 }
 
 const ExtraForm = ({ i, data, inputRef }) => {
-    const labelRef = useRef([]);
-    
+    const checkRef = useRef([]);
+    const dispatch = useDispatch();
+
+    for (let i = 0; i < checkRef.current.length; i++) {
+        if (checkRef.current[0].id === "전체거래") {
+            checkRef.current[0].checked='true'
+        }
+    }
+
+    const [checkedButtons, setCheckedButtons] = useState([]);
+    const changeHandler = (checked, id, name) => {
+
+        if (checked) {
+            //담는거해결하자.....
+            setCheckedButtons([...checkedButtons, id]);
+            
+            dispatch(dataSearchSlice.actions.changeInputs({
+                name : id
+            }))
+
+        } else {
+            setCheckedButtons(checkedButtons.filter(button => button !== id));
+        }
+    };
+
+
     if (data.TYPE == 'MULTICHECK') {
 
     } else if (data.TYPE == 'CHECK') {
+
         return (
             <SearhForm name={data.NAME}>
                 {data && data.SUBDATA.map((SUBDATA, index) => {
                     return (
-                        <label className='check_label' key={index}>
-                            <input type="checkBox" name={data.FIELD} id={SUBDATA.NAME} defalutvalue={SUBDATA.VALUE} ref={e => inputRef.current[i] = e} />
-                            {SUBDATA.NAME}
-                        </label>
+                        <div key={index} style={{ display: 'inline' }}>
+                            <label className='check_label' >
+                                <input
+                                    type="checkBox"
+                                    name={data.FIELD}
+                                    id={SUBDATA.NAME}
+                                    defaultValue={SUBDATA.VALUE}
+                                    onChange={e => {
+                                        changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue, e.currentTarget.name);
+                                    }}
+                                    checked={checkedButtons.includes( SUBDATA.VALUE ) ? true : false}
+                                />
+                                {SUBDATA.NAME}
+                            </label>
+                            {index % 2 !== 0 && <br />}
+                        </div>
                     )
                 })}
+
             </SearhForm>
         );
     } else if (data.TYPE == 'SELECT') {

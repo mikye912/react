@@ -114,20 +114,19 @@
 
 .extra_search_input {
     min-width: 180px;
+    width: 236px;
     height: 70px;
     padding: 13px;
     background: #F5F6F8 0% 0% no-repeat padding-box;
 }
 
 .check_label {
-    /* width: 90px;
+    width: 90px;
     text-align: left;
     font: normal normal bold 14px Pretendard;
     vertical-align: middle;
     letter-spacing: 0px;
-    color: #232F34;   */
-    display: inline-block;
-    width: 90px;
+    color: #232F34;  
 }
 
 input[type='checkBox'] {
