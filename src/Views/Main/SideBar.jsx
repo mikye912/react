@@ -4,7 +4,7 @@ import React, { useState, memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "Components/Main/Sidebar/SidebarMenu";
 import { batch, useDispatch } from "react-redux";
-import { contentSlice, selectTabSlice, sidebarStateSlice } from "../../Common/Redux/slice";
+import { contentSlice, selectTabSlice, sidebarStateSlice } from "Common/Redux/slice";
 
 const SideBar = ({ routes }) => { //TRUE
   console.log("SideBar 렌더링")

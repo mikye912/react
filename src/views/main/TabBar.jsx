@@ -1,9 +1,8 @@
-import React, { memo } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { contentSlice ,selectTabSlice } from "../../Common/Redux/slice"
+import { contentSlice ,selectTabSlice } from "Common/Redux/slice";
 
 const TabBar = () => {
   const isSider = useSelector((state) => state.sidebarState)

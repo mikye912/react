@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Column } from '@ant-design/plots';
-import common from '../../../../Common/common';
-import { UserContext } from '../../../../Context/userContext';
+import common from 'Common/common';
+import { UserContext } from 'Context/userContext';
 
 const Chart_0000 = () => {
 console.log("chart_0000 렌더링")
