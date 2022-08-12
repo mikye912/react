@@ -27,19 +27,19 @@
   }
 
   .top_section .logo_top{
-    content: url(../Resource/Images/logo_top.png);
+    content: url(Resource/Images/logo_top.png);
     width: 35px;
     height: 30px;
   }
 
   .top_section .btn_fix{
-    content: url(../Resource/Images/btn_fix.png);
+    content: url(Resource/Images/btn_fix.png);
     width: 30px;
     height: 30px;
   }
 
   .top_section .btn_fix_hover{
-    content: url(../Resource/Images/btn_fix_hover.png);
+    content: url(Resource/Images/btn_fix_hover.png);
     width: 30px;
     height: 30px;
   }
@@ -180,7 +180,7 @@
   }
 
   .angle_down{
-    content: url(../Resource/Images/btn_navi_bottom.png);
+    content: url(Resource/Images/btn_navi_bottom.png);
     width: 9px;
     height: 6px;
     vertical-align: middle;

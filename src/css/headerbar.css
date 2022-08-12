@@ -20,14 +20,14 @@
 }
 .header_icon .btn_set_favorite{
     cursor: pointer;
-    content: url(../Resource/Images/btn_set_favorite.png);
+    content: url(Resource/Images/btn_set_favorite.png);
     top: 9px;
     left: 209px;
     width: 40px;
     height: 40px;
 }
 .header_icon .btn_set_favorite:hover{
-    content: url(../Resource/Images/btn_set_favorite_hover.png);
+    content: url(Resource/Images/btn_set_favorite_hover.png);
 }
 .header_nav {
     height: 100%;

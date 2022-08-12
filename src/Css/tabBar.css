@@ -60,11 +60,11 @@
     cursor: pointer;
     width: 17px;
     height: 17px;
-    content: url(../Resource/Images/btn_del.png);
+    content: url(Resource/Images/btn_del.png);
 }
 
 .tabbar .tabbar_nav .tabbar_item img:hover{
-    content: url(../Resource/Images/btn_del_hover.png);
+    content: url(Resource/Images/btn_del_hover.png);
 }
 
 .tabbar .tabbar_nav .tabbar_item {

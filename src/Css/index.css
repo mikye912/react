@@ -30,7 +30,7 @@
 
 .index_img_container {
     /* background: linear-gradient(#53BBD3,#2785E3); */
-    background-image: url(../Resource/Images/bg_login.png);
+    background-image: url(Resource/Images/bg_login.png);
 }
 
 .index_logo img {
@@ -39,7 +39,7 @@
     width: 258px;
     height: 101px;
     margin-bottom: 80px;
-    content: url(../Resource/Images/logo_login.png);
+    content: url(Resource/Images/logo_login.png);
 }
 
 .index_signin {
@@ -120,7 +120,7 @@
     width: 24px;
     height: 24px;
     vertical-align: middle;
-    content: url(../Resource/Images/icon_id.png);
+    content: url(Resource/Images/icon_id.png);
 }
 
 .index_input_pw{
@@ -136,7 +136,7 @@
     width: 24px;
     height: 24px;
     vertical-align: middle;
-    content: url(../Resource/Images/icon_pw.png);
+    content: url(Resource/Images/icon_pw.png);
 }
 
 .index_sign_input>span {

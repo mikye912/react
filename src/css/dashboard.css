@@ -32,14 +32,14 @@
 }
 
 .dash_first .title_icon, .dash_seconde .title_icon, .chart .title_icon {
-  content: url(../Resource/Images/icon_title.png);
+  content: url(Resource/Images/icon_title.png);
   width: 20px;
   vertical-align: middle;
   margin-bottom: 6px;
 }
 
 .dash_third .title_icon {
-  content: url(../Resource/Images/icon_notice.png);
+  content: url(Resource/Images/icon_notice.png);
   width: 22px;
   vertical-align: middle;
   margin-bottom: 6px;
