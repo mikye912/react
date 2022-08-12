@@ -51,7 +51,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                                     onChange={e => {
                                         changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue, e.currentTarget.name);
                                     }}
-                                    checked={checkedButtons.includes(SUBDATA.VALUE) || SUBDATA.NAME === '전체거래' ? true : false}
+                                    checked={checkedButtons.includes(SUBDATA.VALUE) ? true : false}
                                 />
                                 {SUBDATA.NAME}
                             </label>

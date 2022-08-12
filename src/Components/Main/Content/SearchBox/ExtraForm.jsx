@@ -14,28 +14,21 @@ const SearhForm = ({ children, name }) => {
 }
 
 const ExtraForm = ({ i, data, inputRef }) => {
-    const checkRef = useRef([]);
     const dispatch = useDispatch();
-
-    for (let i = 0; i < checkRef.current.length; i++) {
-        if (checkRef.current[0].id === "전체거래") {
-            checkRef.current[0].checked='true'
-        }
-    }
 
     const [checkedButtons, setCheckedButtons] = useState([]);
     const changeHandler = (checked, id, name) => {
 
         if (checked) {
-            //담는거해결하자.....
             setCheckedButtons([...checkedButtons, id]);
-            
             dispatch(dataSearchSlice.actions.changeInputs({
-                name : id
+                [name]: [...checkedButtons, id]
             }))
-
         } else {
             setCheckedButtons(checkedButtons.filter(button => button !== id));
+            dispatch(dataSearchSlice.actions.changeInputs({
+                [name]: checkedButtons.filter(button => button !== id)
+            }))
         }
     };
 
@@ -58,7 +51,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                                     onChange={e => {
                                         changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue, e.currentTarget.name);
                                     }}
-                                    checked={checkedButtons.includes( SUBDATA.VALUE ) ? true : false}
+                                    checked={checkedButtons.includes(SUBDATA.VALUE) ? true : false}
                                 />
                                 {SUBDATA.NAME}
                             </label>

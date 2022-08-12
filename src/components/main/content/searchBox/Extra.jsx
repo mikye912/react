@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import ExtraForm from './ExtraForm';
 
-
 const Extra = ({ data, inputRef }) => {
     return (
         <Box className="extra_search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
