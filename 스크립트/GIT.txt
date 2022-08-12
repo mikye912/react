@@ -1,0 +1,2 @@
+#대소문자 구분 하기#
+git config core.ignorecase false
