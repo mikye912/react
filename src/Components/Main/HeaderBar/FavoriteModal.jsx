@@ -45,7 +45,7 @@ const FavoriteModal = ({setUserMenu}) => {
 
   useEffect(() => {
     if(open) {
-      axios.get('/api/sub_main/header/userFav',{
+      axios.get('/api/Main/HeaderBar/getUserFav',{
         params : {
           userId : uInfo[0],
         }
@@ -108,7 +108,7 @@ const FavoriteModal = ({setUserMenu}) => {
       confirmButtonColor : '#1D79E7',
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.put('/api/sub_main/header/userFav',{
+        axios.put('/api/Main/HeaderBar/setUserFav',{
             userId : uInfo[0],
             right : right,
         }).then((res) => {

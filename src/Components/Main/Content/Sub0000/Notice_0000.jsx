@@ -6,7 +6,7 @@ const Notice_0000 = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    axios.get('/api/sub_main/sub_0000/notice_0000')
+    axios.get('/api/Main/Content/Sub0000/notice_0000')
       .then((res) => {
         setData(res.data);
       }).catch((err) => {

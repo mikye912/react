@@ -29,7 +29,7 @@ const Sub_0000 = ({ index }) => {
   );
 
   useEffect(() => {
-    axios.post('/api/sub_main/sub_0000/chartData_0000', {
+    axios.post('/api/Main/Content/Sub0000/chartData_0000', {
       orgcd: uInfo[1]
     }).then((res) => {
       setData(res.data[0]);

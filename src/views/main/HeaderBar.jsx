@@ -16,8 +16,8 @@ const getUserName = (userId) => {
   })
 }
 
-const getUserMenu = (userId) => {
-  return axios.get('/api/Main/HeaderBar/getUserMenu', {
+const getUserFav = (userId) => {
+  return axios.get('/api/Main/HeaderBar/getUserFav', {
     params: {
       userId: userId,
     }
@@ -37,7 +37,7 @@ const HeaderBar = () => {
 
   useEffect(() => {
       // 동시에 가져오기
-      Promise.all([getUserName(uInfo[0]), getUserMenu(uInfo[0])])
+      Promise.all([getUserName(uInfo[0]), getUserFav(uInfo[0])])
         .then((res) => {
           setUserName(res[0][0].USER_NM);
           const arr = res[1].filter(obj => obj.USE_YN === 'Y');

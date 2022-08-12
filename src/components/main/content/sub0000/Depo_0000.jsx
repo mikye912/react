@@ -17,7 +17,7 @@ const Depo_0000 = () => {
   });
 
   useEffect(() => {
-    axios.post('/api/sub_main/sub_0000/depo_0000', {
+    axios.post('/api/Main/Content/Sub0000/depo_0000', {
       orgcd: uInfo[1]
     }).then((res) => {
       setData(res.data[0]);
