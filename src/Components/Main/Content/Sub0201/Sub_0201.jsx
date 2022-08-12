@@ -29,6 +29,8 @@ const Sub_0201 = ({ index, content }) => {
     console.log('obj',newObj)
   }
 
+  console.log(data);
+
   return (
     <Box className={`title ${index} ${selTab.selectTab === index ? 'selected' : ''}`} style={{ gridTemplateRows: 'max-content' }}>
       <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
