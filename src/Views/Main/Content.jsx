@@ -21,39 +21,20 @@ const Content = () => {
       >
         {
           contents.map((content) => {
-            if (content.path === "sub_0000") {
-              //console.log(index);
-              return (
-                <Sub_0000
-                  key={content.index}
-                  index={content.index}
-                // selTab={selTab}
-                // isSider={isSider}
-                />
-              )
-            } else if (content.path === "sub_0201") {
-              // console.log(index);
-              return (
-                <Sub_0201
-                  key={content.index}
-                  index={content.index}
-                  content={content.path}
-                // selTab={selTab}
-                // isSider={isSider}
-                />
-              )
-            } else {
-              return (
-                <ErrorPage
-                  key={content.index}
-                  index={content.index}
-                  // selTab={selTab}
-                  // isSider={isSider}
-                  content={content}
-                />
-              )
+            switch (content.path) {
+              case "sub_0000":
+                return (
+                  <Sub_0000 key={content.index} index={content.index} />
+                )
+              case "sub_0201":
+                return (
+                  <Sub_0201 key={content.index} index={content.index} content={content.path} />
+                )
+              default:
+                return (
+                  <ErrorPage key={content.index} index={content.index} content={content} />
+                )
             }
-
           })
         }
       </motion.div>
