@@ -15,7 +15,7 @@ export default function Login() {
                 <div className='index_signin'>
                     <span>Sign in</span>
                 </div>
-                {uAuth.uInfo ? <AuthCert/> : <AuthLogin/>}
+                {uAuth.token ? <AuthCert/> : <AuthLogin/>}
             </div>
         </div>
     );

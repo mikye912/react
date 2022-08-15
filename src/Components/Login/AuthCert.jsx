@@ -21,7 +21,7 @@ export default function AuthLogin() {
 
     const handleSubmit = () => {
         //인증번호 유효성 검증 후 넘어가기
-        sessionStorage.setItem("uInfo", uAuth.uInfo);
+        // sessionStorage.setItem("uInfo", uAuth.uInfo);
         sessionStorage.setItem("uMenu", uAuth.uMenu);
         sessionStorage.setItem("uSearch", uAuth.uSearch);
         sessionStorage.setItem("token", uAuth.token);
