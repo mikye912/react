@@ -6,16 +6,18 @@ import { UserContext } from 'Context/userContext';
 
 const Chart_0000 = () => {
 console.log("chart_0000 렌더링")
-const { uInfo } = useContext(UserContext);
+//const { token } = useContext(UserContext);
 const [data, setData] = useState([]);
 
 useEffect(() => {
-    axios.post('/api/Main/Content/Sub0000/chart_0000',{
-      orgcd : uInfo[1]
+    axios.post('/api/Main/Content/Sub0000/chart_0000', null, {
+      headers : {
+        x_auth : sessionStorage.getItem("token")
+      }
     }).then((res) => {
       setData(res.data);
     }).catch((err) => {
-      console.log(err);
+      common.apiVerify(err);
     })
 },[])
 

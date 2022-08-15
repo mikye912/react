@@ -8,8 +8,8 @@ import { UserContext } from 'Context/userContext';
 
 const Depo_0000 = () => {
   console.log("depo_0000 렌더링")
-  const { uInfo } = useContext(UserContext);
-  const isSider = useSelector((state) => state.sidebarState)
+  //const { token } = useContext(UserContext);
+  //const isSider = useSelector((state) => state.sidebarState)
   const [data, setData] = useState({
     SALE_AMT: 0,
     FEE: 0,
@@ -17,12 +17,14 @@ const Depo_0000 = () => {
   });
 
   useEffect(() => {
-    axios.post('/api/Main/Content/Sub0000/depo_0000', {
-      orgcd: uInfo[1]
+    axios.post('/api/Main/Content/Sub0000/depo_0000', null, {
+      headers : {
+        x_auth : sessionStorage.getItem("token")
+      }
     }).then((res) => {
       setData(res.data[0]);
     }).catch((err) => {
-      console.log(err);
+      common.apiVerify(err);
     })
   }, [])
 

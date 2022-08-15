@@ -68,6 +68,7 @@ export default function AuthLogin() {
                         uInfo : res.data["uInfo"],
                         uMenu : res.data["uMenu"],
                         uSearch : res.data["uSearch"],
+                        token : res.data["token"],
                     }
 
                     dispatch(uAuthSlice.actions.setAuthStat(uAuth));

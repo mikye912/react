@@ -8,8 +8,8 @@ import { UserContext } from "Context/userContext";
 
 const Sales_0000 = () => {
   console.log("sales_0000 렌더링")
-  const { uInfo } = useContext(UserContext);
-  const isSider = useSelector((state) => state.sidebarState)
+  //const { token } = useContext(UserContext);
+  //const isSider = useSelector((state) => state.sidebarState)
   const [data, setData] = useState({
     CARD: 0,
     CARDCNT: 0,
@@ -22,12 +22,14 @@ const Sales_0000 = () => {
   });
 
   useEffect(() => {
-    axios.post('/api/Main/Content/Sub0000/sales_0000', {
-      orgcd: uInfo[1]
+    axios.post('/api/Main/Content/Sub0000/sales_0000', null, {
+      headers : {
+        x_auth : sessionStorage.getItem("token")
+      }
     }).then((res) => {
       setData(res.data[0]);
     }).catch((err) => {
-      console.log(err);
+      common.apiVerify(err);
     })
   }, [])
 

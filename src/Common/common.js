@@ -90,9 +90,16 @@ export default {
                 width: 460,
                 confirmButtonColor: '#1D79E7'
             }).then(() => {
+                sessionStorage.clear();
                 return window.location.href = '/';
             })
         } else {
+            Swal.fire({
+                icon: 'error',
+                title: '서버에서 오류가 발생하였습니다.',
+                confirmButtonColor: '#1D79E7',
+                confirmButtonText: '확인'
+            })
             console.log(err);
         }
     }

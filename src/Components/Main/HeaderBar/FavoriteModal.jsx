@@ -16,6 +16,7 @@ import { FaTimes } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import { UserContext } from "../../../Context/userContext";
 import { useSelector } from "react-redux";
+import common from "Common/common";
 
 function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
@@ -31,7 +32,7 @@ function not(a, b) {
 
 const FavoriteModal = ({setUserMenu}) => {
   console.log("favorite 렌더링")
-  const { uInfo } = useContext(UserContext);
+  //const { token } = useContext(UserContext);
   const isSider = useSelector((state) => state.sidebarState)
 
   const [open, setOpen] = useState(false);
@@ -46,8 +47,8 @@ const FavoriteModal = ({setUserMenu}) => {
   useEffect(() => {
     if(open) {
       axios.get('/api/Main/HeaderBar/getUserFav',{
-        params : {
-          userId : uInfo[0],
+        headers : {
+          x_auth : sessionStorage.getItem("token")
         }
       }).then((res) => {
         const leftArr = res.data.filter(obj => obj.USE_YN === 'N');
@@ -55,7 +56,7 @@ const FavoriteModal = ({setUserMenu}) => {
         setLeft(leftArr);
         setRight(rightArr);
       }).catch((err) => {
-        console.log(err);
+        common.apiVerify(err);
       })
     }
   },[open])
@@ -109,8 +110,12 @@ const FavoriteModal = ({setUserMenu}) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios.put('/api/Main/HeaderBar/setUserFav',{
-            userId : uInfo[0],
             right : right,
+        },
+        {
+          headers : {
+            x_auth : sessionStorage.getItem("token")
+          },
         }).then((res) => {
           Swal.fire({
             icon: 'success',
@@ -122,13 +127,7 @@ const FavoriteModal = ({setUserMenu}) => {
             setUserMenu(right);
           })
         }).catch((err) => {
-          Swal.fire({
-            icon: 'error',
-            title: '서버에서 오류가 발생하였습니다.',
-            confirmButtonColor : '#1D79E7',
-            confirmButtonText: '확인'
-          })
-          console.log(err);
+          common.apiVerify(err);
         })
       }
     })

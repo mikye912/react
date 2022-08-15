@@ -15,9 +15,10 @@ import { uAuthSlice } from "Common/Redux/slice";
 export default function Sub_main() {
   console.log("sub_main 렌더링")
   const dispatch = useDispatch();
-  const uInfo = common.base64Dec(sessionStorage.getItem("uInfo")).split(':');
+  //const uInfo = common.base64Dec(sessionStorage.getItem("uInfo")).split(':');
   const uMenu = common.base64Dec(sessionStorage.getItem("uMenu"));
   const uSearch = JSON.parse(common.base64Dec(sessionStorage.getItem("uSearch")));
+  //const token = sessionStorage.getItem("token");
   
   const routes = useMemo(() => JSON.parse(uMenu), [uMenu]);
   console.log(routes);
@@ -26,10 +27,9 @@ export default function Sub_main() {
       dispatch(uAuthSlice.actions.destroyAuth());
     }
   },[])
-// uDepart, uTid, uAcq 
   return (
     <div className="main_container">
-      <UserContext.Provider value={{ uInfo, uMenu, uSearch }}>
+      <UserContext.Provider value={{ uMenu, uSearch }}>
         <SideBar routes={routes} />
         <HeaderBar />
         <TabBar />

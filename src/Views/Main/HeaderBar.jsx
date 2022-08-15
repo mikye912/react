@@ -8,7 +8,11 @@ import Slice, { selectTabSlice } from "Common/Redux/slice";
 import common from "Common/common";
 
 const getUserName = () => {
-  return axios.get('/api/Main/HeaderBar/getUserName')
+  return axios.get('/api/Main/HeaderBar/getUserName', {
+    headers : {
+      x_auth : sessionStorage.getItem("token")
+    }
+  })
   .then((res) => {
     return res.data
   }).catch((err) => {
@@ -17,7 +21,11 @@ const getUserName = () => {
 }
 
 const getUserFav = () => {
-  return axios.get('/api/Main/HeaderBar/getUserFav')
+  return axios.get('/api/Main/HeaderBar/getUserFav', {
+    headers : {
+      x_auth : sessionStorage.getItem("token")
+    }
+  })
   .then((res) => {
     return res.data
   }).catch((err) => {
@@ -29,21 +37,21 @@ const HeaderBar = () => {
   console.log("HeaderBar 렌더링")
   const isSider = useSelector((state) => state.sidebarState)
   const dispatch = useDispatch();
-  const { uInfo } = useContext(UserContext);
+  //const { token } = useContext(UserContext);
 
   const [userMenu, setUserMenu] = useState();
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
     // 동시에 가져오기
-    Promise.all([getUserName(uInfo[0]), getUserFav(uInfo[0])])
+    Promise.all([getUserName(), getUserFav()])
       .then((res) => {
         setUserName(res[0][0].USER_NM);
         const arr = res[1].filter(obj => obj.USE_YN === 'Y');
         setUserMenu(arr);
       })
       .catch((err) => {
-        //console.log(err);
+        console.log(err);
       });
   }, []);
 

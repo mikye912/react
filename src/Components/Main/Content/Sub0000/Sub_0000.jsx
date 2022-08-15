@@ -13,7 +13,7 @@ import { UserContext } from "Context/userContext";
 
 const Sub_0000 = ({ index }) => {
   console.log('sub_0000 렌더링')
-  const { uInfo } = useContext(UserContext);
+  //const { token } = useContext(UserContext);
   const selTab = useSelector((state) => state.selectTab);
   const [data, setData] = useState(
     {
@@ -29,12 +29,14 @@ const Sub_0000 = ({ index }) => {
   );
 
   useEffect(() => {
-    axios.post('/api/Main/Content/Sub0000/chartData_0000', {
-      orgcd: uInfo[1]
+    axios.post('/api/Main/Content/Sub0000/chartData_0000', null, {
+      headers : {
+        x_auth : sessionStorage.getItem("token")
+      }
     }).then((res) => {
       setData(res.data[0]);
     }).catch((err) => {
-      console.log(err);
+      common.apiVerify(err);
     })
   }, [])
 

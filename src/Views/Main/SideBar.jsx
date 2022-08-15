@@ -6,7 +6,7 @@ import SidebarMenu from "Components/Main/Sidebar/SidebarMenu";
 import { batch, useDispatch } from "react-redux";
 import { contentSlice, selectTabSlice, sidebarStateSlice } from "Common/Redux/slice";
 
-const SideBar = ({ routes }) => { //TRUE
+const SideBar = ({ routes }) => {
   console.log("SideBar 렌더링")
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(true);
@@ -17,12 +17,8 @@ const SideBar = ({ routes }) => { //TRUE
       setIsHover(!isHover);
     }
     setIsOpen(!isOpen);
-    //setIsSider(!isOpen);
-    //dispatch({ type : 'changeSidebarState', sidebarState : !isOpen })
     dispatch(sidebarStateSlice.actions.changeSidebarState(!isOpen));
   };
-
-  let navigate = useNavigate();
 
   const handleOnclick = () => {
     window.location.reload();
@@ -35,12 +31,8 @@ const SideBar = ({ routes }) => { //TRUE
 
   const hoverToggle = () => {
     if (isHover) {
-      //setIsSider(isOpen);
-      // dispatch({ type : 'changeSidebarState', sidebarState : isOpen })
       dispatch(sidebarStateSlice.actions.changeSidebarState(isOpen));
     } else {
-      //setIsSider(!isOpen);
-      //dispatch({ type : 'changeSidebarState', sidebarState : !isOpen })
       dispatch(sidebarStateSlice.actions.changeSidebarState(!isOpen));
     }
     setIsHover(!isHover)
@@ -118,8 +110,6 @@ const SideBar = ({ routes }) => { //TRUE
                   showAnimation={showAnimation}
                   isOpen={isOpen}
                   isHover={isHover}
-                  // setTabs={setTabs}
-                  // createTab={createTab}
                 />
               );
             } else {
@@ -127,16 +117,13 @@ const SideBar = ({ routes }) => { //TRUE
                 <div
                   key={index}
                   className="menu"
-                  // onClick={() => createTab(route.name, route.path)}
                   onClick={() => {
                     batch(()=>{
                       dispatch(contentSlice.actions.addTabs({
                         name : route.name, 
                         path : route.path
                       }));
-                      // dispatch({ type : 'addTabs', name : route.name, path : route.path })
                       dispatch(selectTabSlice.actions.addSelectTab());
-                      // dispatch({ type : 'addSelectTab' })
                     })
                   }}
                 >

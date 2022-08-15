@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { UserContext } from 'Context/userContext';
+import common from 'Common/common';
 
 const Notice_0000 = () => {
   console.log("notice_0000 렌더링")
+  //const { token } = useContext(UserContext);
   const [data, setData] = useState();
 
   useEffect(() => {
-    axios.get('/api/Main/Content/Sub0000/notice_0000')
+    axios.get('/api/Main/Content/Sub0000/notice_0000', {
+      headers : {
+        x_auth : sessionStorage.getItem("token")
+      }
+    })
       .then((res) => {
         setData(res.data);
       }).catch((err) => {
-        console.log(err);
+        common.apiVerify(err);
       })
   }, [])
 
