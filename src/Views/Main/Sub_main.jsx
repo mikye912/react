@@ -20,7 +20,6 @@ export default function Sub_main() {
   const uSearch = JSON.parse(common.base64Dec(sessionStorage.getItem("uSearch")));
   
   const routes = useMemo(() => JSON.parse(uMenu), [uMenu]);
-
   console.log(routes);
   useEffect(()=>{
     return () => {

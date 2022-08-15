@@ -1,13 +1,14 @@
 import { Buffer } from 'buffer';
+import Swal from "sweetalert2";
 
 export default {
-    base64Enc : (str) => {
+    base64Enc: (str) => {
         return Buffer.from(str, "utf-8").toString('base64')
     },
-    base64Dec : (str) => {
+    base64Dec: (str) => {
         return Buffer.from(str, "base64").toString('utf-8')
     },
-    formatter_number : (data) => {
+    formatter_number: (data) => {
         const jsType = Object.prototype.toString.call(data).slice(8, -1);
         if (jsType === 'String') {
             return data.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`);
@@ -46,7 +47,7 @@ export default {
             data = data.setDate(new Date().getDate() + (num));
 
             let day = new Date(data);
-            day  = day.getDay();
+            day = day.getDay();
 
             return week[day];
         },
@@ -56,8 +57,8 @@ export default {
             data = data.setHours(new Date().getHours() + (num));
 
             let hours = new Date(data);
-            hours  = hours.getHours();
-            
+            hours = hours.getHours();
+
             return hours;
         },
         minutes: (num = 0) => {
@@ -66,8 +67,8 @@ export default {
             data = data.setMinutes(new Date().getMinutes() + (num));
 
             let minutes = new Date(data);
-            minutes  = minutes.getMinutes();
-            
+            minutes = minutes.getMinutes();
+
             return minutes;
         },
         seconds: (num = 0) => {
@@ -76,9 +77,23 @@ export default {
             data = data.setHours(new Date().getSeconds() + (num));
 
             let seconds = new Date(data);
-            seconds  = seconds.getSeconds();
-            
+            seconds = seconds.getSeconds();
+
             return seconds;
+        }
+    },
+    apiVerify: (err) => {
+        if (Object.keys(err.response.data)[0] === 'jwtErr') {
+            Swal.fire({
+                icon: 'error',
+                title: err.response.data.jwtErr,
+                width: 460,
+                confirmButtonColor: '#1D79E7'
+            }).then(() => {
+                return window.location.href = '/';
+            })
+        } else {
+            console.log(err);
         }
     }
 }

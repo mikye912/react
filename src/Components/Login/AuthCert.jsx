@@ -24,9 +24,7 @@ export default function AuthLogin() {
         sessionStorage.setItem("uInfo", uAuth.uInfo);
         sessionStorage.setItem("uMenu", uAuth.uMenu);
         sessionStorage.setItem("uSearch", uAuth.uSearch);
-        //sessionStorage.setItem("uDepart", uAuth.uDepart);
-        //sessionStorage.setItem("uTid", uAuth.uTid);
-        //sessionStorage.setItem("uAcq", uAuth.uAcq);
+        
         navigate("/sub_main");
     }
     return (

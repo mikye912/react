@@ -64,20 +64,12 @@ export default function AuthLogin() {
                         confirmButtonColor: '#1D79E7'
                     })
                 } else {
-                    // sessionStorage.setItem("uInfo", res.data["uInfo"]);
-                    // sessionStorage.setItem("uMenu", res.data["uMenu"]);
-                    // sessionStorage.setItem("uDepart", res.data["uDepart"]);
-                    // sessionStorage.setItem("uTid", res.data["uTid"]);
-                    // sessionStorage.setItem("uAcq", res.data["uAcq"]);
-                    // navigate("/sub_main");
                     const uAuth = {
                         uInfo : res.data["uInfo"],
                         uMenu : res.data["uMenu"],
                         uSearch : res.data["uSearch"],
-                        // uDepart : res.data["uDepart"],
-                        // uTid : res.data["uTid"],
-                        // uAcq : res.data["uAcq"]
                     }
+
                     dispatch(uAuthSlice.actions.setAuthStat(uAuth));
                     // 인증번호 생성 후 DB 처리
                 }
