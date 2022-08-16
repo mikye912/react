@@ -9,7 +9,8 @@
     height: 100vh;
 }
 
-.index_img_container, .index_sign_container{
+.index_img_container,
+.index_sign_container {
     width: 50vw;
     display: flex;
     align-items: center;
@@ -23,8 +24,10 @@
     .index_container {
         justify-content: center;
     }
+
     .index_img_container {
-        display: none;;
+        display: none;
+        ;
     }
 }
 
@@ -44,14 +47,14 @@
 
 .index_signin {
     cursor: default;
-     /* Layout Properties */
-     left: 1376px;
-     width: 128px;
-     height: 51px;
-     margin-bottom: 35px;
+    /* Layout Properties */
+    left: 1376px;
+    width: 128px;
+    height: 51px;
+    margin-bottom: 35px;
 }
 
-.index_signin span{
+.index_signin span {
     /* UI Properties */
     text-align: center;
     font-style: normal;
@@ -63,7 +66,8 @@
     color: #3F3F3F;
 }
 
-.input_id, .input_pw {
+.input_id,
+.input_pw {
     /* Layout Properties */
     left: 1210px;
     width: 415px;
@@ -75,8 +79,9 @@
     font-size: 18px;
 }
 
-.input_id ::placeholder, .input_pw ::placeholder{
-   /* UI Properties */
+.input_id ::placeholder,
+.input_pw ::placeholder {
+    /* UI Properties */
     text-align: left;
     font-style: normal;
     font-weight: 500;
@@ -98,16 +103,16 @@
     background-origin: content-box;
     background-position-x: right;
     background-position-y: center;
-    background-repeat: no-repeat; 
+    background-repeat: no-repeat;
     background-size: 24px 24px;
     padding: 0 10px 0 10px;
 }
 
-.index_sign_input input:focus{
+.index_sign_input input:focus {
     outline: none;
 }
 
-.index_input_id{
+.index_input_id {
     width: 460px;
     height: 77px;
     background: #F7F8FC 0% 0% no-repeat padding-box;
@@ -116,14 +121,14 @@
     margin-bottom: 20px;
 }
 
-.index_input_id img{
+.index_input_id img {
     width: 24px;
     height: 24px;
     vertical-align: middle;
     content: url(Resource/Images/icon_id.png);
 }
 
-.index_input_pw{
+.index_input_pw {
     width: 460px;
     height: 77px;
     background: #F7F8FC 0% 0% no-repeat padding-box;
@@ -132,7 +137,7 @@
     margin-bottom: 20px;
 }
 
-.index_input_pw img{
+.index_input_pw img {
     width: 24px;
     height: 24px;
     vertical-align: middle;
@@ -146,7 +151,7 @@
 }
 
 .index_sign_input button {
-   /* Layout Properties */
+    /* Layout Properties */
     left: 1210px;
     width: 460px;
     height: 56px;
@@ -169,20 +174,21 @@
     border-style: none;
 }
 
-.swal2-title{
+.swal2-title {
     font-size: 1.5em;
 }
 
-.swal2-icon{
+.swal2-icon {
     width: 33px;
     height: 33px;
 }
 
 /* 자동완성시 배경색 변경되는거 없앰 */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+.index_sign_input>input:-webkit-autofill,
+.index_sign_input>input:-webkit-autofill:hover,
+.index_sign_input>input:-webkit-autofill:focus,
+.index_sign_input>input:-webkit-autofill:active {
     transition: background-color 5000s;
     -webkit-text-fill-color: #3F3F3F !important;
+    font-size: 18px;
 }

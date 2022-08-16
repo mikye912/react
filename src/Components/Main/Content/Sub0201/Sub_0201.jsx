@@ -26,17 +26,19 @@ const Sub_0201 = ({ index, content }) => {
     };
     //obj 합치기
     const newObj = Object.assign({}, postData, search_data);
-    console.log('obj',newObj)
+    console.log('obj', newObj)
   }
 
-  console.log(data);
+  const hideForm = () => {
+    
+  }
 
   return (
     <Box className={`title ${index} ${selTab.selectTab === index ? 'selected' : ''}`} style={{ gridTemplateRows: 'max-content' }}>
       <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
         <Default data={data} inputRef={inputRef} />
         <Box className="btn_case" gridColumn="span 2">
-          <button className='extra_btn' ><FaPlusCircle className='extra_img' />상세</button>
+          <button className='extra_btn' ><FaPlusCircle className='extra_img' onClick={hideForm} />상세</button>
           <button className='search_btn' onClick={handleSubmit}><FaSearch className='search_img' />검색</button>
         </Box>
       </Box>

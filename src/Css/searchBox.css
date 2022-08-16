@@ -1,3 +1,12 @@
+/* 자동완성시 배경색 변경되는거 없앰 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s;
+    -webkit-text-fill-color: #3F3F3F !important;
+}
+
 .search_box {
     height: 60px;
 }
@@ -74,8 +83,8 @@
 }
 
 .default_search_input {
+    width: 230px;
     min-width: 180px;
-    width: 236px;
     height: 60px;
     padding: 13px;
 }
@@ -90,23 +99,24 @@
 }
 
 .extra_search_div {
-    height: 100%;
     display: inline-flex;
     border-bottom: 1px solid #D2D2D2;
 }
 
 .extra_search_box {
     margin-top: 10px;
-    height: 180px;
+}
+
+.extra_search_form {
+    height: 188px;
     background: #F5F6F8 0% 0% no-repeat padding-box;
+    border-bottom: 1px solid #D2D2D2;
 }
 
 .extra_search_name {
     width: 110px;
     height: 61.5px;
-    /* UI Properties */
     background: #EAEBEF 0% 0% no-repeat padding-box;
-    border-bottom: 1px solid #D2D2D2;
     border-radius: 4px 0px 0px 4px;
 
     text-align: center;
@@ -117,11 +127,19 @@
 
 .extra_search_input {
     min-width: 180px;
-    width: 236px;
+    width: 230px;
     height: 61.5px;
     padding: 13px;
     background: #F5F6F8 0% 0% no-repeat padding-box;
-    border-bottom: 1px solid #D2D2D2;
+}
+
+.extra_search_input>input[type='text'] {
+    min-width: 100%;
+    height: 34px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid #D1D6DB;
+    border-radius: 4px;
+    padding-left: 5px;
 }
 
 .check_label {
@@ -151,7 +169,7 @@ em {
 }
 
 .amount_text {
-    width: 98px;
+    width: 92px;
     height: 34px;
     border: 1px solid #D1D6DB;
     border-radius: 4px;
@@ -161,14 +179,83 @@ em {
 }
 
 .select_box {
-    width: 216px;
-    background: red 0% 0% no-repeat padding-box;
-    border: 1px solid #D1D6DB;
+    width: 206px;
+    height: 34px;
+    border: 1px solid #D1D6DB !important;
     border-radius: 4px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    margin-top: 5px !important;
 }
 
-.select_item{
-    width: 216px;
-        height: 34px;
-        background-color: #61DDBD;
+.select_item {
+    height: 34px;
+}
+
+.MuiInputBase-input {
+    height: 34px !important;
+    padding: 0px 0px 0px 5px !important;
+    font: normal normal 500 18px/34px Pretendard !important;
+    letter-spacing: 0px !important;
+    color: #303642 !important;
+}
+
+.multi_check_form {
+    display: inline-flex;
+    width: 260px;
+}
+
+.multi_check_button {
+    width: 130px;
+    height: 34px;
+    border: 1PX solid #1976d2;
+    color: #1976d2;
+    line-height: 34px;
+    font: 14px/34px Pretendard;
+    cursor: pointer;
+    background-color: transparent;
+    box-shadow: 1px 1px 3px 1px #dadce0;
+}
+
+.multi_check_button:hover {
+    text-decoration: none;
+    background-color: rgba(25, 118, 210, 0.04);
+    border: 1px solid rgb(25, 118, 210);
+}
+
+.multi_check_label_title{
+    width: 200px;
+    background-color: #1976d2;
+}
+
+.multi_check_label {
+    width: 230px;
+    text-align: left;
+    font: normal normal 400 15px Pretendard;
+    letter-spacing: 0px;
+    color: #232F34;
+    margin-bottom: 5px;
+}
+
+.multi_check_control_btn {
+    text-align: center;
+}
+
+.multi_check_submit {
+    width: 64px;
+    height: 25px;
+    font: normal normal 300 17px/25px Pretendard;
+    margin: 10px 10px 0px 0px;
+    background-color: transparent;
+    border: none;
+    color: rgb(25, 118, 210);
+}
+
+.multi_check_reset {
+    width: 90px;
+    height: 25px;
+    font: normal normal 300 17px/25px Pretendard;
+    margin: 10px 10px 0px 0px;
+    background-color: transparent;
+    border: none;
+    color: rgb(238, 70, 70);
 }

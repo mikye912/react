@@ -87,7 +87,7 @@ export default {
             Swal.fire({
                 icon: 'error',
                 title: err.response.data.jwtErr,
-                width: 460,
+                width: 560,
                 confirmButtonColor: '#1D79E7'
             }).then(() => {
                 sessionStorage.clear();
