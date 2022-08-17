@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState, useEffect, memo } from "react";
+import { useState, useEffect, memo } from "react";
 import { FaCalculator, FaCoins, FaCogs, FaCog } from "react-icons/fa";
 import { batch, useDispatch } from "react-redux";
 import { contentSlice, selectTabSlice } from "Common/Redux/slice";

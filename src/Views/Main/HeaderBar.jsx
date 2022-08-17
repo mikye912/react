@@ -1,10 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from 'axios';
 import FavoriteModal from "Components/Main/HeaderBar/FavoriteModal";
-import { UserContext } from "Context/userContext";
 import { batch, useDispatch, useSelector } from "react-redux";
-import Slice, { selectTabSlice } from "Common/Redux/slice";
+import { contentSlice, selectTabSlice } from "Common/Redux/slice";
 import common from "Common/common";
 
 const getUserName = () => {
@@ -37,7 +36,6 @@ const HeaderBar = () => {
   console.log("HeaderBar 렌더링")
   const isSider = useSelector((state) => state.sidebarState)
   const dispatch = useDispatch();
-  //const { token } = useContext(UserContext);
 
   const [userMenu, setUserMenu] = useState();
   const [userName, setUserName] = useState('');
@@ -75,7 +73,7 @@ const HeaderBar = () => {
               className="header_userMenu"
               onClick={() => {
                 batch(() => {
-                  dispatch(Slice.contentSlice.actions.addTabs({
+                  dispatch(contentSlice.actions.addTabs({
                     name: userMenus.PROGRAM_NAME,
                     path: userMenus.SRC_LOCATION
                   }));

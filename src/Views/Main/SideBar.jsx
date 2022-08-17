@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import React, { useState, memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";

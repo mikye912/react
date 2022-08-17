@@ -32,7 +32,7 @@ function not(a, b) {
 
 const FavoriteModal = ({setUserMenu}) => {
   console.log("favorite 렌더링")
-  //const { token } = useContext(UserContext);
+
   const isSider = useSelector((state) => state.sidebarState)
 
   const [open, setOpen] = useState(false);

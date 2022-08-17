@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { useContext, useState, useEffect, memo } from "react";
+import { useState, useEffect, memo } from "react";
 import axios from 'axios';
 import "Css/dashboard.css";
 import Chart_0000 from "Components/Main/Content/Sub0000/Chart_0000";
@@ -9,11 +9,10 @@ import Notice_0000 from "Components/Main/Content/Sub0000/Notice_0000";
 import common from "Common/common";
 import { CountUp } from 'use-count-up';
 import { useSelector } from "react-redux";
-import { UserContext } from "Context/userContext";
 
 const Sub_0000 = ({ index }) => {
   console.log('sub_0000 렌더링')
-  //const { token } = useContext(UserContext);
+
   const selTab = useSelector((state) => state.selectTab);
   const [data, setData] = useState(
     {

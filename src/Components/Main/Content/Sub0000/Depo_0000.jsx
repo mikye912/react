@@ -1,14 +1,11 @@
 import Box from '@mui/material/Box';
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import common from 'Common/common';
 import { CountUp } from 'use-count-up';
-import { useSelector } from 'react-redux';
-import { UserContext } from 'Context/userContext';
 
 const Depo_0000 = () => {
   console.log("depo_0000 렌더링")
-  //const { token } = useContext(UserContext);
   //const isSider = useSelector((state) => state.sidebarState)
   const [data, setData] = useState({
     SALE_AMT: 0,

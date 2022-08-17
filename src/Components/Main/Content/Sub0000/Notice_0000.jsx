@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { UserContext } from 'Context/userContext';
 import common from 'Common/common';
 
 const Notice_0000 = () => {
