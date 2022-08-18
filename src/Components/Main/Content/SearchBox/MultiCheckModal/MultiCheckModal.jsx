@@ -10,7 +10,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: 590,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -18,7 +18,6 @@ const style = {
 };
 
 const MultiCheckModal = ({ data }) => {
-
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -57,7 +56,7 @@ const MultiCheckModal = ({ data }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" style={{ fontFamily: 'Pretendard', textAlign: 'center', marginBottom: '10px' }}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2" style={{ fontFamily: 'Pretendard', textAlign: 'center', marginBottom: '15px' }}>
                         {data.NAME} 선택
                     </Typography>
                     <div id="modal-modal-description">
@@ -75,7 +74,6 @@ const MultiCheckModal = ({ data }) => {
                                             onChange={e => {
                                                 changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue, e.currentTarget.name);
                                             }}
-
                                             checked={checkedButtons.includes(SUBDATA.VALUE) ? true : false}
                                         />
                                         {SUBDATA.NAME}
@@ -85,7 +83,7 @@ const MultiCheckModal = ({ data }) => {
                         })}
                     </div>
                     <div className='multi_check_control_btn'>
-                        <input type='button' onClick={handleClose} className="multi_check_submit" value="저장" />
+                        <input type='button' onClick={handleClose} className="multi_check_submit" value="저장후닫기" />
                         <input type='button' onClick={checkedReset} className="multi_check_reset" value="선택초기화" />
                     </div>
                 </Box>

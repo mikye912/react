@@ -5,14 +5,14 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import MultiCheckModal from './MultiCheckModal/MultiCheckModal'
 
-const SearhForm = ({ children, name, index }) => {
+const SearhForm = ({ children, data }) => {
     return (
         <>
             <div className='extra_search_div'>
-                <div className='extra_search_name'>{name}</div>
+                <div className='extra_search_name'>{data.NAME}</div>
                 {children}
             </div>
-            {index === 8 || index ===  13 && <br />}
+            {data.SORT % 5 === 0 && <br />}
         </>
     )
 }
@@ -22,34 +22,54 @@ const ExtraForm = ({ i, data, inputRef }) => {
     const extraRef = new useRef();
     const [currency, setCurrency] = useState('all');
 
-
     const handleChange = (event) => {
-        console.log(event, "event")
         setCurrency(event.target.value);
         dispatch(dataSearchSlice.actions.changeInputs({
             [event.target.name]: event.target.value
         }))
     };
 
-    const [checkedButtons, setCheckedButtons] = useState([]);
-    const changeHandler = (checked, id, name) => {
-
-        if (checked) {
-            setCheckedButtons([...checkedButtons, id]);
-            dispatch(dataSearchSlice.actions.changeInputs({
-                [name]: [...checkedButtons, id]
-            }))
-        } else {
-            setCheckedButtons(checkedButtons.filter(button => button !== id));
-            dispatch(dataSearchSlice.actions.changeInputs({
-                [name]: checkedButtons.filter(button => button !== id)
-            }))
+    const [checkedButtons, setCheckedButtons] = useState(['']);
+    const changeHandler = (checked, id, name) => {  
+        if (id !== '' && checkedButtons.includes('')) {
+            /* 전체거래가 선택된 상태에서 전체거래가 아닌 다른 거래건을 체크했을때*/
+            if (checked) {
+                setCheckedButtons([id]);
+                dispatch(dataSearchSlice.actions.changeInputs({
+                    [name]: [id]
+                }))
+            } else {
+                setCheckedButtons(checkedButtons.filter(button => button !== id));
+                dispatch(dataSearchSlice.actions.changeInputs({
+                    [name]: checkedButtons.filter(button => button !== id)
+                }))
+            }
+        } else if (id !== '' && !checkedButtons.includes('')) {
+            /* 전체거래가 선택되지 않은 상태에서 전체거래가 아닌 다른 거래건을 체크했을때*/
+            if (checked) {
+                setCheckedButtons([...checkedButtons, id]);
+                dispatch(dataSearchSlice.actions.changeInputs({
+                    [name]: [...checkedButtons, id]
+                }))
+            } else {
+                setCheckedButtons(checkedButtons.filter(button => button !== id));
+                dispatch(dataSearchSlice.actions.changeInputs({
+                    [name]: checkedButtons.filter(button => button !== id)
+                }))
+            }
+        } else if(id===''){
+            /* 전체거래가 선택되지않고 다른거래건이 체크됐을때 전체거래를 선택하면 전체거래건만 선택값으로 남게*/
+            if (checked) {
+                setCheckedButtons([id]);
+            } else {
+                setCheckedButtons(checkedButtons.filter(button => button !== id));
+            }
         }
     };
 
     if (data.TYPE == 'AMOUNT') {
         return (
-            <SearhForm name={data.NAME} index={i}>
+            <SearhForm data={data} index={i}>
                 <div className='extra_search_input'>
                     <div className='amount_form'>
                         <input
@@ -70,13 +90,13 @@ const ExtraForm = ({ i, data, inputRef }) => {
         )
     } else if (data.TYPE == 'MULTICHECK') {
         return (
-            <SearhForm name={data.NAME} index={i}>
+            <SearhForm data={data} index={i}>
                 <MultiCheckModal data={data} />
             </SearhForm>
         )
     } else if (data.TYPE == 'CHECK') {
         return (
-            <SearhForm name={data.NAME} index={i}>
+            <SearhForm data={data} index={i}>
                 <div className='extra_search_input' style={{ padding: '8px' }}>
                     {data && data.SUBDATA.map((SUBDATA, index) => {
                         return (
@@ -103,7 +123,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
         );
     } else if (data.TYPE == 'SELECT') {
         return (
-            <SearhForm name={data.NAME} index={i}>
+            <SearhForm data={data} index={i}>
                 <div className='extra_search_input' autoComplete="off" style={{ padding: '10px' }}>
                     <TextField
                         className='select_box'
@@ -128,7 +148,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
         )
     } else if (data.TYPE == 'TEXT') {
         return (
-            <SearhForm name={data.NAME} index={i}>
+            <SearhForm data={data} index={i}>
                 <div className='extra_search_input'>
                     <input name={data.FIELD} type="text" ref={e => inputRef.current[i] = e} />
                 </div>

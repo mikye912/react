@@ -201,7 +201,7 @@ em {
 
 .multi_check_form {
     display: inline-flex;
-    width: 260px;
+    width: 250px;
 }
 
 .multi_check_button {
@@ -241,13 +241,14 @@ em {
 }
 
 .multi_check_submit {
-    width: 64px;
+    width: 100px;
     height: 25px;
     font: normal normal 300 17px/25px Pretendard;
     margin: 10px 10px 0px 0px;
     background-color: transparent;
     border: none;
     color: rgb(25, 118, 210);
+    cursor: pointer;
 }
 
 .multi_check_reset {
@@ -258,4 +259,5 @@ em {
     background-color: transparent;
     border: none;
     color: rgb(238, 70, 70);
+    cursor: pointer;
 }
