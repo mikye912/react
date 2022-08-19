@@ -1,15 +1,32 @@
 import { FaHome } from "react-icons/fa";
-import React, { useState, memo } from "react";
+import { useState, useEffect, memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "Components/Main/Sidebar/SidebarMenu";
-import { batch, useDispatch } from "react-redux";
-import { contentSlice, selectTabSlice, sidebarStateSlice } from "Common/Redux/slice";
+import { batch, useDispatch, useSelector } from "react-redux";
+import { uMenuSlice, contentSlice, selectTabSlice, sidebarStateSlice } from "Common/Redux/slice";
+import axios from "axios";
+import common from "Common/common";
 
-const SideBar = ({ routes }) => {
+const SideBar = () => {
   console.log("SideBar 렌더링")
   const dispatch = useDispatch();
+  const routes = useSelector((state) => state.uMenu)
+  console.log("routes",routes);
   const [isOpen, setIsOpen] = useState(true);
   const [isHover, setIsHover] = useState(false);
+
+  useEffect(() => {
+    axios.get('/api/Main/Sidebar/getUserMenu', {
+      headers : {
+        x_auth : sessionStorage.getItem("token")
+      }
+    })
+    .then((res) => {
+      dispatch(uMenuSlice.actions.setUserMenu(res.data))
+    }).catch((err) => {
+      common.apiVerify(err);
+    })
+  },[])
 
   const toggle = () => {
     if (isHover) {
@@ -128,7 +145,7 @@ const SideBar = ({ routes }) => {
                 >
                   <div className="menu_item">
                     <div className="icon">
-                      {route.name.indexOf("메인") !== -1 ? <FaHome /> : ""}
+                      {route.name?.indexOf("메인") !== -1 ? <FaHome /> : ""}
                     </div>
                     <AnimatePresence>
                       {(isOpen) || (!isOpen && isHover) ? (

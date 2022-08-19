@@ -66,7 +66,7 @@ export default function AuthLogin() {
                 } else {
                     const uAuth = {
                         // uInfo : res.data["uInfo"],
-                        uMenu : res.data["uMenu"],
+                        // uMenu : res.data["uMenu"],
                         uSearch : res.data["uSearch"],
                         token : res.data["token"],
                     }
