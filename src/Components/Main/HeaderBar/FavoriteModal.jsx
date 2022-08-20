@@ -1,4 +1,4 @@
-import { useContext, memo, useState, useEffect } from "react";
+import { memo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios  from 'axios';
 import Modal from '@mui/material/Modal';
@@ -14,7 +14,6 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { FaTimes } from "react-icons/fa";
 import Swal from 'sweetalert2';
-import { UserContext } from "../../../Context/userContext";
 import { useSelector } from "react-redux";
 import common from "Common/common";
 

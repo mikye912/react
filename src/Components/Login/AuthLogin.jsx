@@ -36,8 +36,6 @@ export default function AuthLogin() {
     }
 
     const handleSubmit = () => {
-        // for 와 map의 차이
-        // -> for는 동기, map은 비동기
         for (let i = 0; i < inputRef.current.length; i++) {
             if (!inputRef.current[i].value) {
                 Swal.fire({
@@ -67,7 +65,7 @@ export default function AuthLogin() {
                     const uAuth = {
                         // uInfo : res.data["uInfo"],
                         // uMenu : res.data["uMenu"],
-                        uSearch : res.data["uSearch"],
+                        // uSearch : res.data["uSearch"],
                         token : res.data["token"],
                     }
 

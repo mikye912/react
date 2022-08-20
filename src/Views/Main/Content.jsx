@@ -22,8 +22,8 @@ const Content = () => {
       }
     })
     .then((res) => {
-      console.log("uSearch : ",res.data)
-      //dispatch(uSearchSlice.actions.setUserSearch(res.data))
+      //console.log("uSearch : ",res.data)
+      dispatch(uSearchSlice.actions.setUserSearch(res.data))
     }).catch((err) => {
       common.apiVerify(err);
     })
@@ -39,7 +39,7 @@ const Content = () => {
           }
         }}
       >
-        {
+        { contents.length > 0 &&
           contents.map((content) => {
             switch (content.path) {
               case "sub_0000":

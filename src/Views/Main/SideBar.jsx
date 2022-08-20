@@ -116,7 +116,7 @@ const SideBar = () => {
         </div>
         <section className="routes">
 
-          {routes.map((route, index) => {
+          {routes.length > 0 && routes.map((route, index) => {
             if (route.subRoutes) {
               return (
                 <SidebarMenu

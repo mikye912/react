@@ -57,7 +57,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                     [name]: checkedButtons.filter(button => button !== id)
                 }))
             }
-        } else if(id===''){
+        } else if(id === ''){
             /* 전체거래가 선택되지않고 다른거래건이 체크됐을때 전체거래를 선택하면 전체거래건만 선택값으로 남게*/
             if (checked) {
                 setCheckedButtons([id]);
@@ -67,7 +67,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
         }
     };
 
-    if (data.TYPE == 'AMOUNT') {
+    if (data.TYPE === 'AMOUNT') {
         return (
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input'>
@@ -88,13 +88,13 @@ const ExtraForm = ({ i, data, inputRef }) => {
                 </div>
             </SearhForm>
         )
-    } else if (data.TYPE == 'MULTICHECK') {
+    } else if (data.TYPE === 'MULTICHECK') {
         return (
             <SearhForm data={data} index={i}>
                 <MultiCheckModal data={data} />
             </SearhForm>
         )
-    } else if (data.TYPE == 'CHECK') {
+    } else if (data.TYPE === 'CHECK') {
         return (
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input' style={{ padding: '8px' }}>
@@ -121,7 +121,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                 </div>
             </SearhForm>
         );
-    } else if (data.TYPE == 'SELECT') {
+    } else if (data.TYPE === 'SELECT') {
         return (
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input' autoComplete="off" style={{ padding: '10px' }}>
@@ -146,7 +146,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                 </div>
             </SearhForm>
         )
-    } else if (data.TYPE == 'TEXT') {
+    } else if (data.TYPE === 'TEXT') {
         return (
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input'>

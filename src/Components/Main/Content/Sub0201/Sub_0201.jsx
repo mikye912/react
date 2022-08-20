@@ -1,19 +1,20 @@
-import { useRef, useContext, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from "react-redux";
 import Box from '@mui/material/Box';
 import Default from 'Components/Main/Content/SearchBox/Default';
 import Extra from 'Components/Main/Content/SearchBox/Extra';
 import 'Css/searchBox.css';
-import { UserContext } from 'Context/userContext';
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
 
 const Sub_0201 = ({ index, content }) => {
   const [visible, setVisible] = useState(false);
   const search_data = useSelector((state) => state.dataSearch);
   const selTab = useSelector((state) => state.selectTab);
+  const uSearch = useSelector((state) => state.uSearch);
+
   const page = content.substr(-4);
 
-  const { uSearch } = useContext(UserContext);
+  console.log(uSearch);
   const data = uSearch.filter(a => a[page])[0][page]; 
 
   const inputRef = useRef([]);
