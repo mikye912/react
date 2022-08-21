@@ -12,7 +12,7 @@ input:-webkit-autofill:active {
 }
 
 .search_form {
-    /* min-width: 1344px; */
+    min-width: 1320px;
     height: 100%;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border: 1px solid #E9EAEE;
@@ -20,7 +20,7 @@ input:-webkit-autofill:active {
 }
 
 .btn_case {
-    /* max-width: 335px; */
+    max-width: 360px;
     height: 100%;
     background: #F7F8FC 0% 0% no-repeat padding-box;
     border-radius: 0px 3px 3px 0px;
@@ -83,24 +83,20 @@ input:-webkit-autofill:active {
 }
 
 .default_search_input {
-    width: 230px;
-    min-width: 180px;
+    /*max-width: 240px;
+    min-width: 211px;*/
     height: 60px;
     padding: 13px;
 }
 
 .default_search_input>input {
-    min-width: 100%;
+    max-width: 211px;
+    min-width: 204px;
     height: 34px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border: 1px solid #D1D6DB;
     border-radius: 4px;
     padding-left: 5px;
-}
-
-.extra_search_div {
-    display: inline-flex;
-    border-bottom: 1px solid #D2D2D2;
 }
 
 .extra_search_box {
@@ -110,6 +106,12 @@ input:-webkit-autofill:active {
 .extra_search_form {
     height: 188px;
     background: #F5F6F8 0% 0% no-repeat padding-box;
+    width: 100%;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.extra_search_div {
+    display: inline-flex;
     border-bottom: 1px solid #D2D2D2;
 }
 
@@ -126,15 +128,16 @@ input:-webkit-autofill:active {
 }
 
 .extra_search_input {
-    min-width: 180px;
-    width: 230px;
+    /*max-width: 240px;
+    min-width: 211px;*/
     height: 61.5px;
     padding: 13px;
     background: #F5F6F8 0% 0% no-repeat padding-box;
 }
 
 .extra_search_input>input[type='text'] {
-    min-width: 100%;
+    max-width: 211px;
+    min-width: 204px;
     height: 34px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border: 1px solid #D1D6DB;
@@ -160,16 +163,16 @@ input[type='checkBox'] {
     display: inline-block;
 }
 
-em {
-    font: normal normal medium 18px/21px Pretendard;
-    letter-spacing: 0px;
+pre {
+    font: normal normal 500 17.29px/21px Pretendard;
     color: #303642;
     margin: 0px 2px 0px 2px;
     display: inline-block;
 }
 
 .amount_text {
-    width: 92px;
+    max-width: 94.5px;
+    min-width: 80px;
     height: 34px;
     border: 1px solid #D1D6DB;
     border-radius: 4px;
@@ -179,7 +182,8 @@ em {
 }
 
 .select_box {
-    width: 206px;
+    max-width: 211px;
+    min-width: 210px !important;
     height: 34px;
     border: 1px solid #D1D6DB !important;
     border-radius: 4px;
@@ -199,13 +203,9 @@ em {
     color: #303642 !important;
 }
 
-.multi_check_form {
-    display: inline-flex;
-    width: 250px;
-}
-
 .multi_check_button {
-    width: 130px;
+    max-width: 211px;
+    min-width: 204px;
     height: 34px;
     border: 1PX solid #1976d2;
     color: #1976d2;
@@ -222,9 +222,9 @@ em {
     border: 1px solid rgb(25, 118, 210);
 }
 
-.multi_check_label_title{
-    width: 200px;
-    background-color: #1976d2;
+.multi_check_form {
+    display: inline-flex;
+    width: 250px;
 }
 
 .multi_check_label {
@@ -236,6 +236,33 @@ em {
     margin-bottom: 5px;
 }
 
+.multi_tid_check_form {
+    display: table-header-group;
+    width: 250px;
+    height: auto;
+}
+
+.multi_check_label_title {
+    width: 100%;
+    height: 30px;
+    font: normal normal bold 14px/30px Pretendard;
+    color: #232F34;
+    /* border: 1px solid #D2D2D2; */
+    background: #F5F6F8 0% 0% no-repeat padding-box;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.multi_tid_check_label{
+    width: 230px;
+    text-align: left;
+    font: normal normal 400 15px Pretendard;
+    letter-spacing: 0px;
+    color: #232F34;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
 .multi_check_control_btn {
     text-align: center;
 }
@@ -244,7 +271,7 @@ em {
     width: 100px;
     height: 25px;
     font: normal normal 300 17px/25px Pretendard;
-    margin: 10px 10px 0px 0px;
+    margin: 15px 10px 0px 0px;
     background-color: transparent;
     border: none;
     color: rgb(25, 118, 210);
@@ -255,9 +282,11 @@ em {
     width: 90px;
     height: 25px;
     font: normal normal 300 17px/25px Pretendard;
-    margin: 10px 10px 0px 0px;
+    margin: 15px 10px 0px 0px;
     background-color: transparent;
     border: none;
     color: rgb(238, 70, 70);
     cursor: pointer;
 }
+
+

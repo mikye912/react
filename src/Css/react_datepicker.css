@@ -47,8 +47,6 @@
     border-bottom-right-radius: 0.3rem;
 }
 
-
-
 .react-datepicker-popper {
     z-index: 1;
 }
@@ -774,16 +772,9 @@
     display: inline-block;
 }
 
-em {
-    font: normal normal medium 18px/21px Pretendard;
-    letter-spacing: 0px;
-    color: #303642;
-    margin: 0px 2px 0px 2px;
-    display: inline-block;
-}
-
 .date_picker {
-    width: 98px;
+    max-width: 94.5px;
+    min-width: 80px;
     height: 34px;
     border: 1px solid #D1D6DB;
     border-radius: 4px;

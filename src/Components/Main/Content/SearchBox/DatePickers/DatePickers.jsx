@@ -110,7 +110,7 @@ const DatePickers = ( ) => {
                     )}
                 />
             </div>
-            <em>~</em>
+            <pre>~</pre>
             <div className='date_picker_form'>
                 <DatePicker
                     className='date_picker'

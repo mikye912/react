@@ -1,20 +1,22 @@
 import { useRef, useState } from 'react';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import axios from 'axios';
 import Box from '@mui/material/Box';
 import Default from 'Components/Main/Content/SearchBox/Default';
 import Extra from 'Components/Main/Content/SearchBox/Extra';
 import 'Css/searchBox.css';
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
+import common from "Common/common";
+import { dataSearchSlice } from 'Common/Redux/slice';
 
 const Sub_0201 = ({ index, content }) => {
   const [visible, setVisible] = useState(false);
   const search_data = useSelector((state) => state.dataSearch);
   const selTab = useSelector((state) => state.selectTab);
+  const dispatch = useDispatch();
+
   const uSearch = useSelector((state) => state.uSearch);
-
   const page = content.substr(-4);
-
-  console.log(uSearch);
   const data = uSearch.filter(a => a[page])[0][page]; 
 
   const inputRef = useRef([]);
@@ -27,13 +29,27 @@ const Sub_0201 = ({ index, content }) => {
           delete postData[inputRef.current[i].name];
         } else {
           postData[inputRef.current[i].name] = inputRef.current[i].value
-        }
-         
+        } 
       }
     };
     //obj 합치기
     const newObj = Object.assign({}, postData, search_data);
-    console.log(newObj)
+    console.log('newObj',newObj)
+
+    /*axios.post('/api/Main/Content/Sub0201', {
+      where : newObj
+    }, {
+      headers : {
+        x_auth : sessionStorage.getItem("token")
+      }
+    }).then((res) => {
+      
+    }).catch((err) => {
+      common.apiVerify(err);
+    }).finally(() => {
+      dispatch(dataSearchSlice.actions.destroySearch());
+    })*/
+  
   }
 
   return (

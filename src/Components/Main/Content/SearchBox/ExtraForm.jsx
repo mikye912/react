@@ -78,7 +78,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                             name={`S${data.FIELD}`}
                             ref={e => inputRef.current[i] = e}
                         />
-                        <em>~</em>
+                        <pre>~</pre>
                         <input
                             className='amount_text'
                             type="text"
@@ -97,7 +97,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
     } else if (data.TYPE === 'CHECK') {
         return (
             <SearhForm data={data} index={i}>
-                <div className='extra_search_input' style={{ padding: '8px' }}>
+                <div className='extra_search_input' style={{ padding: '8px 76px 8px 8px' }}>
                     {data && data.SUBDATA.map((SUBDATA, index) => {
                         return (
                             <div key={index} style={{ display: 'inline' }}>
