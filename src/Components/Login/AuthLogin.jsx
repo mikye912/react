@@ -4,8 +4,10 @@ import Swal from 'sweetalert2';
 import common from "Common/common"
 import { useDispatch } from 'react-redux';
 import { uAuthSlice } from 'Common/Redux/slice';
+import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 
 export default function AuthLogin() {
+    const [progress, setProgress] = useState(true);
     const [isCapslock, setIsCapslock] = useState(false);
     const dispatch = useDispatch();
 
@@ -48,7 +50,26 @@ export default function AuthLogin() {
             }
         }
 
-        axios.post('/api/Login/AuthLogin', {
+        const baseURL = '/';
+        const fetchApi = axios.create({
+            baseURL,
+        })
+
+        fetchApi.interceptors.request.use((config) => {
+            setProgress(false);
+            return config
+        }, (err) => {
+            return Promise.reject(err);
+        })
+
+        fetchApi.interceptors.response.use((res) => {
+            setProgress(true);
+            return res;
+        }, (err) => {
+            return Promise.reject(err);
+        })
+
+        fetchApi.post('/api/Login/AuthLogin', {
             userId: inputRef.current[0].value,
             userPw: common.base64Enc(inputRef.current[1].value)
         })
@@ -86,6 +107,7 @@ export default function AuthLogin() {
     }
     return (
         <div className='index_sign_input' onKeyPress={handleKeyPress}>
+            {progress === false ? <CircularIndeterminate /> : null}
             <div className="index_input_id">
                 <input
                     type='text'
