@@ -1,12 +1,27 @@
 import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import common from 'Common/common';
 import { CountUp } from 'use-count-up';
+import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
+import useFetch from 'Common/axios';
+
+const SalesComponent = ({ children }) => {
+  return (
+    <Box className="dash_first" gridColumn="span 4">
+      <div>
+        <img className="title_icon"></img>
+        <div className="title_name">전일 매출 현황</div>
+      </div>
+      <Box className="status" display="grid" gridTemplateColumns="repeat(10, 1fr)">
+        {children}
+      </Box>
+    </Box>
+  )
+}
 
 const Sales_0000 = () => {
   console.log("sales_0000 렌더링")
-  //const isSider = useSelector((state) => state.sidebarState)
+  const [progress, fetchApi] = useFetch();
   const [data, setData] = useState({
     CARD: 0,
     CARDCNT: 0,
@@ -19,19 +34,17 @@ const Sales_0000 = () => {
   });
 
   useEffect(() => {
-    axios.post('/api/Main/Content/Sub0000/sales_0000', null, {
-      headers : {
-        x_auth : sessionStorage.getItem("token")
-      }
-    }).then((res) => {
-      setData(res.data[0]);
-    }).catch((err) => {
-      common.apiVerify(err);
-    })
+    fetchApi.post('/api/Main/Content/Sub0000/sales_0000', null, {})
+      .then((res) => {
+        setData(res.data[0]);
+      }).catch((err) => {
+        common.apiVerify(err);
+      })
   }, [])
 
   return (
-    <>
+    <SalesComponent>
+      {progress === false ? <CircularIndeterminate /> : null}
       <Box className='calendar' gridColumn="span 3">
         <span>{`${(common.nowDate.fullDate(-1).slice(4, 6))}월`}</span>
         <span>{`${(common.nowDate.fullDate(-1).slice(6, 8))}일`}</span>
@@ -59,8 +72,7 @@ const Sales_0000 = () => {
           <div>(<CountUp isCounting end={data.TOTCNT} duration={2} thousandsSeparator="," /> 건)</div>
         </div>
       </Box>
-    </>
-
+    </SalesComponent>
   );
 };
 export default Sales_0000;

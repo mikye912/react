@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer';
+import axios from 'axios';
 import Swal from "sweetalert2";
 
 export default {
@@ -102,5 +103,30 @@ export default {
             })
             console.log(err);
         }
+    },
+    axiosApi: (setState) => {
+        const baseURL = '/';
+        const fetchApi = axios.create({
+            baseURL,
+            headers: {
+                x_auth : sessionStorage.getItem("token")
+            }
+        })
+
+        fetchApi.interceptors.request.use((config) => {
+            setState(false);
+            return config
+        }, (err) => {
+            return Promise.reject(err);
+        })
+
+        fetchApi.interceptors.response.use((res) => {
+            setState(true);
+            return res;
+        }, (err) => {
+            return Promise.reject(err);
+        })
+
+        return fetchApi
     }
 }
