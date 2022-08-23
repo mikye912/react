@@ -770,16 +770,16 @@
 /* 추가 css */
 .date_picker_form {
     display: inline-block;
+    width: 47%;
 }
 
 .date_picker {
-    max-width: 94.5px;
-    min-width: 80px;
     height: 34px;
     border: 1px solid #D1D6DB;
     border-radius: 4px;
     cursor: default;
     text-align: center;
+    width: 100%;
 }
 
 .date_picker:focus {

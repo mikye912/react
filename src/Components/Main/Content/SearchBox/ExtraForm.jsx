@@ -12,7 +12,6 @@ const SearhForm = ({ children, data }) => {
                 <div className='extra_search_name'>{data.NAME}</div>
                 {children}
             </div>
-            {data.SORT % 5 === 0 && <br />}
         </>
     )
 }
@@ -30,7 +29,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
     };
 
     const [checkedButtons, setCheckedButtons] = useState(['']);
-    const changeHandler = (checked, id, name) => {  
+    const changeHandler = (checked, id, name) => {
         if (id !== '' && checkedButtons.includes('')) {
             /* 전체거래가 선택된 상태에서 전체거래가 아닌 다른 거래건을 체크했을때*/
             if (checked) {
@@ -57,7 +56,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                     [name]: checkedButtons.filter(button => button !== id)
                 }))
             }
-        } else if(id === ''){
+        } else if (id === '') {
             /* 전체거래가 선택되지않고 다른거래건이 체크됐을때 전체거래를 선택하면 전체거래건만 선택값으로 남게*/
             if (checked) {
                 setCheckedButtons([id]);

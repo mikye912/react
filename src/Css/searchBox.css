@@ -1,4 +1,4 @@
-/* 자동완성시 배경색 변경되는거 없앰 */
+/* 자동완성시 배경색 변경되지않게 */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -12,15 +12,17 @@ input:-webkit-autofill:active {
 }
 
 .search_form {
-    min-width: 1320px;
+    min-width: 1360px;
     height: 100%;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border: 1px solid #E9EAEE;
     border-radius: 4px;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .btn_case {
-    max-width: 360px;
+    min-width: 230px;
     height: 100%;
     background: #F7F8FC 0% 0% no-repeat padding-box;
     border-radius: 0px 3px 3px 0px;
@@ -31,6 +33,7 @@ input:-webkit-autofill:active {
 
 .extra_btn {
     width: 150px;
+    min-width: 95px;
     height: 44px;
     background: transparent linear-gradient(180deg, #61DDBD 0%, #4BCBAB 35%, #36BA9B 100%) 0% 0% no-repeat padding-box;
     border-radius: 4px;
@@ -54,6 +57,7 @@ input:-webkit-autofill:active {
 .search_btn {
     margin-left: 15px;
     width: 150px;
+    min-width: 95px;
     height: 44px;
     background: transparent linear-gradient(0deg, #1D79E7 0%, #8DCEFF 100%) 0% 0% no-repeat padding-box;
     border: none;
@@ -65,12 +69,11 @@ input:-webkit-autofill:active {
 }
 
 .default_search_div {
-    min-width: 280px;
-    display: inline-flex;
+    display: inline-grid;
+    grid-template-columns: 110px repeat(1, 1fr);
 }
 
 .default_search_name {
-    width: 110px;
     height: 60px;
     /* UI Properties */
     background: #F5F6F8 0% 0% no-repeat padding-box;
@@ -83,20 +86,17 @@ input:-webkit-autofill:active {
 }
 
 .default_search_input {
-    /*max-width: 240px;
-    min-width: 211px;*/
     height: 60px;
     padding: 13px;
 }
 
 .default_search_input>input {
-    max-width: 211px;
-    min-width: 204px;
     height: 34px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border: 1px solid #D1D6DB;
     border-radius: 4px;
     padding-left: 5px;
+    width: 99%;
 }
 
 .extra_search_box {
@@ -104,19 +104,22 @@ input:-webkit-autofill:active {
 }
 
 .extra_search_form {
+    min-width: 1690px;
+    width: 100%;
     height: 188px;
     background: #F5F6F8 0% 0% no-repeat padding-box;
-    width: 100%;
     border-bottom: 1px solid #D2D2D2;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .extra_search_div {
-    display: inline-flex;
+    display: inline-grid;
+    grid-template-columns: 110px repeat(1, 1fr);
     border-bottom: 1px solid #D2D2D2;
 }
 
 .extra_search_name {
-    width: 110px;
     height: 61.5px;
     background: #EAEBEF 0% 0% no-repeat padding-box;
     border-radius: 4px 0px 0px 4px;
@@ -128,21 +131,18 @@ input:-webkit-autofill:active {
 }
 
 .extra_search_input {
-    /*max-width: 240px;
-    min-width: 211px;*/
     height: 61.5px;
     padding: 13px;
     background: #F5F6F8 0% 0% no-repeat padding-box;
 }
 
 .extra_search_input>input[type='text'] {
-    max-width: 211px;
-    min-width: 204px;
     height: 34px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border: 1px solid #D1D6DB;
     border-radius: 4px;
     padding-left: 5px;
+    width: 99%;
 }
 
 .check_label {
@@ -171,8 +171,7 @@ pre {
 }
 
 .amount_text {
-    max-width: 94.5px;
-    min-width: 80px;
+    width: 47%;
     height: 34px;
     border: 1px solid #D1D6DB;
     border-radius: 4px;
@@ -182,13 +181,12 @@ pre {
 }
 
 .select_box {
-    max-width: 211px;
-    min-width: 210px !important;
     height: 34px;
     border: 1px solid #D1D6DB !important;
     border-radius: 4px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     margin-top: 5px !important;
+    width: 99%;
 }
 
 .select_item {
@@ -197,15 +195,13 @@ pre {
 
 .MuiInputBase-input {
     height: 34px !important;
-    padding: 0px 0px 0px 5px !important;
-    font: normal normal 500 18px/34px Pretendard !important;
+    padding: 0px 0px 0px 6px !important;
+    font: normal normal 400 16px/34px Pretendard !important;
     letter-spacing: 0px !important;
     color: #303642 !important;
 }
 
 .multi_check_button {
-    max-width: 211px;
-    min-width: 204px;
     height: 34px;
     border: 1PX solid #1976d2;
     color: #1976d2;
@@ -214,6 +210,7 @@ pre {
     cursor: pointer;
     background-color: transparent;
     box-shadow: 1px 1px 3px 1px #dadce0;
+    width: 99%;
 }
 
 .multi_check_button:hover {
@@ -250,10 +247,10 @@ pre {
     /* border: 1px solid #D2D2D2; */
     background: #F5F6F8 0% 0% no-repeat padding-box;
     text-align: center;
-    margin-bottom: 5px;
+    margin: 5px 0px 5px 0px;
 }
 
-.multi_tid_check_label{
+.multi_tid_check_label {
     width: 230px;
     text-align: left;
     font: normal normal 400 15px Pretendard;
@@ -288,5 +285,3 @@ pre {
     color: rgb(238, 70, 70);
     cursor: pointer;
 }
-
-
