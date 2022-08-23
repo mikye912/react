@@ -4,6 +4,7 @@ import axios from 'axios';
 import Box from '@mui/material/Box';
 import Default from 'Components/Main/Content/SearchBox/Default';
 import Extra from 'Components/Main/Content/SearchBox/Extra';
+import TotalData from 'Components/Main/Content/Sub0201/TotalData_0201';
 import 'Css/searchBox.css';
 import 'Css/dataGrid.css';
 import { FaPlusCircle, FaSearch, FaRegPlusSquare } from "react-icons/fa";
@@ -81,6 +82,7 @@ const Sub_0201 = ({ index, content }) => {
           엑셀다운로드
         </button>
       </div>
+      <TotalData/>
     </Box>
   )
 };

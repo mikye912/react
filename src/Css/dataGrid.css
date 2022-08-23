@@ -1,7 +1,7 @@
 .total_form {
     display: flex;
     justify-content: space-between;
-    margin-top: 32px;
+    margin: 32px 0px 20px 0px;
 }
 
 .total_title>div {
