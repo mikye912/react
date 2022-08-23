@@ -8,7 +8,8 @@ import { dataSearchSlice } from 'Common/Redux/slice';
 import 'Css/react_datepicker.css';
 import dayjs from "dayjs";
 
-const DatePickers = ( ) => {
+const DatePickers = ({ index, inputRef }) => {
+    console.log('datepickers',index)
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const _ = require('lodash');
@@ -30,17 +31,12 @@ const DatePickers = ( ) => {
         "12",
     ];
 
-    useEffect(() => {
-        // dispatch(dataSearchSlice.actions.changeDateInputs({
-        //     sdate: dayjs(startDate).format('YYYYMMDD'),
-        //     edate: dayjs(endDate).format('YYYYMMDD')
-        // }))
-
-        dispatch(dataSearchSlice.actions.changeInputs({
-            SDATE: dayjs(startDate).format('YYYYMMDD'),
-            EDATE: dayjs(startDate).format('YYYYMMDD'),
-        }));
-    }, [startDate, endDate])
+    // useEffect(() => {
+    //     dispatch(dataSearchSlice.actions.changeInputs({
+    //         SDATE: dayjs(startDate).format('YYYYMMDD'),
+    //         EDATE: dayjs(startDate).format('YYYYMMDD'),
+    //     }));
+    // }, [startDate, endDate])
 
     return (
         <>
@@ -58,6 +54,7 @@ const DatePickers = ( ) => {
                     startDate={startDate}
                     endDate={endDate}
                     locale={ko}
+                    ref={e => inputRef.current[index] = e}
                     renderCustomHeader={({
                         date,
                         changeYear,
@@ -122,6 +119,7 @@ const DatePickers = ( ) => {
                     endDate={endDate}
                     minDate={startDate}
                     locale={ko}
+                    ref={e => inputRef.current[index] = e}
                     renderCustomHeader={({
                         date,
                         changeYear,

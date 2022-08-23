@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import axios from 'axios';
 import Box from '@mui/material/Box';
@@ -10,9 +10,11 @@ import 'Css/dataGrid.css';
 import { FaPlusCircle, FaSearch, FaRegPlusSquare } from "react-icons/fa";
 import common from "Common/common";
 import { dataSearchSlice } from 'Common/Redux/slice';
+import useFetch from 'Common/axios';
 
 const Sub_0201 = ({ index, content }) => {
   const [visibleSearch, setVisibleSearch] = useState(false);
+  const [progress, fetchApi] = useFetch();
   const search_data = useSelector((state) => state.dataSearch);
   const selTab = useSelector((state) => state.selectTab);
   const dispatch = useDispatch();
@@ -42,49 +44,46 @@ const Sub_0201 = ({ index, content }) => {
     //   / api / Main / Content / Sub0201 / getTotalData // 집계
     //   / api / Main / Content / Sub0201 / getDetailData // 상세
 
-    /*axios.post('/api/Main/Content/Sub0201/getTotalData', {
-      where : newObj
-    }, {
-      headers : {
-        x_auth : sessionStorage.getItem("token")
-      }
-    }).then((res) => {
-      
-    }).catch((err) => {
-      common.apiVerify(err);
-    }).finally(() => {
-      dispatch(dataSearchSlice.actions.destroySearch());
-    })*/
-
+    fetchApi.post('/api/Main/Content/Sub0201/getTotalData', {
+      where: newObj
+    }, {})
+      .then((res) => {
+        console.log(res)
+      }).catch((err) => {
+        common.apiVerify(err);
+      }).finally(() => {
+        dispatch(dataSearchSlice.actions.destroySearch());
+        postData = {};
+      })        
   }
 
-  return (
-    <Box className={`title ${index} ${selTab.selectTab === index ? 'selected' : ''}`} style={{ alignContent: 'baseline' }}>
-      <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
-        <Default data={data} inputRef={inputRef} />
-        <Box className="btn_case" gridColumn="span 2">
-          <button className='extra_btn' onClick={() => { setVisibleSearch(!visibleSearch); }}>
-            <FaPlusCircle className='extra_img' onClick={() => { setVisibleSearch(!visibleSearch); }} />상세
-          </button>
-          <button className='search_btn' onClick={handleSubmit}>
-            <FaSearch className='search_img' />검색
-          </button>
-        </Box>
-      </Box>
-      {visibleSearch && <Extra data={data} inputRef={inputRef} />}
-      <div className='total_form'>
-        <div className='total_title'>
-          <img alt='' />
-          <div>집계</div>
-          <FaRegPlusSquare className='total_btn' />
-        </div>
-        <button className='excel_btn'>
-          엑셀다운로드
+return (
+  <Box className={`title ${index} ${selTab.selectTab === index ? 'selected' : ''}`} style={{ alignContent: 'baseline' }}>
+    <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
+      <Default data={data} inputRef={inputRef} />
+      <Box className="btn_case" gridColumn="span 2">
+        <button className='extra_btn' onClick={() => { setVisibleSearch(!visibleSearch); }}>
+          <FaPlusCircle className='extra_img' onClick={() => { setVisibleSearch(!visibleSearch); }} />상세
         </button>
-      </div>
-      <TotalData/>
+        <button className='search_btn' onClick={handleSubmit}>
+          <FaSearch className='search_img' />검색
+        </button>
+      </Box>
     </Box>
-  )
+    {visibleSearch && <Extra data={data} inputRef={inputRef} />}
+    <div className='total_form'>
+      <div className='total_title'>
+        <img alt='' />
+        <div>집계</div>
+        <FaRegPlusSquare className='total_btn' />
+      </div>
+      <button className='excel_btn'>
+        엑셀다운로드
+      </button>
+    </div>
+    <TotalData />
+  </Box>
+)
 };
 
 export default Sub_0201;

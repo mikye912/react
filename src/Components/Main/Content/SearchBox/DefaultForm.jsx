@@ -14,8 +14,8 @@ const SearhForm = ({ children, name }) => {
 const DefaultForm = ({ index, data, inputRef }) => {
     if (data.TYPE == 'DATE') {
         return (
-            <SearhForm name={data.NAME}>
-                <DatePickers />
+            <SearhForm name={data.NAME} >
+                <DatePickers index={index} inputRef={inputRef} />
             </SearhForm>
         )
     } else if (data.TYPE == 'TEXT') {

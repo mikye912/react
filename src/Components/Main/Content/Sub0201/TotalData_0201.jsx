@@ -1,4 +1,5 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, gridClasses } from '@mui/x-data-grid';
+import { alpha, styled } from '@mui/material/styles';
 
 const columns = [
     { field: 'ROWNUM', headerName: '순번', width: 70, align: "center", headerAlign: "center"},
@@ -30,10 +31,32 @@ const rows = [
     { id: 3, ROWNUM: 3, TID: '건진 단말기', TOTCNT: '18', TOTAMT: '3867500', ACNT: '17', AAMT: '3839100', CCNT: '1', CAMT: '28400', KB: '1777620', NH: '0', LO: '0', BC: '84720', SS: '1758790', SH: '221080', HN: '0', HD: '2178590', RP: '0', AP: '0', WP: '0', ZP: '0', CP: '0' },
 ];
 
+/*테이블 ROW마다 배경색 다르게*/
+const ODD_OPACITY = 0.2;
+const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
+  [`& .${gridClasses.row}.even`]: {
+    backgroundColor: theme.palette.grey[200],
+    '&.Mui-selected': {
+      backgroundColor: alpha(
+        theme.palette.primary.main,
+        ODD_OPACITY + theme.palette.action.selectedOpacity,
+      ),
+      '&:hover, &.Mui-hovered': {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          ODD_OPACITY +
+            theme.palette.action.selectedOpacity +
+            theme.palette.action.hoverOpacity,
+        ),
+      },
+    },
+  },
+}));
+
 const DataTable = () => {
     return (
         <div style={{ height: 200, width: '100%' }}>
-            <DataGrid
+            <StripedDataGrid
                 rows={rows}
                 columns={columns}
                 hideFooter
@@ -41,14 +64,22 @@ const DataTable = () => {
                 rowHeight={40}
                 sx={{
                     font: 'normal normal normal 14px/16px Pretendard',            
-                    border: '1px solid #D2D2D2',
                     '& 	.MuiDataGrid-columnHeaderTitle': {
                         font: 'normal normal 600 14px Pretendard',
                     },
                     '& .MuiDataGrid-columnHeaders': {
                         background: '#EAEBEF 0% 0% no-repeat',
                     },
+                    '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
+                        borderRight: '1px solid #D2D2D2',
+                    },
+                    '&:hover, &.Mui-hovered': {
+                        backgroundColor: '#DAEFFD 0% 0% no-repeat',
+                    },
                 }}
+                getRowClassName={(params) =>
+                    params.indexRelativeToCurrentPage % 2 === 0 ? 'odd' : 'even'
+                }
             />
         </div>
     );
