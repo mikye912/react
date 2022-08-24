@@ -1,9 +1,25 @@
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { alpha, styled } from '@mui/material/styles';
+import common from 'Common/common';
+import useFetch from 'Common/axios';
+import { forwardRef, useImperativeHandle, useState } from "react"
+import { useDispatch } from 'react-redux';
+import { dataSearchSlice } from 'Common/Redux/slice';
+
+const getTotalData = (fetchApi, where) => {
+    return fetchApi.post('/api/Main/Content/Sub0201/getTotalData', {
+        where: where
+    }, {})
+        .then((res) => {
+            return res;
+        }).catch((err) => {
+            common.apiVerify(err);
+        })
+}
 
 const columns = [
-    { field: 'ROWNUM', headerName: '순번', width: 70, align: "center", headerAlign: "center"},
-    { field: 'TID', headerName: '단말기', width: 130, align: "center", headerAlign: "center" },
+    { field: 'ROWNUM', headerName: '순번', width: 70, align: "center", headerAlign: "center" },
+    { field: 'TERM_NM', headerName: '단말기', width: 150, align: "center", headerAlign: "center" },
     { field: 'TOTCNT', headerName: '합계건수', type: 'number', width: 90, headerAlign: "center" },
     { field: 'TOTAMT', headerName: '합계금액', type: 'number', width: 130, headerAlign: "center" },
     { field: 'ACNT', headerName: '승인건수', type: 'number', width: 90, headerAlign: "center" },
@@ -15,55 +31,66 @@ const columns = [
     { field: 'LO', headerName: '롯데', type: 'number', width: 100, headerAlign: "center" },
     { field: 'BC', headerName: '비씨', type: 'number', width: 100, headerAlign: "center" },
     { field: 'SS', headerName: '삼성', type: 'number', width: 100, headerAlign: "center" },
-    { field: 'SH', headerName: '신한', type: 'number', width: 100, headerAlign: "center" },
+    { field: 'SI', headerName: '신한', type: 'number', width: 100, headerAlign: "center" },
     { field: 'HN', headerName: '하나', type: 'number', width: 100, headerAlign: "center" },
     { field: 'HD', headerName: '현대', type: 'number', width: 100, headerAlign: "center" },
     { field: 'RP', headerName: '지역화폐', type: 'number', width: 100, headerAlign: "center" },
     { field: 'AP', headerName: '알리페이', type: 'number', width: 100, headerAlign: "center" },
     { field: 'WP', headerName: '위쳇페이', type: 'number', width: 100, headerAlign: "center" },
     { field: 'ZP', headerName: '제로페이', type: 'number', width: 100, headerAlign: "center" },
-    { field: 'CP', headerName: '카카오페이', type: 'number', width: 100, headerAlign: "center" },
-];
-
-const rows = [
-    { id: 1, ROWNUM: 1, TID: '외래 단말기', TOTCNT: 18, TOTAMT: 3867500, ACNT: 17, AAMT: 3839100, CCNT: 1, CAMT: 28400, KB: 1777620, NH: 0, LO: 0, BC: 84720, SS: 1758790, SH: 221080, HN: 0, HD: 2178590, RP: 0, AP: 0, WP: 0, ZP: 0, CP: 0 },
-    { id: 2, ROWNUM: 2, TID: '외래 무인단말기', TOTCNT: '18', TOTAMT: '3867500', ACNT: '17', AAMT: '3839100', CCNT: '1', CAMT: '28400', KB: '1777620', NH: '0', LO: '0', BC: '84720', SS: '1758790', SH: '221080', HN: '0', HD: '2178590', RP: '0', AP: '0', WP: '0', ZP: '0', CP: '0' },
-    { id: 3, ROWNUM: 3, TID: '건진 단말기', TOTCNT: '18', TOTAMT: '3867500', ACNT: '17', AAMT: '3839100', CCNT: '1', CAMT: '28400', KB: '1777620', NH: '0', LO: '0', BC: '84720', SS: '1758790', SH: '221080', HN: '0', HD: '2178590', RP: '0', AP: '0', WP: '0', ZP: '0', CP: '0' },
+    { field: 'KP', headerName: '카카오페이', type: 'number', width: 100, headerAlign: "center" },
 ];
 
 /*테이블 ROW마다 배경색 다르게*/
 const ODD_OPACITY = 0.2;
 const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
-  [`& .${gridClasses.row}.even`]: {
-    backgroundColor: theme.palette.grey[200],
-    '&.Mui-selected': {
-      backgroundColor: alpha(
-        theme.palette.primary.main,
-        ODD_OPACITY + theme.palette.action.selectedOpacity,
-      ),
-      '&:hover, &.Mui-hovered': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          ODD_OPACITY +
-            theme.palette.action.selectedOpacity +
-            theme.palette.action.hoverOpacity,
-        ),
-      },
+    [`& .${gridClasses.row}.even`]: {
+        backgroundColor: '#F7F8FC',
+        /*selected와 hover시의 색이 확정이 되면 수정 */
+        '&.Mui-selected': {
+            backgroundColor: alpha(
+                theme.palette.primary.main,
+                ODD_OPACITY + theme.palette.action.selectedOpacity,
+            ),
+            '&:hover, &.Mui-hovered': {
+                backgroundColor: alpha(
+                    theme.palette.primary.main,
+                    ODD_OPACITY +
+                    theme.palette.action.selectedOpacity +
+                    theme.palette.action.hoverOpacity,
+                ),
+            },
+        },
     },
-  },
 }));
 
-const DataTable = () => {
+const TotalData = forwardRef((props, ref) => {
+    const [progress, fetchApi] = useFetch();
+    const [totalData, setTotalData] = useState([]);
+    const dispatch = useDispatch();
+
+    useImperativeHandle(ref, () => ({
+        testFn: (where) => {
+            getTotalData(fetchApi, where).then((res) => {
+                setTotalData(res.data);
+                console.log(res.data);
+            }).finally(() => {
+                dispatch(dataSearchSlice.actions.destroySearch());
+            })
+        }
+    }));
+
     return (
         <div style={{ height: 200, width: '100%' }}>
             <StripedDataGrid
-                rows={rows}
+                getRowId={(totalData) => totalData.ROWNUM}
+                rows={totalData}
                 columns={columns}
                 hideFooter
                 headerHeight={40}
                 rowHeight={40}
                 sx={{
-                    font: 'normal normal normal 14px/16px Pretendard',            
+                    font: 'normal normal normal 14px/16px Pretendard',
                     '& 	.MuiDataGrid-columnHeaderTitle': {
                         font: 'normal normal 600 14px Pretendard',
                     },
@@ -83,6 +110,6 @@ const DataTable = () => {
             />
         </div>
     );
-}
+})
 
-export default DataTable;
+export default TotalData;

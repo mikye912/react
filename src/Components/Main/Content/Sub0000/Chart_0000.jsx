@@ -88,16 +88,6 @@ const Chart_0000 = () => {
       .catch((err) => {
         console.log(err);
       });
-
-    // axios.post('/api/Main/Content/Sub0000/chart_0000', null, {
-    //   headers : {
-    //     x_auth : sessionStorage.getItem("token")
-    //   }
-    // }).then((res) => {
-    //   setData(res.data);
-    // }).catch((err) => {
-    //   common.apiVerify(err);
-    // })
   }, [])
 
   const config = {

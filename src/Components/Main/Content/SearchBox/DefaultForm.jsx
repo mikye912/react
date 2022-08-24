@@ -21,7 +21,7 @@ const DefaultForm = ({ index, data, inputRef }) => {
     } else if (data.TYPE == 'TEXT') {
         return (
             <SearhForm name={data.NAME}>
-                <input name={data.FIELD} type="text" ref={e => inputRef.current[index] = e} />
+                <input name={data.FIELD} type="text" ref={e => inputRef.current[index+1] = e} />
             </SearhForm>
         );
     }

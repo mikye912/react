@@ -1,15 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import DatePicker from "react-datepicker";
 import { getYear, getMonth } from "date-fns";
 import { ko } from 'date-fns/esm/locale';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { dataSearchSlice } from 'Common/Redux/slice';
 import 'Css/react_datepicker.css';
-import dayjs from "dayjs";
 
 const DatePickers = ({ index, inputRef }) => {
-    console.log('datepickers',index)
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const _ = require('lodash');
@@ -31,13 +28,6 @@ const DatePickers = ({ index, inputRef }) => {
         "12",
     ];
 
-    // useEffect(() => {
-    //     dispatch(dataSearchSlice.actions.changeInputs({
-    //         SDATE: dayjs(startDate).format('YYYYMMDD'),
-    //         EDATE: dayjs(startDate).format('YYYYMMDD'),
-    //     }));
-    // }, [startDate, endDate])
-
     return (
         <>
             <div className='date_picker_form'>
@@ -48,12 +38,12 @@ const DatePickers = ({ index, inputRef }) => {
                     onChange={(date) => {
                         setStartDate(date)
                         setEndDate(date)
-
                     }}
                     selectsStart
                     startDate={startDate}
                     endDate={endDate}
                     locale={ko}
+                    name='SDATE'
                     ref={e => inputRef.current[index] = e}
                     renderCustomHeader={({
                         date,
@@ -119,7 +109,8 @@ const DatePickers = ({ index, inputRef }) => {
                     endDate={endDate}
                     minDate={startDate}
                     locale={ko}
-                    ref={e => inputRef.current[index] = e}
+                    name='EDATE'
+                    ref={e => inputRef.current[index+1] = e}
                     renderCustomHeader={({
                         date,
                         changeYear,
