@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { dataSearchSlice } from 'Common/Redux/slice';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import { TextField, MenuItem }  from '@mui/material';
 import MultiCheckModal from './MultiCheckModal/MultiCheckModal'
 
 const SearhForm = ({ children, data }) => {
@@ -19,15 +18,17 @@ const SearhForm = ({ children, data }) => {
 const ExtraForm = ({ i, data, inputRef }) => {
     const dispatch = useDispatch();
     const extraRef = new useRef();
-    const [currency, setCurrency] = useState('all');
+    const [currency, setCurrency] = useState();
 
+    /*select */
     const handleChange = (event) => {
         setCurrency(event.target.value);
-        dispatch(dataSearchSlice.actions.changeInputs({
-            [event.target.name]: event.target.value
-        }))
+        // dispatch(dataSearchSlice.actions.changeInputs({
+        //     [event.target.name]: event.target.value
+        // }));
     };
 
+    /* check */
     const [checkedButtons, setCheckedButtons] = useState(['']);
     const changeHandler = (checked, id, name) => {
         if (id !== '' && checkedButtons.includes('')) {
@@ -98,6 +99,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input' style={{ padding: '8px 76px 8px 8px' }}>
                     {data && data.SUBDATA.map((SUBDATA, index) => {
+                        console.log(i+index)
                         return (
                             <div key={index} style={{ display: 'inline' }}>
                                 <label className='check_label' >
@@ -110,6 +112,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                                             changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue, e.currentTarget.name);
                                         }}
                                         checked={checkedButtons.includes(SUBDATA.VALUE) ? true : false}
+                                        // ref={e => inputRef.current[index] = e}
                                     />
                                     {SUBDATA.NAME}
                                 </label>
@@ -130,6 +133,8 @@ const ExtraForm = ({ i, data, inputRef }) => {
                         value={currency}
                         onChange={handleChange}
                         name={data.FIELD}
+                        defaultValue='all'
+                        ref={e => inputRef.current[i] = e}
                     >
                         <MenuItem value='all' className='select_item'>
                             :: 전체 ::

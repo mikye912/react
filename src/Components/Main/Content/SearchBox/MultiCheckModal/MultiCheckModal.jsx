@@ -54,9 +54,6 @@ const MultiCheckModal = ({ data }) => {
 
     const checkedReset = () => {
         setCheckedButtons([]);
-        dispatch(dataSearchSlice.actions.changeInputs({
-            [data.FIELD]: ''
-        }))
     };
 
     if (data.FIELD === 'TID') {

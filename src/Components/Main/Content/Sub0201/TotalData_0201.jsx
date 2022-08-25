@@ -4,6 +4,7 @@ import common from 'Common/common';
 import useFetch from 'Common/axios';
 import { forwardRef, useImperativeHandle, useState } from "react"
 import { useDispatch } from 'react-redux';
+import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import { dataSearchSlice } from 'Common/Redux/slice';
 
 const getTotalData = (fetchApi, where) => {
@@ -89,6 +90,28 @@ const TotalData = forwardRef((props, ref) => {
                 hideFooter
                 headerHeight={40}
                 rowHeight={40}
+                scrollbarSize={3}
+                components={{
+                    NoRowsOverlay: () => (
+                        <div
+                            style={{
+                                height: '100%',
+                                width: '100%',
+                                alignItems: "center",
+                                justifyContent: "center",
+                                textAlign: 'center',
+                                lineHeight: '150px'
+                            }}
+                        >
+                            조회된 데이터가 없습니다
+                        </div>
+                    ),
+                    // NoResultsOverlay: () => (
+                    //     <div height="100%" alignItems="center" justifyContent="center">
+                    //         Local filter returns no result
+                    //     </div>
+                    // )
+                }}
                 sx={{
                     font: 'normal normal normal 14px/16px Pretendard',
                     '& 	.MuiDataGrid-columnHeaderTitle': {
