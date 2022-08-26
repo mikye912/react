@@ -15,17 +15,13 @@ const SearhForm = ({ children, data }) => {
     )
 }
 
-const ExtraForm = ({ i, data, inputRef }) => {
+const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
     const dispatch = useDispatch();
-    const extraRef = new useRef();
     const [currency, setCurrency] = useState();
 
     /*select */
     const handleChange = (event) => {
         setCurrency(event.target.value);
-        // dispatch(dataSearchSlice.actions.changeInputs({
-        //     [event.target.name]: event.target.value
-        // }));
     };
 
     /* check */
@@ -35,27 +31,15 @@ const ExtraForm = ({ i, data, inputRef }) => {
             /* 전체거래가 선택된 상태에서 전체거래가 아닌 다른 거래건을 체크했을때*/
             if (checked) {
                 setCheckedButtons([id]);
-                dispatch(dataSearchSlice.actions.changeInputs({
-                    [name]: [id]
-                }))
             } else {
                 setCheckedButtons(checkedButtons.filter(button => button !== id));
-                dispatch(dataSearchSlice.actions.changeInputs({
-                    [name]: checkedButtons.filter(button => button !== id)
-                }))
             }
         } else if (id !== '' && !checkedButtons.includes('')) {
             /* 전체거래가 선택되지 않은 상태에서 전체거래가 아닌 다른 거래건을 체크했을때*/
             if (checked) {
                 setCheckedButtons([...checkedButtons, id]);
-                dispatch(dataSearchSlice.actions.changeInputs({
-                    [name]: [...checkedButtons, id]
-                }))
             } else {
                 setCheckedButtons(checkedButtons.filter(button => button !== id));
-                dispatch(dataSearchSlice.actions.changeInputs({
-                    [name]: checkedButtons.filter(button => button !== id)
-                }))
             }
         } else if (id === '') {
             /* 전체거래가 선택되지않고 다른거래건이 체크됐을때 전체거래를 선택하면 전체거래건만 선택값으로 남게*/
@@ -76,14 +60,14 @@ const ExtraForm = ({ i, data, inputRef }) => {
                             className='amount_text'
                             type="text"
                             name={`S${data.FIELD}`}
-                            ref={e => inputRef.current[i] = e}
+                            ref={e => inputExRef.current[i] = e}
                         />
                         <pre>~</pre>
                         <input
                             className='amount_text'
                             type="text"
                             name={`E${data.FIELD}`}
-                            ref={e => inputRef.current[i + 1] = e} />
+                            ref={e => inputExRef.current[i + 1] = e} />
                     </div>
                 </div>
             </SearhForm>
@@ -91,7 +75,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
     } else if (data.TYPE === 'MULTICHECK') {
         return (
             <SearhForm data={data} index={i}>
-                <MultiCheckModal data={data} />
+                <MultiCheckModal data={data} multiCheckRef={multiCheckRef} />
             </SearhForm>
         )
     } else if (data.TYPE === 'CHECK') {
@@ -99,7 +83,6 @@ const ExtraForm = ({ i, data, inputRef }) => {
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input' style={{ padding: '8px 76px 8px 8px' }}>
                     {data && data.SUBDATA.map((SUBDATA, index) => {
-                        console.log(i+index)
                         return (
                             <div key={index} style={{ display: 'inline' }}>
                                 <label className='check_label' >
@@ -112,7 +95,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                                             changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue, e.currentTarget.name);
                                         }}
                                         checked={checkedButtons.includes(SUBDATA.VALUE) ? true : false}
-                                        // ref={e => inputRef.current[index] = e}
+                                        ref={e => inputExRef.current[(i+index)+index] = e}
                                     />
                                     {SUBDATA.NAME}
                                 </label>
@@ -134,7 +117,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
                         onChange={handleChange}
                         name={data.FIELD}
                         defaultValue='all'
-                        ref={e => inputRef.current[i] = e}
+                        ref={e => inputExRef.current[i+1] = e}
                     >
                         <MenuItem value='all' className='select_item'>
                             :: 전체 ::
@@ -154,7 +137,7 @@ const ExtraForm = ({ i, data, inputRef }) => {
         return (
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input'>
-                    <input name={data.FIELD} type="text" ref={e => inputRef.current[i] = e} />
+                    <input name={data.FIELD} type="text" ref={e => inputExRef.current[i+1] = e} />
                 </div>
             </SearhForm>
         );

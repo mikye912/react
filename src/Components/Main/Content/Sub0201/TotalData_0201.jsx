@@ -7,9 +7,9 @@ import { useDispatch } from 'react-redux';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import { dataSearchSlice } from 'Common/Redux/slice';
 
-const getTotalData = (fetchApi, where) => {
+const getTotalData = (fetchApi, postData) => {
     return fetchApi.post('/api/Main/Content/Sub0201/getTotalData', {
-        where: where
+        postData: postData
     }, {})
         .then((res) => {
             return res;
@@ -71,10 +71,9 @@ const TotalData = forwardRef((props, ref) => {
     const dispatch = useDispatch();
 
     useImperativeHandle(ref, () => ({
-        testFn: (where) => {
-            getTotalData(fetchApi, where).then((res) => {
+        testFn: (postData) => {
+            getTotalData(fetchApi, postData).then((res) => {
                 setTotalData(res.data);
-                console.log(res.data);
             }).finally(() => {
                 dispatch(dataSearchSlice.actions.destroySearch());
             })

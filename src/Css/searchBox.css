@@ -203,14 +203,17 @@ pre {
 
 .multi_check_button {
     height: 34px;
-    border: 1PX solid #1976d2;
+    border: 1PX solid #1976d2 !important;
     color: #1976d2;
-    line-height: 34px;
-    font: 14px/34px Pretendard;
     cursor: pointer;
     background-color: transparent;
     box-shadow: 1px 1px 3px 1px #dadce0;
-    width: 99%;
+    width: 99% !important;
+    text-align: center !important;
+}
+
+.css-10hburv-MuiTypography-root {
+    font: 14px/34px Pretendard !important;
 }
 
 .multi_check_button:hover {
@@ -268,7 +271,7 @@ pre {
     width: 100px;
     height: 25px;
     font: normal normal 300 17px/25px Pretendard;
-    margin: 15px 10px 0px 0px;
+    margin: 0px 10px 0px 0px;
     background-color: transparent;
     border: none;
     color: rgb(25, 118, 210);
@@ -279,7 +282,7 @@ pre {
     width: 90px;
     height: 25px;
     font: normal normal 300 17px/25px Pretendard;
-    margin: 15px 10px 0px 0px;
+    margin: 0px 10px 0px 0px;
     background-color: transparent;
     border: none;
     color: rgb(238, 70, 70);
