@@ -37,7 +37,7 @@ const HeaderBar = () => {
   const isSider = useSelector((state) => state.sidebarState)
   const dispatch = useDispatch();
 
-  const [userMenu, setUserMenu] = useState();
+  const [userMenu, setUserMenu] = useState([]);
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -45,7 +45,9 @@ const HeaderBar = () => {
     Promise.all([getUserName(), getUserFav()])
       .then((res) => {
         setUserName(res[0][0].USER_NM);
-        const arr = res[1].filter(obj => obj.USE_YN === 'Y');
+        const arr = res[1].filter(obj => obj.USE_YN === 'Y').sort((a, b)=>{
+          return a.SORT2 - b.SORT2
+        });
         setUserMenu(arr);
       })
       .catch((err) => {
@@ -67,7 +69,7 @@ const HeaderBar = () => {
           <FavoriteModal setUserMenu={setUserMenu} />
         </div>
         <div className="header_nav">
-          {userMenu && userMenu.map((userMenus, index) => (
+          {userMenu.length > 0 && userMenu.map((userMenus, index) => (
             <div
               key={index}
               className="header_userMenu"

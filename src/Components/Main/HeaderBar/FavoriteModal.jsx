@@ -40,6 +40,7 @@ const FavoriteModal = ({setUserMenu}) => {
   const [checked, setChecked] = useState([]);
   const [left, setLeft] = useState([]);
   const [right, setRight] = useState([]);
+  console.log('right',right)
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
 
@@ -51,7 +52,9 @@ const FavoriteModal = ({setUserMenu}) => {
         }
       }).then((res) => {
         const leftArr = res.data.filter(obj => obj.USE_YN === 'N');
-        const rightArr = res.data.filter(obj => obj.USE_YN === 'Y');
+        const rightArr = res.data.filter(obj => obj.USE_YN === 'Y').sort((a, b)=>{
+          return a.SORT2 - b.SORT2
+        });
         setLeft(leftArr);
         setRight(rightArr);
       }).catch((err) => {
