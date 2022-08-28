@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
 import { uAuthSlice } from 'Common/Redux/slice';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
-import { enc } from 'Common/hashing';
+import { sha256enc } from 'Common/hashing';
 
 export default function AuthLogin() {
     const [progress, setProgress] = useState(true);
@@ -71,7 +71,7 @@ export default function AuthLogin() {
 
         fetchApi.post('/api/Login/AuthLogin', {
             userId: inputRef.current[0].value,
-            userPw: enc(inputRef.current[1].value)
+            userPw: sha256enc(inputRef.current[1].value)
         })
             .then((res) => {
                 let key = Object.keys(res.data)[0];
@@ -84,14 +84,10 @@ export default function AuthLogin() {
                     })
                 } else {
                     const uAuth = {
-                        // uInfo : res.data["uInfo"],
-                        // uMenu : res.data["uMenu"],
-                        // uSearch : res.data["uSearch"],
                         token : res.data["token"],
                     }
 
                     dispatch(uAuthSlice.actions.setAuthStat(uAuth));
-                    // 인증번호 생성 후 DB 처리
                 }
             })
             .catch((e) => {
