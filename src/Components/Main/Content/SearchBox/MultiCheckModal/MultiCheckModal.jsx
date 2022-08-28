@@ -1,18 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
+import { useState, useEffect } from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
-import RadioGroup from '@mui/material/RadioGroup';
 
 function ConfirmationDialogRaw(props) {
     const { onClose, value: valueProp, open, data, multiCheckRef, ...other } = props;
-    // const [value, setValue] = useState(valueProp);
     const [checkedButtons, setCheckedButtons] = useState([]);
     const changeHandler = (checked, id) => {
         if (checked) {
@@ -36,10 +31,6 @@ function ConfirmationDialogRaw(props) {
         onClose(checkedButtons);
     };
 
-    // const handleChange = (event) => {
-    //     setValue(event.target.value);
-    // };
-
     if (data.FIELD === 'TID') {
         return (
             <Dialog
@@ -50,10 +41,7 @@ function ConfirmationDialogRaw(props) {
             >
                 <DialogTitle variant="h6" component="h2" style={{ fontFamily: 'Pretendard', textAlign: 'center' }}>{data.NAME} 선택</DialogTitle>
                 <DialogContent dividers>
-                    <div
-                        aria-label="ringtone"
-                        name="ringtone"
-                    >
+                    <div aria-label="ringtone" name="ringtone">
                         {data && data.SUBDATA.map((SUBDATA, index) => {
                             return (
                                 <div key={index} className='multi_tid_check_form'>
@@ -70,7 +58,7 @@ function ConfirmationDialogRaw(props) {
                                                         changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue);
                                                     }}
                                                     checked={checkedButtons.includes(TIDARRAY.VALUE) ? true : false}
-                                                    ref={e => multiCheckRef.current[index + tidIndex] = e}
+                                                    ref={e => multiCheckRef.current[tidIndex+'1'] = e}
                                                 />
                                                 {TIDARRAY.NAME}
                                             </label>
@@ -98,10 +86,7 @@ function ConfirmationDialogRaw(props) {
             >
                 <DialogTitle variant="h6" component="h2" style={{ fontFamily: 'Pretendard', textAlign: 'center' }}>{props.data.NAME} 선택</DialogTitle>
                 <DialogContent dividers>
-                    <div
-                        aria-label="ringtone"
-                        name="ringtone"
-                    >
+                    <div aria-label="ringtone" name="ringtone">
                         {data && data.SUBDATA.map((SUBDATA, index) => {
                             return (
                                 <div key={index} className='multi_check_form'>
@@ -135,12 +120,6 @@ function ConfirmationDialogRaw(props) {
     }
 }
 
-// MultiCheckModal.propTypes = {
-//     onClose: PropTypes.func.isRequired,
-//     open: PropTypes.bool.isRequired,
-//     value: PropTypes.string.isRequired,
-// };
-
 const MultiCheckModal = ({ data, multiCheckRef }) => {
     const [open, setOpen] = useState(false);
     const [checkedButtons, setCheckedButtons] = useState([]);
@@ -151,7 +130,6 @@ const MultiCheckModal = ({ data, multiCheckRef }) => {
 
     const handleClose = (newValue) => {
         setOpen(false);
-
         if (newValue) {
             setCheckedButtons(newValue);
         }

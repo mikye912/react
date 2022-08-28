@@ -3,9 +3,7 @@ import { alpha, styled } from '@mui/material/styles';
 import common from 'Common/common';
 import useFetch from 'Common/axios';
 import { forwardRef, useImperativeHandle, useState } from "react"
-import { useDispatch } from 'react-redux';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
-import { dataSearchSlice } from 'Common/Redux/slice';
 
 const getTotalData = (fetchApi, postData) => {
     return fetchApi.post('/api/Main/Content/Sub0201/getTotalData', {
@@ -68,20 +66,18 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 const TotalData = forwardRef((props, ref) => {
     const [progress, fetchApi] = useFetch();
     const [totalData, setTotalData] = useState([]);
-    const dispatch = useDispatch();
-
+    
     useImperativeHandle(ref, () => ({
         testFn: (postData) => {
             getTotalData(fetchApi, postData).then((res) => {
                 setTotalData(res.data);
-            }).finally(() => {
-                dispatch(dataSearchSlice.actions.destroySearch());
             })
         }
     }));
 
     return (
         <div style={{ height: 200, width: '100%' }}>
+            {progress === false ? <CircularIndeterminate /> : null}
             <StripedDataGrid
                 getRowId={(totalData) => totalData.ROWNUM}
                 rows={totalData}
@@ -105,6 +101,7 @@ const TotalData = forwardRef((props, ref) => {
                             조회된 데이터가 없습니다
                         </div>
                     ),
+                    // LoadingOverlay: ((progress) => (progress === false ? <CircularIndeterminate /> : null))
                     // NoResultsOverlay: () => (
                     //     <div height="100%" alignItems="center" justifyContent="center">
                     //         Local filter returns no result
