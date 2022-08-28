@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import common from "Common/common"
 import { useDispatch } from 'react-redux';
 import { uAuthSlice } from 'Common/Redux/slice';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
+import { enc } from 'Common/hashing';
 
 export default function AuthLogin() {
     const [progress, setProgress] = useState(true);
@@ -71,7 +71,7 @@ export default function AuthLogin() {
 
         fetchApi.post('/api/Login/AuthLogin', {
             userId: inputRef.current[0].value,
-            userPw: common.base64Enc(inputRef.current[1].value)
+            userPw: enc(inputRef.current[1].value)
         })
             .then((res) => {
                 let key = Object.keys(res.data)[0];
