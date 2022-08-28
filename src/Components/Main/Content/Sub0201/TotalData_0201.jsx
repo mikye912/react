@@ -76,7 +76,7 @@ const TotalData = forwardRef((props, ref) => {
     }));
 
     return (
-        <div style={{ height: 200, width: '100%' }}>
+        <div style={{ height: 200, width: '100%', position: 'relative' }}>
             {progress === false ? <CircularIndeterminate /> : null}
             <StripedDataGrid
                 getRowId={(totalData) => totalData.ROWNUM}
