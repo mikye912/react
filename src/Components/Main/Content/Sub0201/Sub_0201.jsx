@@ -23,14 +23,14 @@ const Sub_0201 = ({ index, content }) => {
   const inputRef = useRef([]);
   const inputExRef = useRef([]);
   const multiCheckRef = useRef([]);
-  
+
   let postData = {};
   const handleSubmit = () => {
     let appgb = [];
     let authstat = [];
     let tid = [];
     let depcd = [];
-    /*기본검색조건과 상세검색조건 나눠서 받기*/
+
     /*기본*/
     for (let i = 0; i < inputRef.current.length; i++) {
       if (inputRef.current[i] && inputRef.current[i] !== undefined) {
@@ -61,7 +61,7 @@ const Sub_0201 = ({ index, content }) => {
             if (inputExRef.current[j].name === 'APPGB') {
               appgb = [...appgb, inputExRef.current[j].value]
               postData[inputExRef.current[j].name] = [...appgb]
-            } else if (inputExRef.current[j].name === 'AUTHSTAT'){
+            } else if (inputExRef.current[j].name === 'AUTHSTAT') {
               authstat = [...authstat, inputExRef.current[j].value]
               postData[inputExRef.current[j].name] = [...authstat]
             }
@@ -73,24 +73,21 @@ const Sub_0201 = ({ index, content }) => {
     };
 
     /*멀티체크*/
-    for (let k = 0; k < multiCheckRef.current.length; k++){
+    for (let k = 0; k < multiCheckRef.current.length; k++) {
       if (multiCheckRef.current[k] && multiCheckRef.current[k] !== undefined && multiCheckRef.current[k] !== null) {
-        if (multiCheckRef.current[k].checked) {
-          if (multiCheckRef.current[k].name === 'DEP_CD') {
-            depcd = [...depcd, multiCheckRef.current[k].value]
-            postData[multiCheckRef.current[k].name] = [...depcd]
-          } else if (multiCheckRef.current[k].name === 'TID') {
-            tid = [...tid, multiCheckRef.current[k].value]
-            postData[multiCheckRef.current[k].name] = [...tid]
+          if (multiCheckRef.current[k].checked) {
+            console.log('multiCheckRef.current[' + k + ']Checked', multiCheckRef.current[k].checked.value)
+            if (multiCheckRef.current[k].name === 'DEP_CD') {
+              depcd = [...depcd, multiCheckRef.current[k].value]
+              postData[multiCheckRef.current[k].name] = [...depcd]
+            } else if (multiCheckRef.current[k].name === 'TID') {
+              tid = [...tid, multiCheckRef.current[k].value]
+              postData[multiCheckRef.current[k].name] = [...tid]
+            }
           }
         }
-      }
     }
 
-    //obj 합치기
-    // const where = Object.assign({}, postData, search_data);
-    
-    console.log(postData)
     if (postData['SDATE'] === undefined && postData['EDATE'] === undefined) {
       Swal.fire({
         titleText: '승인일자를 입력해주세요',
@@ -101,6 +98,7 @@ const Sub_0201 = ({ index, content }) => {
     } else {
       TotalDataRef.current.testFn(postData);
 
+      postData = {};
     }
 
     // fetchApi.post('/api/Main/Content/Sub0201/getDetailData',
@@ -132,7 +130,7 @@ const Sub_0201 = ({ index, content }) => {
         <div className='total_title'>
           <img alt='' />
           <div>집계</div>
-          <FaRegPlusSquare className='total_btn' onClick={() => {setVisibleTotal(!visibleTotal)}}/>
+          <FaRegPlusSquare className='total_btn' onClick={() => { setVisibleTotal(!visibleTotal) }} />
         </div>
         <button className='excel_btn'>
           엑셀다운로드
