@@ -1,4 +1,4 @@
---»ç¾÷ºÎ »ý¼º ½Ã ÀÚµ¿ »ý¼º
+--ì‚¬ì—…ë¶€ ìƒì„± ì‹œ ìžë™ ìƒì„±
 INSERT INTO TB_BAS_SEARCHBOX_NEW 
 	SELECT 
 		:ORGCD AS ORG_CD, 

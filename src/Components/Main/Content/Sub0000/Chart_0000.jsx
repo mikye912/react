@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import Box from '@mui/material/Box';
 import { CountUp } from 'use-count-up';
 import { Column } from '@ant-design/plots';

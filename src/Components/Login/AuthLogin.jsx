@@ -85,8 +85,8 @@ export default function AuthLogin() {
                 } else {
                     const uAuth = {
                         token : res.data["token"],
+                        userId : inputRef.current[0].value
                     }
-
                     dispatch(uAuthSlice.actions.setAuthStat(uAuth));
                 }
             })
