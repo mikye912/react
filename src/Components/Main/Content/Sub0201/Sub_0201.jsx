@@ -9,12 +9,13 @@ import Extra from 'Components/Main/Content/SearchBox/Extra';
 import TotalData from 'Components/Main/Content/Sub0201/TotalData_0201';
 import 'Css/searchBox.css';
 import 'Css/dataGrid.css';
+import { Hidden } from '@mui/material';
 
 const Sub_0201 = ({ index, content }) => {
   const TotalDataRef = useRef();
   const [visibleSearch, setVisibleSearch] = useState(false);
   const [visibleTotal, setVisibleTotal] = useState(true);
-  const search_data = useSelector((state) => state.dataSearch);
+  // const search_data = useSelector((state) => state.dataSearch);
   const selTab = useSelector((state) => state.selectTab);
 
   const uSearch = useSelector((state) => state.uSearch);
@@ -75,17 +76,17 @@ const Sub_0201 = ({ index, content }) => {
     /*멀티체크*/
     for (let k = 0; k < multiCheckRef.current.length; k++) {
       if (multiCheckRef.current[k] && multiCheckRef.current[k] !== undefined && multiCheckRef.current[k] !== null) {
-          if (multiCheckRef.current[k].checked) {
-            console.log('multiCheckRef.current[' + k + ']Checked', multiCheckRef.current[k].checked.value)
-            if (multiCheckRef.current[k].name === 'DEP_CD') {
-              depcd = [...depcd, multiCheckRef.current[k].value]
-              postData[multiCheckRef.current[k].name] = [...depcd]
-            } else if (multiCheckRef.current[k].name === 'TID') {
-              tid = [...tid, multiCheckRef.current[k].value]
-              postData[multiCheckRef.current[k].name] = [...tid]
-            }
+        if (multiCheckRef.current[k].checked) {
+          console.log('multiCheckRef.current[' + k + ']Checked', multiCheckRef.current[k].checked.value)
+          if (multiCheckRef.current[k].name === 'DEP_CD') {
+            depcd = [...depcd, multiCheckRef.current[k].value]
+            postData[multiCheckRef.current[k].name] = [...depcd]
+          } else if (multiCheckRef.current[k].name === 'TID') {
+            tid = [...tid, multiCheckRef.current[k].value]
+            postData[multiCheckRef.current[k].name] = [...tid]
           }
         }
+      }
     }
 
     if (postData['SDATE'] === undefined && postData['EDATE'] === undefined) {
@@ -136,7 +137,8 @@ const Sub_0201 = ({ index, content }) => {
           엑셀다운로드
         </button>
       </div>
-      {visibleTotal && <TotalData ref={TotalDataRef} />}
+      {/* {visibleTotal && <TotalData ref={TotalDataRef} />} */}
+      <TotalData ref={TotalDataRef} visible={visibleTotal} />
     </Box>
   )
 };
