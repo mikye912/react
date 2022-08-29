@@ -1,8 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default function AuthLogin() {
+    const [progress, setProgress] = useState(true);
     const uAuth = useSelector((state) => state.uAuth)
     const inputRef = useRef();
 
@@ -21,15 +25,61 @@ export default function AuthLogin() {
 
     const handleSubmit = () => {
         //인증번호 유효성 검증 후 넘어가기
-        // sessionStorage.setItem("uInfo", uAuth.uInfo);
-        // sessionStorage.setItem("uMenu", uAuth.uMenu);
-        // sessionStorage.setItem("uSearch", uAuth.uSearch);
-        sessionStorage.setItem("token", uAuth.token);
         
-        navigate("/sub_main");
+
+        const baseURL = '/';
+        const fetchApi = axios.create({
+            baseURL,
+        })
+
+        fetchApi.interceptors.request.use((config) => {
+            setProgress(false);
+            return config
+        }, (err) => {
+            return Promise.reject(err);
+        })
+
+        fetchApi.interceptors.response.use((res) => {
+            setProgress(true);
+            return res;
+        }, (err) => {
+            return Promise.reject(err);
+        })
+
+        fetchApi.get('/api/Login/AuthLogin', {
+                params: {
+                    transNo : inputRef.current.value,
+                    userId : uAuth.userId
+                }
+            })
+            .then((res) => {
+                let key = Object.keys(res.data)[0];
+                if (key === "errMsg") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: res.data[key],
+                        width: 560,
+                        confirmButtonColor: '#1D79E7'
+                    })
+                } else {
+                    sessionStorage.setItem("token", uAuth.token);
+                    navigate("/sub_main");
+                }
+            })
+            .catch((e) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: '서버 요청에 실패하였습니다.',
+                    text: e.message,
+                    width: 560,
+                    confirmButtonColor: '#1D79E7'
+                })
+                return;
+            });
     }
     return (
         <div className='index_sign_input' onKeyPress={handleKeyPress}>
+            {progress === false ? <CircularIndeterminate /> : null}
             <div className="index_input_pw">
                 <input
                     type='text'

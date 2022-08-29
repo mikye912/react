@@ -1,2 +1,2 @@
-#╢К╪р╧╝юз ╠╦╨п го╠Б#
+#К▄─Л├▄К╛╦Л·░ Й╣╛К╤└ М∙≤Й╦╟#
 git config core.ignorecase false
