@@ -9,7 +9,6 @@ import Extra from 'Components/Main/Content/SearchBox/Extra';
 import TotalData from 'Components/Main/Content/Sub0201/TotalData_0201';
 import 'Css/searchBox.css';
 import 'Css/dataGrid.css';
-import { Hidden } from '@mui/material';
 
 const Sub_0201 = ({ index, content }) => {
   const TotalDataRef = useRef();
@@ -76,6 +75,7 @@ const Sub_0201 = ({ index, content }) => {
     /*멀티체크*/
     for (let k = 0; k < multiCheckRef.current.length; k++) {
       if (multiCheckRef.current[k] && multiCheckRef.current[k] !== undefined && multiCheckRef.current[k] !== null) {
+        console.log('multiCheckRef.current[' + k + ']', multiCheckRef.current[k])
         if (multiCheckRef.current[k].checked) {
           console.log('multiCheckRef.current[' + k + ']Checked', multiCheckRef.current[k].checked.value)
           if (multiCheckRef.current[k].name === 'DEP_CD') {
@@ -98,6 +98,7 @@ const Sub_0201 = ({ index, content }) => {
       return;
     } else {
       TotalDataRef.current.testFn(postData);
+      console.log(postData);
 
       postData = {};
     }

@@ -7,7 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
 
 function ConfirmationDialogRaw(props) {
-    const { onClose, value: valueProp, open, data, multiCheckRef, ...other } = props;
+    const { onClose, value: valueProp, open, data, multiCheckRef, i, ...other } = props;
     const [checkedButtons, setCheckedButtons] = useState([]);
     const changeHandler = (checked, id) => {
         if (checked) {
@@ -47,6 +47,7 @@ function ConfirmationDialogRaw(props) {
                                 <div key={index} className='multi_tid_check_form'>
                                     <div className='multi_check_label_title'>{SUBDATA.TITLE}</div>
                                     {SUBDATA && SUBDATA.TID.map((TIDARRAY, tidIndex) => {
+                                        console.log()
                                         return (
                                             <label className='multi_tid_check_label' key={tidIndex}>
                                                 <input
@@ -58,7 +59,7 @@ function ConfirmationDialogRaw(props) {
                                                         changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue);
                                                     }}
                                                     checked={checkedButtons.includes(TIDARRAY.VALUE) ? true : false}
-                                                    ref={e => multiCheckRef.current[tidIndex+'1'] = e}
+                                                    ref={e => multiCheckRef.current[`${i}` + +index + tidIndex] = e}
                                                 />
                                                 {TIDARRAY.NAME}
                                             </label>
@@ -100,7 +101,7 @@ function ConfirmationDialogRaw(props) {
                                                 changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue);
                                             }}
                                             checked={checkedButtons.includes(SUBDATA.VALUE) ? true : false}
-                                            ref={e => multiCheckRef.current[index] = e}
+                                            ref={e => multiCheckRef.current[`${i}` + index] = e}
                                         />
                                         {SUBDATA.NAME}
                                     </label>
@@ -120,7 +121,7 @@ function ConfirmationDialogRaw(props) {
     }
 }
 
-const MultiCheckModal = ({ data, multiCheckRef }) => {
+const MultiCheckModal = ({ data, i, multiCheckRef }) => {
     const [open, setOpen] = useState(false);
     const [checkedButtons, setCheckedButtons] = useState([]);
 
@@ -155,6 +156,7 @@ const MultiCheckModal = ({ data, multiCheckRef }) => {
                 onClose={handleClose}
                 value={checkedButtons}
                 multiCheckRef={multiCheckRef}
+                i={i}
             />
         </div>
     );

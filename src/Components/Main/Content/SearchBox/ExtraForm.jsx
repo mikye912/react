@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from "react-redux";
-import { dataSearchSlice } from 'Common/Redux/slice';
 import { TextField, MenuItem }  from '@mui/material';
 import MultiCheckModal from './MultiCheckModal/MultiCheckModal'
 
@@ -75,7 +74,7 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
     } else if (data.TYPE === 'MULTICHECK') {
         return (
             <SearhForm data={data} index={i}>
-                <MultiCheckModal data={data} multiCheckRef={multiCheckRef} />
+                <MultiCheckModal data={data} i={i} multiCheckRef={multiCheckRef} />
             </SearhForm>
         )
     } else if (data.TYPE === 'CHECK') {
