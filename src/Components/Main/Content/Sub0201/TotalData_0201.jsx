@@ -5,9 +5,9 @@ import useFetch from 'Common/axios';
 import { forwardRef, useImperativeHandle, useState } from "react"
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 
-const getTotalData = (fetchApi, postData) => {
-    return fetchApi.post('/api/Main/Content/Sub0201/getTotalData', {
-        postData: postData
+const getTotalData = (fetchApi, reqData) => {
+    return fetchApi.get('/api/Main/Content/Sub0201/getTotalData', {
+        params: reqData
     }, {})
         .then((res) => {
             return res;
@@ -62,7 +62,7 @@ const TotalData = forwardRef((props, ref) => {
 
     const columns = [
         {
-            field: 'ROWNUM', headerName: '순번', width: 70, align: "center", headerAlign: "center",
+            field: 'ROWNUM', headerName: '순번', width: 50, align: "center", headerAlign: "center",
             colSpan: ({ row }) => {
                 if (row.TERM_NM === null) {
                     return 2;
@@ -72,10 +72,7 @@ const TotalData = forwardRef((props, ref) => {
             valueGetter: ({ value, row }) => {
                 if (row.TERM_NM === null) {
                     return "합계";
-                } else if(row.TERM_NM !== null){
-                    value = totalData.reduce((accumulator, currentObject, index) => {
-                        return index;
-                    });
+                } else {
                 }
                 return value;
             },
