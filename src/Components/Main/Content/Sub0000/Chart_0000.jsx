@@ -7,7 +7,7 @@ import common from 'Common/common';
 import useFetch from 'Common/axios';
 
 const chart_0000 = (fetchApi) => {
-  return fetchApi.post('/api/Main/Content/Sub0000/chart_0000', null, {})
+  return fetchApi.get('/api/Main/Content/Sub0000/chart_0000', null, {})
     .then((res) => {
       return res.data;
     }).catch((err) => {
@@ -16,7 +16,7 @@ const chart_0000 = (fetchApi) => {
 }
 
 const chartData_0000 = (fetchApi) => {
-  return fetchApi.post('/api/Main/Content/Sub0000/chartData_0000', null, {})
+  return fetchApi.get('/api/Main/Content/Sub0000/chartData_0000', null, {})
     .then((res) => {
       return res.data[0];
     }).catch((err) => {
