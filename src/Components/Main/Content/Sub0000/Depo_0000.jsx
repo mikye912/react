@@ -29,7 +29,7 @@ const Depo_0000 = () => {
   });
 
   useEffect(() => {
-    fetchApi.post('/api/Main/Content/Sub0000/depo_0000', null, {})
+    fetchApi.get('/api/Main/Content/Sub0000/depo_0000', null, {})
       .then((res) => {
         setData(res.data[0]);
       }).catch((err) => {

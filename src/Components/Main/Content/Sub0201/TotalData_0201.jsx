@@ -5,9 +5,9 @@ import useFetch from 'Common/axios';
 import { forwardRef, useImperativeHandle, useState } from "react"
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 
-const getTotalData = (fetchApi, postData) => {
-    return fetchApi.post('/api/Main/Content/Sub0201/getTotalData', {
-        postData: postData
+const getTotalData = (fetchApi, reqData) => {
+    return fetchApi.get('/api/Main/Content/Sub0201/getTotalData', {
+        params: reqData
     }, {})
         .then((res) => {
             return res;
