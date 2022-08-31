@@ -201,6 +201,17 @@ pre {
     color: #303642 !important;
 }
 
+.multi_check_title {
+    display: inline-block;
+    font-family: Pretendard;
+    text-align: center;
+    
+}
+
+.multi_check_close{
+    display: inline-block;
+}
+
 .multi_check_button {
     height: 34px;
     border: 1PX solid #1976d2 !important;
@@ -212,6 +223,7 @@ pre {
     text-align: center !important;
 }
 
+/*DialogTitle*/
 .css-10hburv-MuiTypography-root {
     font: 14px/34px Pretendard !important;
 }

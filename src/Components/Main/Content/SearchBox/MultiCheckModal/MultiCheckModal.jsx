@@ -5,6 +5,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
+import { FaTimes } from 'react-icons/fa';
 
 function ConfirmationDialogRaw(props) {
     const { onClose, value: valueProp, open, data, multiCheckRef, i, ...other } = props;
@@ -39,7 +40,10 @@ function ConfirmationDialogRaw(props) {
                 maxWidth='770px'
                 {...other}
             >
-                <DialogTitle variant="h6" component="h2" style={{ fontFamily: 'Pretendard', textAlign: 'center' }}>{data.NAME} 선택</DialogTitle>
+                <DialogTitle variant="h6" component="h2">
+                    <div className='multi_check_title'>{data.NAME} 선택</div>
+                    <div className='multi_check_close'><FaTimes onClick={handleOk} /></div>
+                </DialogTitle>
                 <DialogContent dividers>
                     <div aria-label="ringtone" name="ringtone">
                         {data && data.SUBDATA.map((SUBDATA, index) => {
@@ -85,7 +89,7 @@ function ConfirmationDialogRaw(props) {
                 open={open}
                 {...other}
             >
-                <DialogTitle variant="h6" component="h2" style={{ fontFamily: 'Pretendard', textAlign: 'center' }}>{props.data.NAME} 선택</DialogTitle>
+                <DialogTitle variant="h6" component="h2" style={{ fontFamily: 'Pretendard', textAlign: 'center' }}>{props.data.NAME} 선택 <FaTimes onClose/></DialogTitle> 
                 <DialogContent dividers>
                     <div aria-label="ringtone" name="ringtone">
                         {data && data.SUBDATA.map((SUBDATA, index) => {
