@@ -203,13 +203,14 @@ pre {
 
 .multi_check_title {
     display: inline-block;
-    font-family: Pretendard;
+    font: normal normal bold 18px Pretendard;
     text-align: center;
-    
+    width: 95%; 
 }
 
 .multi_check_close{
     display: inline-block;
+    vertical-align: middle;
 }
 
 .multi_check_button {
@@ -221,11 +222,6 @@ pre {
     box-shadow: 1px 1px 3px 1px #dadce0;
     width: 99% !important;
     text-align: center !important;
-}
-
-/*DialogTitle*/
-.css-10hburv-MuiTypography-root {
-    font: 14px/34px Pretendard !important;
 }
 
 .multi_check_button:hover {

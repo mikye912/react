@@ -40,7 +40,7 @@ function ConfirmationDialogRaw(props) {
                 maxWidth='770px'
                 {...other}
             >
-                <DialogTitle variant="h6" component="h2">
+                <DialogTitle>
                     <div className='multi_check_title'>{data.NAME} 선택</div>
                     <div className='multi_check_close'><FaTimes onClick={handleOk} /></div>
                 </DialogTitle>
@@ -89,7 +89,10 @@ function ConfirmationDialogRaw(props) {
                 open={open}
                 {...other}
             >
-                <DialogTitle variant="h6" component="h2" style={{ fontFamily: 'Pretendard', textAlign: 'center' }}>{props.data.NAME} 선택 <FaTimes onClose/></DialogTitle> 
+                <DialogTitle>
+                    <div className='multi_check_title'>{data.NAME} 선택</div>
+                    <div className='multi_check_close'><FaTimes onClick={handleOk} /></div>
+                </DialogTitle>
                 <DialogContent dividers>
                     <div aria-label="ringtone" name="ringtone">
                         {data && data.SUBDATA.map((SUBDATA, index) => {
