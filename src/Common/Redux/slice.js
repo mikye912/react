@@ -22,6 +22,17 @@ export const uSearchSlice = createSlice({
     }
 })
 
+const initUserDomainState = new Array();
+export const uDomainSlice = createSlice({
+    name: 'uDomainSlice',
+    initialState: initUserDomainState,
+    reducers: {
+        setUserDomain: (state, action) => {
+            return action.payload
+        }
+    }
+})
+
 const initAuthStat = {};
 export const uAuthSlice = createSlice({
     name: 'isAuthSlice',

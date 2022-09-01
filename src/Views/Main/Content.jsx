@@ -4,7 +4,7 @@ import ErrorPage from "Components/Main/Content/ErrorPage";
 import Sub_0000 from "Components/Main/Content/Sub0000/Sub_0000";
 import Sub_0201 from "Components/Main/Content/Sub0201/Sub_0201";
 import { useDispatch, useSelector } from "react-redux";
-import { uSearchSlice } from "Common/Redux/slice";
+import { uDomainSlice, uSearchSlice } from "Common/Redux/slice";
 import common from "Common/common";
 import axios from "axios";
 
@@ -16,14 +16,15 @@ const Content = () => {
   //console.log("contents", contents);
 
   useEffect(() => {
-    axios.get('/api/Main/Content/getUserSearch', {
+    axios.get('/api/Main/Content/usercontent', {
       headers : {
         x_auth : sessionStorage.getItem("token")
       }
     })
     .then((res) => {
-      //console.log("uSearch : ",res.data)
-      dispatch(uSearchSlice.actions.setUserSearch(res.data))
+      //console.log("usercontent : ",res.data.uDomain)
+      dispatch(uSearchSlice.actions.setUserSearch(res.data.uSearch));
+      dispatch(uDomainSlice.actions.setUserDomain(res.data.uDomain));
     }).catch((err) => {
       common.apiVerify(err);
     })
