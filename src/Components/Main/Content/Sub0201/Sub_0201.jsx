@@ -7,22 +7,26 @@ import Swal from 'sweetalert2';
 import Default from 'Components/Main/Content/SearchBox/Default';
 import Extra from 'Components/Main/Content/SearchBox/Extra';
 import TotalData from 'Components/Main/Content/Sub0201/TotalData_0201';
+import DetailData from 'Components/Main/Content/Sub0201/DetailData_0201';
 import 'Css/searchBox.css';
 import 'Css/dataGrid.css';
 
 const Sub_0201 = ({ index, content }) => {
   const TotalDataRef = useRef();
+  const DetailDataRef = useRef();
+  const inputRef = useRef([]);
+  const inputExRef = useRef([]);
+  const multiCheckRef = useRef([]);
   const [visibleSearch, setVisibleSearch] = useState(false);
   const [visibleTotal, setVisibleTotal] = useState(true);
-  // const search_data = useSelector((state) => state.dataSearch);
   const selTab = useSelector((state) => state.selectTab);
 
   const uSearch = useSelector((state) => state.uSearch);
   const page = content.substr(-4);
   const data = uSearch.filter(a => a[page])[0][page];
-  const inputRef = useRef([]);
-  const inputExRef = useRef([]);
-  const multiCheckRef = useRef([]);
+
+  const uDomain = useSelector((state) => state.uDomain);
+  const columns = uDomain.filter(a => a.page === page)
 
   let postData = {};
   const handleSubmit = () => {
@@ -98,20 +102,10 @@ const Sub_0201 = ({ index, content }) => {
       return;
     } else {
       TotalDataRef.current.testFn(postData);
-      console.log(postData);
+      DetailDataRef.current.testFn(postData);
 
       postData = {};
     }
-
-    // fetchApi.post('/api/Main/Content/Sub0201/getDetailData',
-    //   { where: newObj }, {})
-    //   .then((res) => {
-    //     console.log(res)
-    //   }).catch((err) => {
-    //     common.apiVerify(err);
-    //   }).finally(() => {
-    //     dispatch(dataSearchSlice.actions.destroySearch());
-    //   })
   }
 
   return (
@@ -138,8 +132,8 @@ const Sub_0201 = ({ index, content }) => {
           엑셀다운로드
         </button>
       </div>
-      {/* {visibleTotal && <TotalData ref={TotalDataRef} />} */}
-      <TotalData ref={TotalDataRef} visible={visibleTotal} />
+      <TotalData ref={TotalDataRef} visible={visibleTotal} columns={columns} />
+      <DetailData ref={DetailDataRef} visible={visibleTotal} columns={columns} />
     </Box>
   )
 };

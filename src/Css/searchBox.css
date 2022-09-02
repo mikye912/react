@@ -211,6 +211,7 @@ pre {
 .multi_check_close{
     display: inline-block;
     vertical-align: middle;
+    cursor: pointer;
 }
 
 .multi_check_button {

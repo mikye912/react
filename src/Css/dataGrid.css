@@ -43,3 +43,29 @@
     letter-spacing: 0px;
     color: #FFFFFF;
 }
+
+.detail_form {
+    display: flex;
+    justify-content: space-between;
+    width: 99%;
+    margin-top: 20px;
+    height: 61px;
+    border-top: 1px solid #D2D2D2;
+    padding: 20px 0px 20px 0px;
+}
+
+.detail_title>div {
+    width: 31px;
+    height: 21px;
+    text-align: left;
+    font: normal normal bold 18px/21px Pretendard;
+    color: #0A87D7;
+    display: inline-block;
+}
+
+.detail_title>img {
+    content: url(Resource/Images/icon_title.png);
+    width: 20px;
+    height: 10px;
+    margin: 0px 12px 0px 0px;
+}

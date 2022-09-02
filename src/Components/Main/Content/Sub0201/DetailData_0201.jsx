@@ -5,8 +5,8 @@ import common from 'Common/common';
 import useFetch from 'Common/axios';
 require('Css/agGrid.scss');
 
-const getTotalData = (fetchApi, reqData) => {
-    return fetchApi.get('/api/Main/Content/Sub0201/getTotalData', {
+const getDetailData = (fetchApi, reqData) => {
+    return fetchApi.get('/api/Main/Content/Sub0201/getDetailData', {
         params: reqData
     }, {})
         .then((res) => {
@@ -16,19 +16,19 @@ const getTotalData = (fetchApi, reqData) => {
         })
 }
 
-const TotalData = forwardRef((props, ref) => {
+const DetailData = forwardRef((props, ref) => {
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [progress, fetchApi] = useFetch();
-    const [totalData, setTotalData] = useState([]);
+    const [detailData, setDetailData] = useState([]);
 
     useImperativeHandle(ref, () => ({
         testFn: (postData) => {
-            getTotalData(fetchApi, postData).then((res) => {
-                setTotalData(res.data);
+            getDetailData(fetchApi, postData).then((res) => {
+                setDetailData(res.data);
             })
         }
     }));
-
+    let columns = props.columns.filter(a => a.category === 'DETAIL');
     const defaultColDef = {
         resizable: true,
         sortable: true
@@ -64,18 +64,9 @@ const TotalData = forwardRef((props, ref) => {
         }
     };
 
-    let columns = props.columns.filter(a => a.category === 'TOTAL');
-
     // *기본 컬럼 조건을 제외한 추가조건
     columns = columns.map((obj) => {
-        if (obj.field === 'ROWNUM') {
-            columns = {
-                ...obj,
-                colSpan: params => params.data.TERM_NM === '합계' ? 2 : 1,
-                valueGetter: totalValueGetter
-            }
-            return columns;
-        } else if (obj.type === 'number') {
+        if (obj.type === 'number') {
             columns = {
                 ...obj,
                 valueFormatter: currencyFormatter,
@@ -90,22 +81,29 @@ const TotalData = forwardRef((props, ref) => {
     })
 
     return (
-        <div className="ag-theme-custom"
-            style={
-                props.visible === false ?
-                    { height: 0, width: 0 } : { height: 200, width: '99%', position: 'relative' }}
-        >
-            {progress === false ? <CircularIndeterminate /> : null}
-            <AgGridReact
-                ref={gridRef} // Ref for accessing Grid's API
-                rowData={totalData} // Row Data for Rows
-                columnDefs={columns} // Column Defs for Columns
-                defaultColDef={defaultColDef}
-                animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-                rowSelection='multiple' // Options - allows click selection of rows
-                getRowStyle={getRowStyle}
-                overlayNoRowsTemplate={
-                    `<div
+        <>
+            <div className='detail_form'>
+                <div className='detail_title'>
+                    <img alt='' />
+                    <div>상세</div>
+                </div>
+            </div>
+            <div className="ag-theme-custom"
+                style={
+                    props.visible === false ?
+                        { height: '555px', width: '99%', position: 'relative' } :
+                        { height: '355px', width: '99%', position: 'relative' }}>
+                {progress === false ? <CircularIndeterminate /> : null}
+                <AgGridReact
+                    ref={gridRef} // Ref for accessing Grid's API
+                    rowData={detailData} // Row Data for Rows
+                    columnDefs={columns} // Column Defs for Columns
+                    defaultColDef={defaultColDef}
+                    animateRows={true} // Optional - set to 'true' to have rows animate when sorted
+                    rowSelection='multiple' // Options - allows click selection of rows
+                    getRowStyle={getRowStyle}
+                    overlayNoRowsTemplate={
+                        `<div
                             style={{
                         height: '100%',
                         width: '100%',
@@ -116,11 +114,12 @@ const TotalData = forwardRef((props, ref) => {
                     }}>
                         조회된 데이터가 없습니다.
                     </div>`
-                }
-            // onCellClicked={onCellClicked}
-            />
-        </div>
+                    }
+                // onCellClicked={onCellClicked}
+                />
+            </div>
+        </>
     );
 })
 
-export default TotalData;
+export default DetailData;
