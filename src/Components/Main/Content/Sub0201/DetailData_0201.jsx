@@ -6,7 +6,7 @@ import useFetch from 'Common/axios';
 require('Css/agGrid.scss');
 
 const getDetailData = (fetchApi, reqData) => {
-    return fetchApi.get('/api/Main/Content/Sub0201/getDetailData', {
+    return fetchApi.get('/api/users/contents/0201/detail', {
         params: reqData
     }, {})
         .then((res) => {

@@ -16,7 +16,7 @@ const Content = () => {
   //console.log("contents", contents);
 
   useEffect(() => {
-    axios.get('/api/Main/Content/usercontent', {
+    axios.get('/api/users/contents/items', {
       headers : {
         x_auth : sessionStorage.getItem("token")
       }

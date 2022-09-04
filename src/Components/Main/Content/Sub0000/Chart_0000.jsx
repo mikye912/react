@@ -6,24 +6,6 @@ import CircularIndeterminate from "Components/Main/Content/Progress/CircularInde
 import common from 'Common/common';
 import useFetch from 'Common/axios';
 
-const chart_0000 = (fetchApi) => {
-  return fetchApi.get('/api/Main/Content/Sub0000/chart_0000', null, {})
-    .then((res) => {
-      return res.data;
-    }).catch((err) => {
-      common.apiVerify(err);
-    })
-}
-
-const chartData_0000 = (fetchApi) => {
-  return fetchApi.get('/api/Main/Content/Sub0000/chartData_0000', null, {})
-    .then((res) => {
-      return res.data[0];
-    }).catch((err) => {
-      common.apiVerify(err);
-    })
-}
-
 const ChartComponent = ({ children, progress, data }) => {
   return (
     <Box className="chart" gridColumn="span 12">
@@ -78,15 +60,13 @@ const Chart_0000 = () => {
 
   useEffect(() => {
     // 동시에 가져오기
-    Promise.all([chart_0000(fetchApi), chartData_0000(fetchApi)])
-      .then((res) => {
-        console.log("res", res[1])
-        setData(res[0]);
-        setChartData(res[1]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    fetchApi.get('/api/users/contents/0000/chart', null, {})
+    .then((res) => {
+      setData(res.data.chart);
+      setChartData(res.data.chartData[0]);
+    }).catch((err) => {
+      common.apiVerify(err);
+    })
   }, [])
 
   const config = {

@@ -26,7 +26,7 @@ const Notice_0000 = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    fetchApi.get('/api/Main/Content/Sub0000/notice_0000', null, {})
+    fetchApi.get('/api/users/contents/0000/notice', null, {})
       .then((res) => {
         setData(res.data);
       }).catch((err) => {

@@ -46,7 +46,7 @@ export default function AuthLogin() {
             return Promise.reject(err);
         })
 
-        fetchApi.get('/api/Login/AuthLogin', {
+        fetchApi.get('/api/auth', {
                 params: {
                     transNo : inputRef.current.value,
                     userId : uAuth.userId
@@ -63,7 +63,7 @@ export default function AuthLogin() {
                     })
                 } else {
                     sessionStorage.setItem("token", uAuth.token);
-                    navigate("/sub_main");
+                    navigate("/main");
                 }
             })
             .catch((e) => {

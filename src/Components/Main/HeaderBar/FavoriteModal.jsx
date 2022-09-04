@@ -46,7 +46,7 @@ const FavoriteModal = ({setUserMenu}) => {
 
   useEffect(() => {
     if(open) {
-      axios.get('/api/Main/HeaderBar/getUserFav',{
+      axios.get('/api/users/headers/favorites',{
         headers : {
           x_auth : sessionStorage.getItem("token")
         }
@@ -111,7 +111,7 @@ const FavoriteModal = ({setUserMenu}) => {
       confirmButtonColor : '#1D79E7',
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.put('/api/Main/HeaderBar/setUserFav',{
+        axios.put('/api/users/headers/favorites',{
             right : right,
         },
         {

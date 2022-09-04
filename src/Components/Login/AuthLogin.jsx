@@ -69,7 +69,7 @@ export default function AuthLogin() {
             return Promise.reject(err);
         })
 
-        fetchApi.post('/api/Login/AuthLogin', {
+        fetchApi.post('/api/auth', {
             userId: inputRef.current[0].value,
             userPw: sha256enc(inputRef.current[1].value)
         })

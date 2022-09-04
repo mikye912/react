@@ -34,7 +34,7 @@ const Sales_0000 = () => {
   });
 
   useEffect(() => {
-    fetchApi.get('/api/Main/Content/Sub0000/sales_0000', null, {})
+    fetchApi.get('/api/users/contents/0000/sales', null, {})
       .then((res) => {
         setData(res.data[0]);
       }).catch((err) => {

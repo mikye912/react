@@ -7,7 +7,7 @@ import { contentSlice, selectTabSlice } from "Common/Redux/slice";
 import common from "Common/common";
 
 const getUserName = () => {
-  return axios.get('/api/Main/HeaderBar/getUserName', {
+  return axios.get('/api/users/headers/name', {
     headers : {
       x_auth : sessionStorage.getItem("token")
     }
@@ -20,7 +20,7 @@ const getUserName = () => {
 }
 
 const getUserFav = () => {
-  return axios.get('/api/Main/HeaderBar/getUserFav', {
+  return axios.get('/api/users/headers/favorites', {
     headers : {
       x_auth : sessionStorage.getItem("token")
     }

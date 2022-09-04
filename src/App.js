@@ -11,7 +11,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/sub_main/*" element={<Sub_main />} />
+          <Route path="/main/*" element={<Sub_main />} />
+          <Route path="/*" element={<Sub_main />} />
         </Routes>
       </Router>
     </Provider>

@@ -16,7 +16,7 @@ const SideBar = () => {
   const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
-    axios.get('/api/Main/Sidebar/getUserMenu', {
+    axios.get('/api/users/sidemenus', {
       headers : {
         x_auth : sessionStorage.getItem("token")
       }
