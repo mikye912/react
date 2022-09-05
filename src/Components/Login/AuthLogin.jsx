@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
 import { uAuthSlice } from 'Common/Redux/slice';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
-import { sha256enc } from 'Common/hashing';
+import hash from 'Common/hashing';
 
 export default function AuthLogin() {
     const [progress, setProgress] = useState(true);
@@ -71,7 +71,7 @@ export default function AuthLogin() {
 
         fetchApi.post('/api/auth', {
             userId: inputRef.current[0].value,
-            userPw: sha256enc(inputRef.current[1].value)
+            userPw: hash.sha256enc(inputRef.current[1].value)
         })
             .then((res) => {
                 let key = Object.keys(res.data)[0];
