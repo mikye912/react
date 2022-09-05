@@ -2,13 +2,16 @@ import React, { forwardRef, useImperativeHandle, useState, useRef, useCallback }
 import { AgGridReact } from 'ag-grid-react';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import common from 'Common/common';
+import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 import dayjs from "dayjs";
 require('Css/agGrid.scss');
 
 const getDetailData = (fetchApi, reqData) => {
     return fetchApi.get('/api/users/contents/0201/detail', {
-        params: reqData
+        params: {
+            reqData : hash.cryptoEnc(JSON.stringify(reqData))
+        }
     }, {})
         .then((res) => {
             return res;
@@ -23,7 +26,7 @@ const DetailData = forwardRef((props, ref) => {
     const [detailData, setDetailData] = useState([]);
 
     useImperativeHandle(ref, () => ({
-        testFn: (postData) => {
+        fetchApi: (postData) => {
             getDetailData(fetchApi, postData).then((res) => {
                 setDetailData(res.data);
             })
@@ -144,7 +147,7 @@ const DetailData = forwardRef((props, ref) => {
                     animateRows={true} 
                     getRowStyle={getRowStyle}
                     onFirstDataRendered={() => autoSizeAll(false)}
-                    // onGridReady={() => autoSizeAll(false)}
+                    suppressPropertyNamesCheck={true}
                     overlayNoRowsTemplate={
                         `<div
                             style={{

@@ -2,12 +2,15 @@ import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react'
 import { AgGridReact } from 'ag-grid-react';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import common from 'Common/common';
+import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 require('Css/agGrid.scss');
 
 const getTotalData = (fetchApi, reqData) => {
     return fetchApi.get('/api/users/contents/0201/total', {
-        params: reqData
+        params: {
+            reqData : hash.cryptoEnc(JSON.stringify(reqData))
+        }
     }, {})
         .then((res) => {
             return res;
@@ -22,7 +25,7 @@ const TotalData = forwardRef((props, ref) => {
     const [totalData, setTotalData] = useState([]);
 
     useImperativeHandle(ref, () => ({
-        testFn: (postData) => {
+        fetchApi: (postData) => {
             getTotalData(fetchApi, postData).then((res) => {
                 setTotalData(res.data);
             })
@@ -100,6 +103,7 @@ const TotalData = forwardRef((props, ref) => {
                 defaultColDef={defaultColDef}
                 animateRows={true} 
                 getRowStyle={getRowStyle}
+                suppressPropertyNamesCheck={true}
                 overlayNoRowsTemplate={
                     `<div
                             style={{

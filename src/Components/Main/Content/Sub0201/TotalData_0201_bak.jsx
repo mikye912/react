@@ -52,7 +52,7 @@ const TotalData = forwardRef((props, ref) => {
     const [totalData, setTotalData] = useState([]);
 
     useImperativeHandle(ref, () => ({
-        testFn: (postData) => {
+        fetchApi: (postData) => {
             getTotalData(fetchApi, postData).then((res) => {
                 setTotalData(res.data);
             })

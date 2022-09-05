@@ -53,7 +53,7 @@ const DetailData = forwardRef((props, ref) => {
     const [detailData, setDetailData] = useState([]);
 
     useImperativeHandle(ref, () => ({
-        testFn: (postData) => {
+        fetchApi: (postData) => {
             getDetailData(fetchApi, postData).then((res) => {
                 setDetailData(res.data);
             })

@@ -35,7 +35,7 @@ const Sub_0201 = ({ index, content }) => {
     let tid = [];
     let depcd = [];
 
-    /*기본*/
+    /*기본 검색*/
     for (let i = 0; i < inputRef.current.length; i++) {
       if (inputRef.current[i] && inputRef.current[i] !== undefined) {
         if (inputRef.current[i].value === '') {
@@ -51,7 +51,7 @@ const Sub_0201 = ({ index, content }) => {
         }
       }
     };
-    /*상세*/
+    /*확장 검색*/
     for (let j = 0; j < inputExRef.current.length; j++) {
       if (inputExRef.current[j] && inputExRef.current[j] !== undefined && inputExRef.current[j] !== null) {
         if (inputExRef.current[j].value === '') {
@@ -101,8 +101,8 @@ const Sub_0201 = ({ index, content }) => {
       })
       return;
     } else {
-      TotalDataRef.current.testFn(postData);
-      DetailDataRef.current.testFn(postData);
+      TotalDataRef.current.fetchApi(postData);
+      DetailDataRef.current.fetchApi(postData);
 
       postData = {};
     }
