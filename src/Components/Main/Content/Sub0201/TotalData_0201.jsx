@@ -32,8 +32,8 @@ const TotalData = forwardRef((props, ref) => {
     const defaultColDef = {
         resizable: true,
         sortable: true
-
     };
+    
     //더블클릭예제
     const onCellClicked = (params) => console.log(params.data.TERM_NM);
 
@@ -44,15 +44,11 @@ const TotalData = forwardRef((props, ref) => {
         return params.data.ROWNUM
     };
 
-    const currencyFormatter = (params) => {
-        return formatNumber(params.value);
-    };
-
-    const formatNumber = (number) => {
-        return Math.floor(number)
+    const numberFormatter = (params) => {
+        return Math.floor(params.value)
             .toString()
             .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-    }
+    };
 
     const getRowStyle = params => {
         if (params.data.TERM_NM === '합계') {
@@ -64,45 +60,45 @@ const TotalData = forwardRef((props, ref) => {
         }
     };
 
-    let columns = props.columns.filter(a => a.category === 'TOTAL');
+    let columnDefs = props.columns.filter(a => a.category === 'TOTAL');
 
     // *기본 컬럼 조건을 제외한 추가조건
-    columns = columns.map((obj) => {
+    columnDefs = columnDefs.map((obj) => {
         if (obj.field === 'ROWNUM') {
-            columns = {
+            columnDefs = {
                 ...obj,
                 colSpan: params => params.data.TERM_NM === '합계' ? 2 : 1,
                 valueGetter: totalValueGetter
             }
-            return columns;
-        } else if (obj.type === 'number') {
-            columns = {
+            return columnDefs;
+        } else if(obj.type === 'number') {
+            columnDefs = {
                 ...obj,
-                valueFormatter: currencyFormatter,
-                cellClass: 'number_cell'
+                valueFormatter: numberFormatter,
+                cellClass: `${obj.align}_cell`
             }
         } else {
-            columns = {
+            columnDefs = {
                 ...obj,
+                cellClass: `${obj.align}_cell`
             }
         }
-        return columns
+        return columnDefs
     })
 
     return (
-        <div className="ag-theme-custom"
+        <div className="ag-theme-custom total_grid"
             style={
                 props.visible === false ?
                     { height: 0, width: 0 } : { height: 200, width: '99%', position: 'relative' }}
         >
             {progress === false ? <CircularIndeterminate /> : null}
             <AgGridReact
-                ref={gridRef} // Ref for accessing Grid's API
-                rowData={totalData} // Row Data for Rows
-                columnDefs={columns} // Column Defs for Columns
+                ref={gridRef}
+                rowData={totalData} 
+                columnDefs={columnDefs} 
                 defaultColDef={defaultColDef}
-                animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-                rowSelection='multiple' // Options - allows click selection of rows
+                animateRows={true} 
                 getRowStyle={getRowStyle}
                 overlayNoRowsTemplate={
                     `<div

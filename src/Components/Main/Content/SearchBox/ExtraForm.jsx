@@ -81,7 +81,7 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
         return (
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input' style={{ padding: '8px 76px 8px 8px' }}>
-                    {data && data.SUBDATA.map((SUBDATA, index) => {
+                    {data.SUBDATA && data.SUBDATA.map((SUBDATA, index) => {
                         return (
                             <div key={index} style={{ display: 'inline' }}>
                                 <label className='check_label' >
@@ -104,8 +104,9 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
                     })}
                 </div>
             </SearhForm>
-        );
+        )
     } else if (data.TYPE === 'SELECT') {
+        try {
         return (
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input' autoComplete="off" style={{ padding: '10px' }}>
@@ -121,17 +122,22 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
                         <MenuItem value='all' className='select_item'>
                             :: 전체 ::
                         </MenuItem>
-                        {data && data.SUBDATA.map((SUBDATA, index) => {
+                        
+                        {data.SUBDATA && data.SUBDATA.map((SUBDATA, index) => {
                             return (
                                 <MenuItem key={index} value={SUBDATA.VALUE} className='select_item'>
                                     {SUBDATA.NAME}
                                 </MenuItem>
                             )
                         })}
+                         
                     </TextField>
                 </div>
             </SearhForm>
-        )
+            )
+        } catch (error) {
+            console.log({ error });
+        }
     } else if (data.TYPE === 'TEXT') {
         return (
             <SearhForm data={data} index={i}>

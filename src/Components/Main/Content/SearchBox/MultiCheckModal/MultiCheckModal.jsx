@@ -46,12 +46,11 @@ function ConfirmationDialogRaw(props) {
                 </DialogTitle>
                 <DialogContent dividers>
                     <div aria-label="ringtone" name="ringtone">
-                        {data && data.SUBDATA.map((SUBDATA, index) => {
+                        {data.SUBDATA && data.SUBDATA.map((SUBDATA, index) => {
                             return (
                                 <div key={index} className='multi_tid_check_form'>
                                     <div className='multi_check_label_title'>{SUBDATA.TITLE}</div>
                                     {SUBDATA && SUBDATA.TID.map((TIDARRAY, tidIndex) => {
-                                        console.log()
                                         return (
                                             <label className='multi_tid_check_label' key={tidIndex}>
                                                 <input
@@ -95,7 +94,7 @@ function ConfirmationDialogRaw(props) {
                 </DialogTitle>
                 <DialogContent dividers>
                     <div aria-label="ringtone" name="ringtone">
-                        {data && data.SUBDATA.map((SUBDATA, index) => {
+                        {data.SUBDATA && data.SUBDATA.map((SUBDATA, index) => {
                             return (
                                 <div key={index} className='multi_check_form'>
                                     <label className='multi_check_label' >

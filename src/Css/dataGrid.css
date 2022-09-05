@@ -29,6 +29,11 @@
     cursor: pointer;
 }
 
+.total_grid{
+    border-bottom: 1px solid #D2D2D2;
+    padding-bottom: 20px;
+}
+
 .excel_btn {
     width: 150px;
     height: 44px;
@@ -49,9 +54,7 @@
     justify-content: space-between;
     width: 99%;
     margin-top: 20px;
-    height: 61px;
-    border-top: 1px solid #D2D2D2;
-    padding: 20px 0px 20px 0px;
+    padding: 0px 0px 20px 0px;
 }
 
 .detail_title>div {

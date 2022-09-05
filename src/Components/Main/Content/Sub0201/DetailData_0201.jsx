@@ -1,8 +1,9 @@
-import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useState, useRef, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import common from 'Common/common';
 import useFetch from 'Common/axios';
+import dayjs from "dayjs";
 require('Css/agGrid.scss');
 
 const getDetailData = (fetchApi, reqData) => {
@@ -28,12 +29,13 @@ const DetailData = forwardRef((props, ref) => {
             })
         }
     }));
-    let columns = props.columns.filter(a => a.category === 'DETAIL');
+    let columnDefs = props.columns.filter(a => a.category === 'DETAIL');
+
     const defaultColDef = {
         resizable: true,
-        sortable: true
-
+        sortable: true,
     };
+
     //더블클릭예제
     const onCellClicked = (params) => console.log(params.data.TERM_NM);
 
@@ -44,15 +46,19 @@ const DetailData = forwardRef((props, ref) => {
         return params.data.ROWNUM
     };
 
-    const currencyFormatter = (params) => {
-        return formatNumber(params.value);
-    };
-
-    const formatNumber = (number) => {
-        return Math.floor(number)
+    const numberFormatter = (params) => {
+        return Math.floor(params.value)
             .toString()
             .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-    }
+    };
+
+    const dateFormatter = (params) => {
+        return dayjs(params.value).format('YYYY-MM-DD');
+    };
+
+    const timeFormatter = (params) => {
+        return dayjs(params.value).format('HH:mm:ss');
+    };
 
     const getRowStyle = params => {
         if (params.data.TERM_NM === '합계') {
@@ -63,21 +69,54 @@ const DetailData = forwardRef((props, ref) => {
             };
         }
     };
+    //field, 
+    const onBtSaveOrderAndVisibilityState = useCallback(() => {
+        const allState = gridRef.current.columnApi.getColumnState();
+        const orderAndVisibilityState = allState.map((state) => ({
+            field: state.colId,
+            visible: state.hide,
+        }));
+        window.orderAndVisibilityState = orderAndVisibilityState;
+    }, []);
+
+    const autoSizeAll = useCallback((skipHeader) => {
+        const allColumnIds = [];
+        gridRef.current.columnApi.getColumns().forEach((column) => {
+            {
+                column.colDef.width === 'auto' &&
+                    allColumnIds.push(column.getId());
+            }
+        });
+        gridRef.current.columnApi.autoSizeColumn(allColumnIds, skipHeader);
+    }, []);
 
     // *기본 컬럼 조건을 제외한 추가조건
-    columns = columns.map((obj) => {
+    columnDefs = columnDefs.map((obj) => {
         if (obj.type === 'number') {
-            columns = {
+            columnDefs = {
                 ...obj,
-                valueFormatter: currencyFormatter,
-                cellClass: 'number_cell'
+                valueFormatter: numberFormatter,
+                cellClass: `${obj.align}_cell`
+            }
+        } else if (obj.type === 'date') { 
+            columnDefs = {
+                ...obj,
+                valueFormatter: dateFormatter,
+                cellClass: `${obj.align}_cell`
+            }
+        } else if (obj.type === 'time') { 
+            columnDefs = {
+                ...obj,
+                valueFormatter: timeFormatter,
+                cellClass: `${obj.align}_cell`
             }
         } else {
-            columns = {
+            columnDefs = {
                 ...obj,
+                cellClass: `${obj.align}_cell`
             }
         }
-        return columns
+        return columnDefs
     })
 
     return (
@@ -87,6 +126,9 @@ const DetailData = forwardRef((props, ref) => {
                     <img alt='' />
                     <div>상세</div>
                 </div>
+                {/* <button onClick={onBtSaveOrderAndVisibilityState}>
+                    순서저장
+                </button> */}
             </div>
             <div className="ag-theme-custom"
                 style={
@@ -95,21 +137,21 @@ const DetailData = forwardRef((props, ref) => {
                         { height: '355px', width: '99%', position: 'relative' }}>
                 {progress === false ? <CircularIndeterminate /> : null}
                 <AgGridReact
-                    ref={gridRef} // Ref for accessing Grid's API
-                    rowData={detailData} // Row Data for Rows
-                    columnDefs={columns} // Column Defs for Columns
+                    ref={gridRef}
+                    rowData={detailData} 
+                    columnDefs={columnDefs} 
                     defaultColDef={defaultColDef}
-                    animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-                    rowSelection='multiple' // Options - allows click selection of rows
+                    animateRows={true} 
                     getRowStyle={getRowStyle}
+                    onFirstDataRendered={() => autoSizeAll(false)}
+                    // onGridReady={() => autoSizeAll(false)}
                     overlayNoRowsTemplate={
                         `<div
                             style={{
                         height: '100%',
                         width: '100%',
                         alignItems: "center",
-                        justifyContent: "center",
-                        textAlign: 'center',
+                        justifyContent: "center",wjd
                         verticalAlgin:'center'
                     }}>
                         조회된 데이터가 없습니다.
