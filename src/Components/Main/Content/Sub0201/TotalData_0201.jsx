@@ -4,7 +4,8 @@ import CircularIndeterminate from "Components/Main/Content/Progress/CircularInde
 import common from 'Common/common';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
-require('Css/agGrid.scss');
+import 'Css/agGrid.scss';
+
 
 const getTotalData = (fetchApi, reqData) => {
     return fetchApi.get('/api/users/contents/0201/total', {
