@@ -5,7 +5,7 @@ import common from 'Common/common';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 import dayjs from "dayjs";
-require('Css/agGrid.scss');
+import 'Css/agGrid.scss';
 
 const getDetailData = (fetchApi, reqData) => {
     return fetchApi.get('/api/users/contents/0201/detail', {
