@@ -28,7 +28,6 @@
     "redux": "^4.2.0",
     "sass": "^1.54.8",
     "sha256": "^0.2.0",
-    "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.18",
     "sweetalert2-react-content": "^5.0.0",
     "use-count-up": "^3.0.1",
