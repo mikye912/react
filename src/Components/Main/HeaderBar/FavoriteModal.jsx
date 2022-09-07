@@ -1,35 +1,25 @@
 import { memo, useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import axios from 'axios';
 import { motion } from "framer-motion";
-import axios  from 'axios';
-import Modal from '@mui/material/Modal';
-import Grid from '@mui/material/Grid';
-import List from '@mui/material/List';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Checkbox from '@mui/material/Checkbox';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+import { Modal, Grid, List, Card, CardHeader, ListItem, ListItemText, ListItemIcon, Checkbox, Button, Divider } from '@mui/material';
 import { FaTimes } from "react-icons/fa";
 import Swal from 'sweetalert2';
-import { useSelector } from "react-redux";
 import common from "Common/common";
 
 function not(a, b) {
-    return a.filter((value) => b.indexOf(value) === -1);
-  }
-  
-  function intersection(a, b) {
-    return a.filter((value) => b.indexOf(value) !== -1);
-  }
-  
-  function union(a, b) {
-    return [...a, ...not(b, a)];
-  }
+  return a.filter((value) => b.indexOf(value) === -1);
+}
 
-const FavoriteModal = ({setUserMenu}) => {
+function intersection(a, b) {
+  return a.filter((value) => b.indexOf(value) !== -1);
+}
+
+function union(a, b) {
+  return [...a, ...not(b, a)];
+}
+
+const FavoriteModal = ({ setUserMenu }) => {
   console.log("favorite 렌더링")
 
   const isSider = useSelector((state) => state.sidebarState)
@@ -40,19 +30,18 @@ const FavoriteModal = ({setUserMenu}) => {
   const [checked, setChecked] = useState([]);
   const [left, setLeft] = useState([]);
   const [right, setRight] = useState([]);
-  console.log('right',right)
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
 
   useEffect(() => {
-    if(open) {
-      axios.get('/api/users/headers/favorites',{
-        headers : {
-          x_auth : sessionStorage.getItem("token")
+    if (open) {
+      axios.get('/api/users/headers/favorites', {
+        headers: {
+          x_auth: sessionStorage.getItem("token")
         }
       }).then((res) => {
         const leftArr = res.data.filter(obj => obj.USE_YN === 'N');
-        const rightArr = res.data.filter(obj => obj.USE_YN === 'Y').sort((a, b)=>{
+        const rightArr = res.data.filter(obj => obj.USE_YN === 'Y').sort((a, b) => {
           return a.SORT2 - b.SORT2
         });
         setLeft(leftArr);
@@ -61,8 +50,8 @@ const FavoriteModal = ({setUserMenu}) => {
         common.apiVerify(err);
       })
     }
-  },[open])
-  
+  }, [open])
+
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -94,7 +83,7 @@ const FavoriteModal = ({setUserMenu}) => {
 
   const handleCheckedLeft = () => {
     // setLeft 하고 left의 SORT를 가지고 오름차순으로 정렬
-    setLeft(left.concat(rightChecked).sort((a, b)=>{
+    setLeft(left.concat(rightChecked).sort((a, b) => {
       return a.SORT1 - b.SORT1
     }));
     setRight(not(right, rightChecked));
@@ -108,35 +97,35 @@ const FavoriteModal = ({setUserMenu}) => {
       showCancelButton: true,
       cancelButtonText: '취소',
       confirmButtonText: '저장',
-      confirmButtonColor : '#1D79E7',
+      confirmButtonColor: '#1D79E7',
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.put('/api/users/headers/favorites',{
-            right : right,
+        axios.put('/api/users/headers/favorites', {
+          right: right,
         },
-        {
-          headers : {
-            x_auth : sessionStorage.getItem("token")
-          },
-        }).then((res) => {
-          Swal.fire({
-            icon: 'success',
-            title: '저장이 완료되었습니다.',
-            confirmButtonColor : '#1D79E7',
-            confirmButtonText: '확인'
-          }).then(()=>{
-            setOpen(false);
-            setUserMenu(right);
+          {
+            headers: {
+              x_auth: sessionStorage.getItem("token")
+            },
+          }).then((res) => {
+            Swal.fire({
+              icon: 'success',
+              title: '저장이 완료되었습니다.',
+              confirmButtonColor: '#1D79E7',
+              confirmButtonText: '확인'
+            }).then(() => {
+              setOpen(false);
+              setUserMenu(right);
+            })
+          }).catch((err) => {
+            common.apiVerify(err);
           })
-        }).catch((err) => {
-          common.apiVerify(err);
-        })
       }
     })
   }
 
   const customList = (title, items) => (
-    
+
     <Card>
       <CardHeader
         sx={{ px: 2, py: 1 }}
@@ -168,7 +157,7 @@ const FavoriteModal = ({setUserMenu}) => {
         component="div"
         role="list"
       >
-        { items && items.map((value, index) => {
+        {items && items.map((value, index) => {
           const labelId = `transfer-list-all-item-${value.PROGRAM_SEQ}-label`;
 
           return (
@@ -190,7 +179,7 @@ const FavoriteModal = ({setUserMenu}) => {
               </ListItemIcon>
               {/* <ListItemText id={labelId} primary={`List item ${value + 1}`} /> */}
               <ListItemText id={labelId} primary={`${value.PROGRAM_NAME}`} />
-              
+
             </ListItem>
           );
         })}
@@ -201,64 +190,64 @@ const FavoriteModal = ({setUserMenu}) => {
 
   return (
     <div>
-    <img className='btn_set_favorite' onClick={handleOpen} alt={``}/>
+      <img className='btn_set_favorite' onClick={handleOpen} alt={``} />
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-          <motion.div 
-            className="modal_box"
-            style={{
-              left : isSider ? '210px' : '80px',
-            }}
-            animate={{
-              left: isSider ? '210px' : '80px',
-              transition: {
-                duration: 0.5,
-              },
-            }}
-          >
-          <FaTimes onClick={handleClose} className="modal_close"/>
-            <div id="modal-modal-title" className="modal_title">
-              즐겨찾기설정
-            </div>
-            <div id="modal-modal-description" sx={{ mt: 2 }}>
-              <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <motion.div
+          className="modal_box"
+          style={{
+            left: isSider ? '210px' : '80px',
+          }}
+          animate={{
+            left: isSider ? '210px' : '80px',
+            transition: {
+              duration: 0.5,
+            },
+          }}
+        >
+          <FaTimes onClick={handleClose} className="modal_close" />
+          <div id="modal-modal-title" className="modal_title">
+            즐겨찾기설정
+          </div>
+          <div id="modal-modal-description" sx={{ mt: 2 }}>
+            <Grid container spacing={2} justifyContent="center" alignItems="center">
               <Grid item>{customList('선택', left)}</Grid>
               <Grid item>
-                  <Grid container direction="column" alignItems="center">
+                <Grid container direction="column" alignItems="center">
                   <Button
-                      sx={{ my: 0.5 }}
-                      variant="outlined"
-                      size="small"
-                      onClick={handleCheckedRight}
-                      disabled={leftChecked.length === 0}
-                      aria-label="move selected right"
+                    sx={{ my: 0.5 }}
+                    variant="outlined"
+                    size="small"
+                    onClick={handleCheckedRight}
+                    disabled={leftChecked.length === 0}
+                    aria-label="move selected right"
                   >
-                      &gt;
+                    &gt;
                   </Button>
                   <Button
-                      sx={{ my: 0.5 }}
-                      variant="outlined"
-                      size="small"
-                      onClick={handleCheckedLeft}
-                      disabled={rightChecked.length === 0}
-                      aria-label="move selected left"
+                    sx={{ my: 0.5 }}
+                    variant="outlined"
+                    size="small"
+                    onClick={handleCheckedLeft}
+                    disabled={rightChecked.length === 0}
+                    aria-label="move selected left"
                   >
-                      &lt;
+                    &lt;
                   </Button>
-                  </Grid>
+                </Grid>
               </Grid>
               <Grid item>{customList('선택', right)}</Grid>
-              </Grid>
-              
-            </div>
-            <div className="fav_btn">
-            <Button variant="contained"  onClick={ handleOnClick }> 저장 </Button>
-            </div>
-          </motion.div>
+            </Grid>
+
+          </div>
+          <div className="fav_btn">
+            <Button variant="contained" onClick={handleOnClick}> 저장 </Button>
+          </div>
+        </motion.div>
       </Modal>
     </div>
   );

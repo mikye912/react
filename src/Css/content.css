@@ -41,3 +41,87 @@
     background-color: #FFFFFF;
     border-radius: 5px;
 }
+
+.total_form {
+    display: flex;
+    justify-content: space-between;
+    margin: 32px 0px 20px 0px;
+}
+
+.total_title>div {
+    width: 31px;
+    height: 21px;
+    text-align: left;
+    font: normal normal bold 18px/21px Pretendard;
+    color: #0A87D7;
+    display: inline-block;
+    margin: 0px 15px 0px 0px;
+}
+
+.total_title>img {
+    content: url(Resource/Images/icon_title.png);
+    width: 20px;
+    height: 10px;
+    margin: 0px 12px 0px 0px;
+}
+
+.total_btn {
+    width: 20px;
+    height: 20px;
+    vertical-align: text-bottom;
+    color: #0A87D7;
+    cursor: pointer;
+}
+
+.excel_btn {
+    width: 150px;
+    height: 44px;
+    background: transparent linear-gradient(180deg, #61DDBD 0%, #4BCBAB 35%, #36BA9B 100%) 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    margin-right: 31px;
+
+    text-align: center;
+    font: normal normal bold 18px/21px Pretendard;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+}
+
+.total_grid {
+    border-bottom: 1px solid #D2D2D2;
+    padding-bottom: 20px;
+}
+
+.detail_form {
+    display: flex;
+    justify-content: space-between;
+    width: 99%;
+    margin-top: 20px;
+    padding: 0px 0px 20px 0px;
+}
+
+.detail_title>div {
+    width: 31px;
+    height: 21px;
+    text-align: left;
+    font: normal normal bold 18px/21px Pretendard;
+    color: #0A87D7;
+    display: inline-block;
+}
+
+.detail_title>img {
+    content: url(Resource/Images/icon_title.png);
+    width: 20px;
+    height: 10px;
+    margin: 0px 12px 0px 0px;
+}
+
+.detail_column_sort {
+    width: 70px;
+    height: 21px;
+    font: normal normal bold 18px/21px Pretendard;
+    color: #0A87D7;
+    cursor: pointer;
+}
+

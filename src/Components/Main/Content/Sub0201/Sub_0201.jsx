@@ -9,7 +9,6 @@ import Extra from 'Components/Main/Content/SearchBox/Extra';
 import TotalData from 'Components/Main/Content/Sub0201/TotalData_0201';
 import DetailData from 'Components/Main/Content/Sub0201/DetailData_0201';
 import 'Css/searchBox.css';
-import 'Css/dataGrid.css';
 
 const Sub_0201 = ({ index, content }) => {
   const TotalDataRef = useRef();

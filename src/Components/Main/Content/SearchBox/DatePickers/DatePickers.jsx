@@ -4,7 +4,7 @@ import { getYear, getMonth } from "date-fns";
 import { ko } from 'date-fns/esm/locale';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import 'Css/react_datepicker.css';
+import 'Css/datepicker.css';
 
 const DatePickers = ({ index, inputRef }) => {
     const [startDate, setStartDate] = useState(new Date());

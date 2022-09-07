@@ -6,6 +6,9 @@ import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 import dayjs from "dayjs";
 import 'Css/agGrid.scss';
+import ModalPortal from "./Modal/ColumnModifyModal";
+import ColumnModify from './ColumnModify'
+import 'Css/modal.css';
 
 const getDetailData = (fetchApi, reqData) => {
     return fetchApi.get('/api/users/contents/0201/detail', {
@@ -21,6 +24,15 @@ const getDetailData = (fetchApi, reqData) => {
 }
 
 const DetailData = forwardRef((props, ref) => {
+    const [modalOpened, setModalOpened] = useState(false);
+    const handleOpen = () => {
+        setModalOpened(true);
+    };
+
+    const handleClose = () => {
+        setModalOpened(false);
+    };
+
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [progress, fetchApi] = useFetch();
     const [detailData, setDetailData] = useState([]);
@@ -49,39 +61,24 @@ const DetailData = forwardRef((props, ref) => {
         return params.data.ROWNUM
     };
 
-    const numberFormatter = (params) => {
-        return Math.floor(params.value)
-            .toString()
-            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-    };
-
-    const dateFormatter = (params) => {
-        return dayjs(params.value).format('YYYY-MM-DD');
-    };
-
-    const timeFormatter = (params) => {
-        return dayjs(params.value).format('HH:mm:ss');
-    };
-
-    const getRowStyle = params => {
-        if (params.data.TERM_NM === '합계') {
-            return {
-                background: '#DAEFFD 0% 0% no-repeat padding-box',
-                font: 'normal normal bold 14px/16px Pretendard',
-                color: '#0885D7'
-            };
+    const dataFormatter = (params) => {
+        if (params.colDef.type === 'number') {
+            return Math.floor(params.value)
+                .toString()
+                .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        } else if (params.colDef.type === 'date' && params.value) {
+            return dayjs(params.value).format('YYYY-MM-DD');
+        } else if (params.colDef.type === 'time') {
+            let time = params.value;
+            const hh = time.substr(0, 2);
+            const mm = time.substr(2, 2);
+            const ss = time.substr(4, 2);
+            return hh + ':' + mm + ':' + ss;
         }
     };
-    //field, 
-    const onBtSaveOrderAndVisibilityState = useCallback(() => {
-        const allState = gridRef.current.columnApi.getColumnState();
-        const orderAndVisibilityState = allState.map((state) => ({
-            field: state.colId,
-            visible: state.hide,
-        }));
-        window.orderAndVisibilityState = orderAndVisibilityState;
-    }, []);
 
+    // * db에서 가져오는 컬럼 width값이 auto일 경우만 자동맞춤으로 사이즈 조절
+    // * skipHeader가 true면 헤더의 텍스트 길이를 무시하고 사이즈 조절
     const autoSizeAll = useCallback((skipHeader) => {
         const allColumnIds = [];
         gridRef.current.columnApi.getColumns().forEach((column) => {
@@ -98,19 +95,19 @@ const DetailData = forwardRef((props, ref) => {
         if (obj.type === 'number') {
             columnDefs = {
                 ...obj,
-                valueFormatter: numberFormatter,
+                valueFormatter: dataFormatter,
                 cellClass: `${obj.align}_cell`
             }
         } else if (obj.type === 'date') { 
             columnDefs = {
                 ...obj,
-                valueFormatter: dateFormatter,
+                valueFormatter: dataFormatter,
                 cellClass: `${obj.align}_cell`
             }
         } else if (obj.type === 'time') { 
             columnDefs = {
                 ...obj,
-                valueFormatter: timeFormatter,
+                valueFormatter: dataFormatter,
                 cellClass: `${obj.align}_cell`
             }
         } else {
@@ -129,15 +126,20 @@ const DetailData = forwardRef((props, ref) => {
                     <img alt='' />
                     <div>상세</div>
                 </div>
-                {/* <button onClick={onBtSaveOrderAndVisibilityState}>
-                    순서저장
-                </button> */}
+                <div className='detail_column_sort' onClick={handleOpen}>
+                    컬럼수정
+                </div>
+                {modalOpened && (
+                    <ModalPortal closePortal={handleClose}>
+                        <ColumnModify column={columnDefs} />
+                    </ModalPortal>
+                )}
             </div>
             <div className="ag-theme-custom"
                 style={
                     props.visible === false ?
-                        { height: '555px', width: '99%', position: 'relative' } :
-                        { height: '355px', width: '99%', position: 'relative' }}>
+                        { height: 'calc(100vh - 400px)', width: '99%', position: 'relative' } :
+                        { height: 'calc(100vh - 600px)', width: '99%', position: 'relative' }}>
                 {progress === false ? <CircularIndeterminate /> : null}
                 <AgGridReact
                     ref={gridRef}
@@ -145,7 +147,6 @@ const DetailData = forwardRef((props, ref) => {
                     columnDefs={columnDefs} 
                     defaultColDef={defaultColDef}
                     animateRows={true} 
-                    getRowStyle={getRowStyle}
                     onFirstDataRendered={() => autoSizeAll(false)}
                     suppressPropertyNamesCheck={true}
                     overlayNoRowsTemplate={
