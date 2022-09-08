@@ -1,13 +1,9 @@
 import React, { Component, useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
-
-// fake data generator
-const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    content: `item ${k}`
-  }));
+import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
+import useFetch from 'Common/axios';
+import common from 'Common/common';
+import Swal from 'sweetalert2';
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -21,15 +17,13 @@ const reorder = (list, startIndex, endIndex) => {
 const grid = 4;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
   userSelect: "none",
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
   width: '280px',
   textAlign:'center',
 
-  // change background colour if dragging
-  // background: isDragging ? "lightgreen" : "grey",
+  // 드래그 할 때 리스트의 배경색 변경
   background: isDragging ? "#D2D2D2" : "#FFFFFF",
   border: '1px solid #EEF0F1',
 
@@ -40,16 +34,19 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "#D2D2D2" : "#FFFFFF",
   color: 'black',
-  border:'1px solid #EEF0F1'
+  border: '1px solid #EEF0F1',
 });
 
 const queryAttr = "data-rbd-drag-handle-draggable-id";
 
 const ColumnModify = ({ column }) => {
+  // react-beautiful-dnd development 경고 사용 안함
+  window['__react-beautiful-dnd-disable-dev-warnings'] = true;
   const [placeholderProps, setPlaceholderProps] = useState({});
-  // const [items, setItems] = useState(getItems(10));
+  const [progress, fetchApi] = useFetch();
   const [items, setItems] = useState(column);
 
+  //드래그 완료
   const onDragEnd = result => {
     // dropped outside the list
     if (!result.destination) {
@@ -59,6 +56,7 @@ const ColumnModify = ({ column }) => {
     setItems(items => reorder(items, result.source.index, result.destination.index));
   };
 
+  // 리스트 드래그중
   const onDragUpdate = update => {
     if (!update.destination) {
       return;
@@ -90,17 +88,52 @@ const ColumnModify = ({ column }) => {
     });
   };
 
+  const colnmnOrderSave = () => {
+    Swal.fire({
+      title: '저장 하시겠습니까?',
+      showCancelButton: true,
+      cancelButtonText: '취소',
+      confirmButtonText: '저장',
+      confirmButtonColor: '#1D79E7',
+      width: '400px'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetchApi.put('', {
+          // params: {
+    //         headerName : items.headerName,
+    //         field : items.field,
+    //         // sort : result.destination.index,
+    //     }
+          }, {}).then((res) => {
+            Swal.fire({
+              icon: 'success',
+              title: '저장이 완료되었습니다.',
+              confirmButtonColor: '#1D79E7',
+              confirmButtonText: '확인'
+            }).then(() => {
+
+            })
+          }).catch((err) => {
+            common.apiVerify(err);
+          })
+      }
+    })
+  } 
+
   return (
+    <>
+      <div className="modal_content" style={{position:'relative'}}>
+        {progress === false ? <CircularIndeterminate /> : null}
       <DragDropContext onDragEnd={onDragEnd} onDragUpdate={onDragUpdate}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <div
               {...provided.droppableProps}
-              ref={provided.innerRef}
+                ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              {items.map((column, index) => (
-                <Draggable key={column.sort} draggableId={column.field} index={index}>
+              {items && items.map((column, index) => (
+                <Draggable key={column.sort} draggableId={column.headerName} index={index}>
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
@@ -116,7 +149,6 @@ const ColumnModify = ({ column }) => {
                   )}
                 </Draggable>
               ))}
-
               {provided.placeholder}
               {/* <CustomPlaceholder snapshot={snapshot} /> */}
               <div style={{
@@ -130,6 +162,11 @@ const ColumnModify = ({ column }) => {
           )}
         </Droppable>
       </DragDropContext>
+      </div>
+      <div className="modal_content_footer">
+          <button variant="contained" className="modal_content_button" onClick={colnmnOrderSave}> 저장 </button>
+      </div>
+      </>
   )
 };
 

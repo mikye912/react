@@ -24,6 +24,11 @@ const getDetailData = (fetchApi, reqData) => {
 }
 
 const DetailData = forwardRef((props, ref) => {
+    const gridRef = useRef(); // Optional - for accessing Grid's API
+    const [progress, fetchApi] = useFetch();
+    const [detailData, setDetailData] = useState([]);
+
+    //드래그앤드롭 모달창관련
     const [modalOpened, setModalOpened] = useState(false);
     const handleOpen = () => {
         setModalOpened(true);
@@ -32,10 +37,6 @@ const DetailData = forwardRef((props, ref) => {
     const handleClose = () => {
         setModalOpened(false);
     };
-
-    const gridRef = useRef(); // Optional - for accessing Grid's API
-    const [progress, fetchApi] = useFetch();
-    const [detailData, setDetailData] = useState([]);
 
     useImperativeHandle(ref, () => ({
         fetchApi: (postData) => {
