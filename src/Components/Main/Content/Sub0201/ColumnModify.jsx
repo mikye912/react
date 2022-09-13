@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+// import Switch from '@mui/material/Switch';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import useFetch from 'Common/axios';
 import common from 'Common/common';
@@ -120,6 +121,9 @@ const ColumnModify = ({ column }) => {
     })
   } 
 
+  // const label = { inputProps: { 'aria-label': 'Switch demo' } };
+  // const [checked, setChecked] = useState(false);
+
   return (
     <>
       <div className="modal_content" style={{position:'relative'}}>
@@ -145,11 +149,13 @@ const ColumnModify = ({ column }) => {
                       )}
                     >
                       {column.headerName}
+                      {/* <Switch {...label} checked={column.visible === 'N' ? setChecked(!checked) : setChecked(checked)} /> */}
                     </div>
                   )}
                 </Draggable>
               ))}
-              {provided.placeholder}
+                {provided.placeholder}
+
               {/* <CustomPlaceholder snapshot={snapshot} /> */}
               <div style={{
                 position: "absolute",
@@ -158,7 +164,7 @@ const ColumnModify = ({ column }) => {
                 height: placeholderProps.clientHeight,
                 width: placeholderProps.clientWidth
               }} />
-            </div>
+              </div>
           )}
         </Droppable>
       </DragDropContext>
