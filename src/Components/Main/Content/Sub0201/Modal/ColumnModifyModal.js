@@ -28,9 +28,8 @@ const ModalPortal = ({ children, closePortal }) => {
             </div>
             <FaTimes className="modal_content_close" onClick={closePortal} />
           </div>
-          <div className="modal_content_main">{children}</div>
-          <div className="modal_content_footer">
-            <button variant="contained" className="modal_content_button" onClick={closePortal}> 저장 </button>
+          <div className="modal_content_main">
+            {children}
           </div>
         </div>
       </div>,
