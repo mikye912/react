@@ -94,10 +94,6 @@
     margin-top: 20px;
 }
 
-.swal2-container {
-    z-index: 1300;
-}
-
 .modal_box {
     position: absolute;
     top: 100px;
