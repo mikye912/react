@@ -188,10 +188,6 @@
     height: 33px;
 }
 
-.swal2-container {
-    z-index: 1300;
-}
-
 /* 자동완성시 배경색 변경되는거 없앰 */
 .index_sign_input>input:-webkit-autofill,
 .index_sign_input>input:-webkit-autofill:hover,
