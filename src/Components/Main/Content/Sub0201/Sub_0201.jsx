@@ -11,17 +11,25 @@ import DetailData from 'Components/Main/Content/Sub0201/DetailData_0201';
 import 'Css/searchBox.css';
 
 const Sub_0201 = ({ index, content }) => {
+  /*자식창에 부모 검색 조건을 보내기 위한Ref*/
   const TotalDataRef = useRef();
   const DetailDataRef = useRef();
+
+  /*검색조건 담는 Ref*/
   const inputRef = useRef([]);
   const inputExRef = useRef([]);
   const multiCheckRef = useRef([]);
+
+  /*상세검색조건확장축소*/
   const [visibleSearch, setVisibleSearch] = useState(false);
+  /*집계확장축소*/
   const [visibleTotal, setVisibleTotal] = useState(true);
+
+  const page = content.substr(-4);
+
   const selTab = useSelector((state) => state.selectTab);
 
   const uSearch = useSelector((state) => state.uSearch);
-  const page = content.substr(-4);
   const data = uSearch.filter(a => a[page])[0][page];
 
   const uDomain = useSelector((state) => state.uDomain);
@@ -132,7 +140,7 @@ const Sub_0201 = ({ index, content }) => {
         </button>
       </div>
       <TotalData ref={TotalDataRef} visible={visibleTotal} columns={columns} />
-      <DetailData ref={DetailDataRef} visible={visibleTotal} columns={columns} />
+      <DetailData ref={DetailDataRef} visible={visibleTotal} columns={columns} page={page} />
     </Box>
   )
 };

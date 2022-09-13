@@ -45,11 +45,13 @@ const DetailData = forwardRef((props, ref) => {
             })
         }
     }));
-    let columnDefs = props.columns.filter(a => a.category === 'DETAIL');
+
+    let columnDefs = props.columns.filter(a => a.category === 'DETAIL' && a.visiable === 'Y');
 
     const defaultColDef = {
         resizable: true,
         sortable: true,
+        suppressMovable: true, /*컬럼이동 방지*/
     };
 
     //더블클릭예제
@@ -132,7 +134,10 @@ const DetailData = forwardRef((props, ref) => {
                 </div>
                 {modalOpened && (
                     <ModalPortal closePortal={handleClose}>
-                        <ColumnModify column={columnDefs} />
+                        <ColumnModify
+                            column={props.columns.filter(a => a.category === 'DETAIL')}
+                            page={props.page}
+                            closePortal={handleClose} />
                     </ModalPortal>
                 )}
             </div>

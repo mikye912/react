@@ -16,7 +16,9 @@ const Content = () => {
   //console.log("contents", contents);
 
   useEffect(() => {
-    axios.get('/api/users/contents/items', {
+    /*검색조건 url `/api/users/contents/${page}/searchparams`*/
+    /*컬럼 url `/api/users/contents/${page}/columns`*/
+    axios.get(`/api/users/contents/items`, {
       headers : {
         x_auth : sessionStorage.getItem("token")
       }
