@@ -45,11 +45,33 @@ const ColumnModify = ({ column, page, closePortal }) => {
   window['__react-beautiful-dnd-disable-dev-warnings'] = true;
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [progress, fetchApi] = useFetch();
-  // const [items, setItems] = useState([]);
-  // useEffect(() => {
-  //   setItems(column);
-  // }, [])
-  const [items, setItems] = useState(column);
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    setItems(column);
+  }, [])
+  // const [items, setItems] = useState(column);
+
+  const [checkedSwitch, setCheckedSwitch] = useState();
+  const checkedColumn = {};
+
+  useEffect(() => {
+    items.forEach((el) => {
+      el.visiable === 'Y'
+        ? checkedColumn[el.headerName] = 'Y'
+        : checkedColumn[el.headerName] = 'N'
+    });
+    setCheckedSwitch(checkedColumn);
+  }, [items])
+
+  const changeHandler = (checked, name) => {
+    if (checked) {
+      setCheckedSwitch({ ...checkedSwitch, [name]: 'Y' });
+    } else if (!checked) {
+      setCheckedSwitch({ ...checkedSwitch, [name]: 'N' });
+    }
+  };
+
+  console.log(checkedSwitch)
 
   //드래그 완료
   const onDragEnd = result => {
@@ -107,7 +129,8 @@ const ColumnModify = ({ column, page, closePortal }) => {
           PAGE: page,
           CATEGORY: 'DETAIL',
           ITEMS: items,
-        }, {}).then((res) => {
+          visiable: checkedSwitch
+        }, {}).then(() => {
           Swal.fire({
             icon: 'success',
             title: '저장이 완료되었습니다.',
@@ -122,29 +145,6 @@ const ColumnModify = ({ column, page, closePortal }) => {
       }
     })
   }
-
-  const [checkedToggle, setCheckedToggle] = useState([]);
-
-  const changeHandler = (checked, value, name) => {
-    if (checked) {
-      setCheckedToggle([...checkedToggle, name]);
-    } else {
-      setCheckedToggle(checkedToggle.filter(button => button !== name));
-    }
-
-    /*
-    Cannot assign to read only property
-    for (let i = 0; i < items.length; i++) {
-      if (items[i]['headerName'] === name) {
-        if (!checked && value === 'Y') {
-          items[i]['visiable'] = 'N'
-        }
-      }
-    }
-    */
-  };
-
-
 
   return (
     <>
@@ -174,10 +174,9 @@ const ColumnModify = ({ column, page, closePortal }) => {
                         <div className="switch_case">
                           <Switch
                             name={column.headerName}
-                            value={column.visiable}
-                            checked={column.visiable === 'Y' ? true : false}
+                            checked={checkedSwitch[column.headerName]==='Y' ? true : false}
                             onChange={e => {
-                              changeHandler(e.currentTarget.checked, e.currentTarget.value, e.currentTarget.name);
+                              changeHandler(e.currentTarget.checked, e.currentTarget.name);
                             }}
                             inputProps={{ 'aria-label': 'controlled' }}
                           />
@@ -187,7 +186,6 @@ const ColumnModify = ({ column, page, closePortal }) => {
                   </Draggable>
                 ))}
                 {provided.placeholder}
-
                 {/* <CustomPlaceholder snapshot={snapshot} /> */}
                 <div style={{
                   position: "absolute",
