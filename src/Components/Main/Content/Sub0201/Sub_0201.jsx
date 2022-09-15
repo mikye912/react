@@ -30,6 +30,9 @@ const Sub_0201 = ({ index, content }) => {
   const uSearch = useSelector((state) => state.uSearch);
   const data = uSearch.filter(a => a[page])[0][page];
 
+  const uDomain = useSelector((state) => state.uDomain);
+  const columns = uDomain.filter(a => a.page === page)
+
   // const [searchParams, setSearchParams] = useState();
   // useEffect(() => {
   //   /*컬럼 url `/api/users/contents/${page}/columns`*/
@@ -45,8 +48,7 @@ const Sub_0201 = ({ index, content }) => {
   //     })
   // }, [])
 
-  const uDomain = useSelector((state) => state.uDomain);
-  const columns = uDomain.filter(a => a.page === page)
+  
 
   let postData = {};
   const handleSubmit = () => {

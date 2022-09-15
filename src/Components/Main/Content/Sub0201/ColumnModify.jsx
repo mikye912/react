@@ -40,38 +40,26 @@ const getListStyle = isDraggingOver => ({
 
 const queryAttr = "data-rbd-drag-handle-draggable-id";
 
-const ColumnModify = ({ column, page, closePortal }) => {
+const ColumnModify = ({ column, page, setColumnlist, closePortal }) => {
   // react-beautiful-dnd development 경고 사용 안함
   window['__react-beautiful-dnd-disable-dev-warnings'] = true;
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [progress, fetchApi] = useFetch();
-  const [items, setItems] = useState([]);
-  useEffect(() => {
-    setItems(column);
-  }, [])
-  // const [items, setItems] = useState(column);
-
-  const [checkedSwitch, setCheckedSwitch] = useState();
-  const checkedColumn = {};
-
-  useEffect(() => {
-    items.forEach((el) => {
-      el.visiable === 'Y'
-        ? checkedColumn[el.headerName] = 'Y'
-        : checkedColumn[el.headerName] = 'N'
-    });
-    setCheckedSwitch(checkedColumn);
-  }, [items])
-
+  const [items, setItems] = useState(column);
+  
   const changeHandler = (checked, name) => {
-    if (checked) {
-      setCheckedSwitch({ ...checkedSwitch, [name]: 'Y' });
-    } else if (!checked) {
-      setCheckedSwitch({ ...checkedSwitch, [name]: 'N' });
+    const findIndex = items.findIndex(element => element.headerName == name);
+    let columnList = [...items];
+    
+    if (findIndex != -1) {
+      if (checked) {
+        columnList[findIndex] = { ...columnList[findIndex], visiable: "Y" };
+      } else { 
+        columnList[findIndex] = { ...columnList[findIndex], visiable: "N" };
+      }
     }
+    setItems(columnList);
   };
-
-  console.log(checkedSwitch)
 
   //드래그 완료
   const onDragEnd = result => {
@@ -129,7 +117,6 @@ const ColumnModify = ({ column, page, closePortal }) => {
           PAGE: page,
           CATEGORY: 'DETAIL',
           ITEMS: items,
-          visiable: checkedSwitch
         }, {}).then(() => {
           Swal.fire({
             icon: 'success',
@@ -137,7 +124,8 @@ const ColumnModify = ({ column, page, closePortal }) => {
             confirmButtonColor: '#1D79E7',
             confirmButtonText: '확인'
           }).then(() => {
-            closePortal();
+            closePortal()
+            setColumnlist(items)
           })
         }).catch((err) => {
           common.apiVerify(err);
@@ -174,7 +162,7 @@ const ColumnModify = ({ column, page, closePortal }) => {
                         <div className="switch_case">
                           <Switch
                             name={column.headerName}
-                            checked={checkedSwitch[column.headerName]==='Y' ? true : false}
+                            checked={column.visiable==='Y' ? true : false}
                             onChange={e => {
                               changeHandler(e.currentTarget.checked, e.currentTarget.name);
                             }}
