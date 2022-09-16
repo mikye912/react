@@ -154,6 +154,7 @@ const DetailData = forwardRef((props, ref) => {
                     animateRows={true} 
                     onFirstDataRendered={() => autoSizeAll(false)}
                     suppressPropertyNamesCheck={true}
+                    // onCellClicked={onCellClicked}
                     overlayNoRowsTemplate={
                         `<div
                             style={{
@@ -166,7 +167,6 @@ const DetailData = forwardRef((props, ref) => {
                         조회된 데이터가 없습니다.
                     </div>`
                     }
-                // onCellClicked={onCellClicked}
                 />
             </div>
         </>

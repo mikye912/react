@@ -1,9 +1,11 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import Box from '@mui/material/Box';
 import { FaPlusCircle, FaSearch, FaRegPlusSquare } from "react-icons/fa";
 import dayjs from "dayjs";
 import Swal from 'sweetalert2';
+import axios from 'axios';
+import common from 'Common/common';
 import Default from 'Components/Main/Content/SearchBox/Default';
 import Extra from 'Components/Main/Content/SearchBox/Extra';
 import TotalData from 'Components/Main/Content/Sub0201/TotalData_0201';
@@ -27,28 +29,27 @@ const Sub_0201 = ({ index, content }) => {
 
   const selTab = useSelector((state) => state.selectTab);
 
-  const uSearch = useSelector((state) => state.uSearch);
-  const data = uSearch.filter(a => a[page])[0][page];
-
   const uDomain = useSelector((state) => state.uDomain);
   const columns = uDomain.filter(a => a.page === page)
 
-  // const [searchParams, setSearchParams] = useState();
-  // useEffect(() => {
-  //   /*컬럼 url `/api/users/contents/${page}/columns`*/
-  //   axios.get(`/api/users/contents/${page}/searchparams`, {
-  //     headers: {
-  //       x_auth: sessionStorage.getItem("token")
-  //     }
-  //   })
-  //     .then((res) => {
-  //       setSearchParams()
-  //     }).catch((err) => {
-  //       common.apiVerify(err);
-  //     })
-  // }, [])
+// 컬럼 집계 url `/api/users/contents/${page}/totalcols`
+// 컬럼 상세 url `/api/users/contents/${page}/detailcols`
+// 검색조건 url `/api/users/contents/${page}/searchparams`
 
-  
+  const [searchParams, setSearchParams] = useState();
+
+  useEffect(() => {
+    axios.get(`/api/users/contents/${page}/searchparams`, {
+      headers: {
+        x_auth: sessionStorage.getItem("token")
+      }
+    })
+      .then((res) => {
+        setSearchParams(res.data)
+      }).catch((err) => {
+        common.apiVerify(err);
+      })
+  }, [])
 
   let postData = {};
   const handleSubmit = () => {
@@ -133,7 +134,7 @@ const Sub_0201 = ({ index, content }) => {
   return (
     <Box className={`title ${index} ${selTab.selectTab === index ? 'selected' : ''}`} style={{ alignContent: 'baseline' }}>
       <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
-        <Default data={data} inputRef={inputRef} />
+        <Default data={searchParams} inputRef={inputRef} />
         <Box className="btn_case" gridColumn="span 2">
           <button className='extra_btn' onClick={() => { setVisibleSearch(!visibleSearch); }}>
             <FaPlusCircle className='extra_img' onClick={() => { setVisibleSearch(!visibleSearch); }} />상세
@@ -143,7 +144,7 @@ const Sub_0201 = ({ index, content }) => {
           </button>
         </Box>
       </Box>
-      {visibleSearch && <Extra data={data} inputExRef={inputExRef} multiCheckRef={multiCheckRef} />}
+      {visibleSearch && <Extra data={searchParams} inputExRef={inputExRef} multiCheckRef={multiCheckRef} />}
       <div className='total_form'>
         <div className='total_title'>
           <img alt='' />
