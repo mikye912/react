@@ -34,10 +34,7 @@ const Sub_0201 = ({ index, content }) => {
 
 // 컬럼 집계 url `/api/users/contents/${page}/totalcols`
 // 컬럼 상세 url `/api/users/contents/${page}/detailcols`
-// 검색조건 url `/api/users/contents/${page}/searchparams`
-
   const [searchParams, setSearchParams] = useState();
-
   useEffect(() => {
     axios.get(`/api/users/contents/${page}/searchparams`, {
       headers: {
@@ -155,7 +152,7 @@ const Sub_0201 = ({ index, content }) => {
           엑셀다운로드
         </button>
       </div>
-      <TotalData ref={TotalDataRef} visible={visibleTotal} columns={columns} />
+      <TotalData ref={TotalDataRef} visible={visibleTotal} columns={columns} page={page}/>
       <DetailData ref={DetailDataRef} visible={visibleTotal} columns={columns} page={page} />
     </Box>
   )

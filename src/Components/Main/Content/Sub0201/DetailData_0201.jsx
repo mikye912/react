@@ -5,10 +5,11 @@ import common from 'Common/common';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 import dayjs from "dayjs";
-import 'Css/agGrid.scss';
 import ModalPortal from "./Modal/ColumnModifyModal";
 import ColumnModify from './ColumnModify'
+import axios from 'axios';
 import 'Css/modal.css';
+import 'Css/agGrid.scss';
 
 const getDetailData = (fetchApi, reqData) => {
     return fetchApi.get('/api/users/contents/0201/detail', {
@@ -48,8 +49,16 @@ const DetailData = forwardRef((props, ref) => {
     }));
 
     useEffect(() => {
-        const columnsFilter = props.columns.filter(a => a.category === 'DETAIL')
-        setColumnlist(columnsFilter);
+      axios.get(`/api/users/contents/${props.page}/detailcols`, {
+        headers: {
+            x_auth: sessionStorage.getItem("token")
+        }
+        })
+        .then((res) => {
+            setColumnlist(res.data)
+        }).catch((err) => {
+            common.apiVerify(err);
+        })
     },[])
 
     const defaultColDef = {
