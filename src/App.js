@@ -11,17 +11,17 @@ function App() {
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={ 
+          <Route path="/" element={ <Login /> } />
+          <Route path="/main/*" element={
             <>
-            {/* <MobileView>
+              <MobileView>
               test
-            </MobileView> */}
-            {/* <BrowserView> */}
-              <Login /> 
-            {/* </BrowserView> */}
+              </MobileView>
+              <BrowserView>
+                <Sub_main />
+              </BrowserView>
             </>
-            } />
-          <Route path="/main/*" element={<Sub_main />} />
+          } />
           <Route path="/*" element={<Sub_main />} />
         </Routes>
       </Router>
