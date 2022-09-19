@@ -11,28 +11,6 @@ export const uMenuSlice = createSlice({
     }
 })
 
-const initUserSearchState = new Array();
-export const uSearchSlice = createSlice({
-    name: 'uSearchSlice',
-    initialState: initUserSearchState,
-    reducers: {
-        setUserSearch: (state, action) => {
-            return action.payload
-        }
-    }
-})
-
-const initUserDomainState = new Array();
-export const uDomainSlice = createSlice({
-    name: 'uDomainSlice',
-    initialState: initUserDomainState,
-    reducers: {
-        setUserDomain: (state, action) => {
-            return action.payload
-        }
-    }
-})
-
 const initAuthStat = {};
 export const uAuthSlice = createSlice({
     name: 'isAuthSlice',
@@ -95,22 +73,6 @@ export const sidebarStateSlice = createSlice({
     reducers: {
         changeSidebarState: (state, action) => {
             return action.payload;
-        }
-    }
-});
-
-const initDataSearchState = new Object();
-export const dataSearchSlice = createSlice({
-    name: 'dataSearchSlice',
-    initialState: initDataSearchState,
-    reducers: {
-        destroySearch: () => {
-            return initDataSearchState
-        },
-        changeInputs: (state, action) => {
-            return {
-                ...state, ...action.payload
-            }
         }
     }
 });

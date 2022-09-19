@@ -1,16 +1,16 @@
-import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useState, useRef, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import common from 'Common/common';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
+import axios from 'axios';
 import 'Css/agGrid.scss';
-
 
 const getTotalData = (fetchApi, reqData) => {
     return fetchApi.get('/api/users/contents/0201/total', {
         params: {
-            reqData : hash.cryptoEnc(JSON.stringify(reqData))
+            reqData: hash.cryptoEnc(JSON.stringify(reqData))
         }
     }, {})
         .then((res) => {
@@ -37,7 +37,7 @@ const TotalData = forwardRef((props, ref) => {
         resizable: true,
         sortable: true
     };
-    
+
     //더블클릭예제
     const onCellClicked = (params) => console.log(params.data.TERM_NM);
 
@@ -64,9 +64,22 @@ const TotalData = forwardRef((props, ref) => {
         }
     };
 
-    let columnDefs = props.columns.filter(a => a.category === 'TOTAL');
+    const [columnList, setColumnlist] = useState([]);
+    useEffect(() => {
+        axios.get(`/api/users/contents/${props.page}/totalcols`, {
+            headers: {
+                x_auth: sessionStorage.getItem("token")
+            }
+        })
+            .then((res) => {
+                setColumnlist(res.data);
+            }).catch((err) => {
+                common.apiVerify(err);
+            })
+    }, [])
 
     // *기본 컬럼 조건을 제외한 추가조건
+    let columnDefs = [...columnList];
     columnDefs = columnDefs.map((obj) => {
         if (obj.field === 'ROWNUM') {
             columnDefs = {
@@ -75,7 +88,7 @@ const TotalData = forwardRef((props, ref) => {
                 valueGetter: totalValueGetter
             }
             return columnDefs;
-        } else if(obj.type === 'number') {
+        } else if (obj.type === 'number') {
             columnDefs = {
                 ...obj,
                 valueFormatter: numberFormatter,
@@ -99,10 +112,10 @@ const TotalData = forwardRef((props, ref) => {
             {progress === false ? <CircularIndeterminate /> : null}
             <AgGridReact
                 ref={gridRef}
-                rowData={totalData} 
-                columnDefs={columnDefs} 
+                rowData={totalData}
+                columnDefs={columnDefs}
                 defaultColDef={defaultColDef}
-                animateRows={true} 
+                animateRows={true}
                 getRowStyle={getRowStyle}
                 suppressPropertyNamesCheck={true}
                 overlayNoRowsTemplate={

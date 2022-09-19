@@ -1,14 +1,15 @@
-import React, { forwardRef, useImperativeHandle, useState, useRef, useCallback } from 'react';
+import { forwardRef, useImperativeHandle, useState, useRef, useEffect, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import common from 'Common/common';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 import dayjs from "dayjs";
-import 'Css/agGrid.scss';
 import ModalPortal from "./Modal/ColumnModifyModal";
 import ColumnModify from './ColumnModify'
+import axios from 'axios';
 import 'Css/modal.css';
+import 'Css/agGrid.scss';
 
 const getDetailData = (fetchApi, reqData) => {
     return fetchApi.get('/api/users/contents/0201/detail', {
@@ -27,6 +28,7 @@ const DetailData = forwardRef((props, ref) => {
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [progress, fetchApi] = useFetch();
     const [detailData, setDetailData] = useState([]);
+    const [columnList, setColumnlist] = useState([]);
 
     //드래그앤드롭 모달창관련
     const [modalOpened, setModalOpened] = useState(false);
@@ -45,22 +47,28 @@ const DetailData = forwardRef((props, ref) => {
             })
         }
     }));
-    let columnDefs = props.columns.filter(a => a.category === 'DETAIL');
+
+    useEffect(() => {
+      axios.get(`/api/users/contents/${props.page}/detailcols`, {
+        headers: {
+            x_auth: sessionStorage.getItem("token")
+        }
+        })
+        .then((res) => {
+            setColumnlist(res.data)
+        }).catch((err) => {
+            common.apiVerify(err);
+        })
+    },[])
 
     const defaultColDef = {
         resizable: true,
         sortable: true,
+        suppressMovable: true, /*컬럼이동 방지*/
     };
 
     //더블클릭예제
     const onCellClicked = (params) => console.log(params.data.TERM_NM);
-
-    const totalValueGetter = (params) => {
-        if (params.data.TERM_NM === '합계') {
-            return '합계'
-        }
-        return params.data.ROWNUM
-    };
 
     const dataFormatter = (params) => {
         if (params.colDef.type === 'number') {
@@ -92,6 +100,7 @@ const DetailData = forwardRef((props, ref) => {
     }, []);
 
     // *기본 컬럼 조건을 제외한 추가조건
+    let columnDefs = [...columnList];
     columnDefs = columnDefs.map((obj) => {
         if (obj.type === 'number') {
             columnDefs = {
@@ -132,7 +141,11 @@ const DetailData = forwardRef((props, ref) => {
                 </div>
                 {modalOpened && (
                     <ModalPortal closePortal={handleClose}>
-                        <ColumnModify column={columnDefs} />
+                        <ColumnModify
+                            column={columnList}
+                            page={props.page}
+                            setColumnlist={setColumnlist}
+                            closePortal={handleClose} />
                     </ModalPortal>
                 )}
             </div>
@@ -145,11 +158,12 @@ const DetailData = forwardRef((props, ref) => {
                 <AgGridReact
                     ref={gridRef}
                     rowData={detailData} 
-                    columnDefs={columnDefs} 
+                    columnDefs={columnDefs.filter(a => a.visiable === 'Y')} 
                     defaultColDef={defaultColDef}
                     animateRows={true} 
                     onFirstDataRendered={() => autoSizeAll(false)}
                     suppressPropertyNamesCheck={true}
+                    // onCellClicked={onCellClicked}
                     overlayNoRowsTemplate={
                         `<div
                             style={{
@@ -162,7 +176,6 @@ const DetailData = forwardRef((props, ref) => {
                         조회된 데이터가 없습니다.
                     </div>`
                     }
-                // onCellClicked={onCellClicked}
                 />
             </div>
         </>

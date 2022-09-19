@@ -27,7 +27,7 @@
     height: 550px;
     border: 1px solid #EEF0F1;
     background: white;
-    padding:10px;
+    padding: 10px;
 }
 
 .modal_content_header {
@@ -53,10 +53,10 @@
 .modal_content_main {
     display: flex;
     flex-direction: column;
-    height:520px;
+    height: 520px;
 }
 
-.modal_content{
+.modal_content {
     overflow: auto;
     height: 460px;
 }
@@ -69,7 +69,7 @@
     padding: 10px;
 }
 
-.modal_content_button{
+.modal_content_button {
     width: 50px;
     font: normal normal normal 18px Pretendard;
     background-color: #1976d2;
@@ -77,4 +77,8 @@
     border: none;
     height: 30px;
     cursor: pointer;
+}
+
+.switch_case {
+    float: right;
 }
