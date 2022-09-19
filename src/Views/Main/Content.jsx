@@ -1,36 +1,14 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 import ErrorPage from "Components/Main/Content/ErrorPage";
 import Sub_0000 from "Components/Main/Content/Sub0000/Sub_0000";
 import Sub_0201 from "Components/Main/Content/Sub0201/Sub_0201";
 import { useDispatch, useSelector } from "react-redux";
-import { uDomainSlice, uSearchSlice } from "Common/Redux/slice";
-import common from "Common/common";
-import axios from "axios";
 
 const Content = () => {
   console.log("Content 렌더링")
   const dispatch = useDispatch();
   const isSider = useSelector((state) => state.sidebarState);
   const contents = useSelector((state) => state.content);
-  //console.log("contents", contents);
-
-  useEffect(() => {
-    /*검색조건 url `/api/users/contents/${page}/searchparams`*/
-    /*컬럼 url `/api/users/contents/${page}/columns`*/
-    axios.get(`/api/users/contents/items`, {
-      headers : {
-        x_auth : sessionStorage.getItem("token")
-      }
-    })
-    .then((res) => {
-      //console.log("usercontent : ",res.data.uDomain)
-      dispatch(uSearchSlice.actions.setUserSearch(res.data.uSearch));
-      dispatch(uDomainSlice.actions.setUserDomain(res.data.uDomain));
-    }).catch((err) => {
-      common.apiVerify(err);
-    })
-  },[])
 
   return (
     <section className="content_container">

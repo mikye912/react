@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Switch from '@mui/material/Switch';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
