@@ -4,7 +4,7 @@ import Login from 'Views/Login/Login';
 import Sub_main from 'Views/Main/Sub_main';
 import { Provider } from "react-redux";
 import store from "Common/Redux/store";
-import { isMobile, isTablet, isDesktop } from 'react-device-detect';
+import { isMobile, isTablet, isDesktop, deviceType } from 'react-device-detect';
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
           <Route path="/" element={ <Login /> } />
           <Route path="/main/*" element={
             <>
+              {deviceType}
               { isMobile && 
                 "mobile"
               }
