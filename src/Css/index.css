@@ -12,7 +12,7 @@
 @media screen and (max-width : 945px) and (max-height : 530px) {
     .index_img_container,
     .index_sign_container {
-        flex-direction: normal;
+        justify-content: normal;
     }
 }
 
