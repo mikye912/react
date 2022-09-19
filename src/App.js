@@ -14,9 +14,9 @@ function App() {
           <Route path="/" element={ <Login /> } />
           <Route path="/main/*" element={
             <>
-              <div>isIPad13 : {isIPad13}</div>
-              <div>isMobile : {isMobile}</div>
-              <div>isBrowser : {isBrowser}</div>
+              isIPad13 : { isIPad13 ? "true" : "false" } <br/>
+              isMobile : { isMobile ? "true" : "false" } <br/>
+              isBrowser : { isBrowser ? "true" : "false" }
               {/* { isBrowser && 
                 <Sub_main />
               } */}
