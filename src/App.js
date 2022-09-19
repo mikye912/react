@@ -4,7 +4,7 @@ import Login from 'Views/Login/Login';
 import Sub_main from 'Views/Main/Sub_main';
 import { Provider } from "react-redux";
 import store from "Common/Redux/store";
-import { isBrowser, isMobile ,isIPad13} from 'react-device-detect';
+import { isBrowser } from 'react-device-detect';
 
 function App() {
   return (
