@@ -14,18 +14,10 @@ function App() {
           <Route path="/" element={ <Login /> } />
           <Route path="/main/*" element={
             <>
-              isIPad13 : { isIPad13 ? "true" : "false" } <br/>
-              isMobile : { isMobile ? "true" : "false" } <br/>
-              isBrowser : { isBrowser ? "true" : "false" }
-              {/* { isBrowser && 
-                <Sub_main />
-              } */}
-              {/* <IOSView>
-              tablet
-              </IOSView>
-              <BrowserView>
-                <Sub_main />
-              </BrowserView> */}
+            {isBrowser ? 
+              <Sub_main /> :
+              "mobile"
+            }
             </>
           } />
           <Route path="/*" element={<Sub_main />} />
