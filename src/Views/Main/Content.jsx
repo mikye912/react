@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Content = () => {
   console.log("Content 렌더링")
-  const dispatch = useDispatch();
   const isSider = useSelector((state) => state.sidebarState);
   const contents = useSelector((state) => state.content);
 
@@ -20,7 +19,7 @@ const Content = () => {
           }
         }}
       >
-        { contents.length > 0 &&
+        {contents.length > 0 &&
           contents.map((content) => {
             switch (content.path) {
               case "sub_0000":
