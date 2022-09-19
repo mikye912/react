@@ -4,7 +4,7 @@ import Login from 'Views/Login/Login';
 import Sub_main from 'Views/Main/Sub_main';
 import { Provider } from "react-redux";
 import store from "Common/Redux/store";
-import { MobileView, BrowserView, TabletView, IOSView } from 'react-device-detect';
+import { isMobile, isTablet, isDesktop } from 'react-device-detect';
 
 function App() {
   return (
@@ -14,15 +14,21 @@ function App() {
           <Route path="/" element={ <Login /> } />
           <Route path="/main/*" element={
             <>
-              <MobileView>
-              mobile
-              </MobileView>
-              <IOSView>
+              { isMobile && 
+                "mobile"
+              }
+              { isTablet && 
+                "tablet"
+              }
+              { isDesktop && 
+                <Sub_main />
+              }
+              {/* <IOSView>
               tablet
               </IOSView>
               <BrowserView>
                 <Sub_main />
-              </BrowserView>
+              </BrowserView> */}
             </>
           } />
           <Route path="/*" element={<Sub_main />} />
