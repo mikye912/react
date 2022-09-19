@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState } from "react";
+import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-// import Switch from '@mui/material/Switch';
+import Switch from '@mui/material/Switch';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import useFetch from 'Common/axios';
 import common from 'Common/common';
@@ -22,7 +22,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
   width: '280px',
-  textAlign:'center',
+  textAlign: 'center',
 
   // 드래그 할 때 리스트의 배경색 변경
   background: isDragging ? "#D2D2D2" : "#FFFFFF",
@@ -40,12 +40,26 @@ const getListStyle = isDraggingOver => ({
 
 const queryAttr = "data-rbd-drag-handle-draggable-id";
 
-const ColumnModify = ({ column }) => {
+const ColumnModify = ({ column, page, setColumnlist, closePortal }) => {
   // react-beautiful-dnd development 경고 사용 안함
   window['__react-beautiful-dnd-disable-dev-warnings'] = true;
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [progress, fetchApi] = useFetch();
   const [items, setItems] = useState(column);
+  
+  const changeHandler = (checked, name) => {
+    const findIndex = items.findIndex(element => element.headerName == name);
+    let columnList = [...items];
+    
+    if (findIndex != -1) {
+      if (checked) {
+        columnList[findIndex] = { ...columnList[findIndex], visiable: "Y" };
+      } else { 
+        columnList[findIndex] = { ...columnList[findIndex], visiable: "N" };
+      }
+    }
+    setItems(columnList);
+  };
 
   //드래그 완료
   const onDragEnd = result => {
@@ -57,7 +71,7 @@ const ColumnModify = ({ column }) => {
     setItems(items => reorder(items, result.source.index, result.destination.index));
   };
 
-  // 리스트 드래그중
+  // 리스트 드래그할때
   const onDragUpdate = update => {
     if (!update.destination) {
       return;
@@ -97,82 +111,86 @@ const ColumnModify = ({ column }) => {
       confirmButtonText: '저장',
       confirmButtonColor: '#1D79E7',
       width: '400px'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetchApi.put('', {
-          // params: {
-    //         headerName : items.headerName,
-    //         field : items.field,
-    //         // sort : result.destination.index,
-    //     }
-          }, {}).then((res) => {
-            Swal.fire({
-              icon: 'success',
-              title: '저장이 완료되었습니다.',
-              confirmButtonColor: '#1D79E7',
-              confirmButtonText: '확인'
-            }).then(() => {
-
-            })
-          }).catch((err) => {
-            common.apiVerify(err);
+    }).then((rst) => {
+      if (rst.isConfirmed) {
+        fetchApi.put('/api/users/contents/0201/detail', {
+          PAGE: page,
+          CATEGORY: 'DETAIL',
+          ITEMS: items,
+        }, {}).then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: '저장이 완료되었습니다.',
+            confirmButtonColor: '#1D79E7',
+            confirmButtonText: '확인'
+          }).then(() => {
+            closePortal()
+            setColumnlist(items)
           })
+        }).catch((err) => {
+          common.apiVerify(err);
+        })
       }
     })
-  } 
-
-  // const label = { inputProps: { 'aria-label': 'Switch demo' } };
-  // const [checked, setChecked] = useState(false);
+  }
 
   return (
     <>
-      <div className="modal_content" style={{position:'relative'}}>
+      <div className="modal_content" style={{ position: 'relative' }}>
         {progress === false ? <CircularIndeterminate /> : null}
-      <DragDropContext onDragEnd={onDragEnd} onDragUpdate={onDragUpdate}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <div
-              {...provided.droppableProps}
+        <DragDropContext onDragEnd={onDragEnd} onDragUpdate={onDragUpdate}>
+          <Droppable droppableId="droppable">
+            {(provided, snapshot) => (
+              <div
+                {...provided.droppableProps}
                 ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-            >
-              {items && items.map((column, index) => (
-                <Draggable key={column.sort} draggableId={column.headerName} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                      {column.headerName}
-                      {/* <Switch {...label} checked={column.visible === 'N' ? setChecked(!checked) : setChecked(checked)} /> */}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
+                style={getListStyle(snapshot.isDraggingOver)}
+              >
+                {items && items.map((column, index) => (
+                  <Draggable key={column.sort} draggableId={column.headerName} index={index}>
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                      >
+                        {column.headerName}
+                        <div className="switch_case">
+                          <Switch
+                            name={column.headerName}
+                            checked={column.visiable==='Y' ? true : false}
+                            onChange={e => {
+                              changeHandler(e.currentTarget.checked, e.currentTarget.name);
+                            }}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
                 {provided.placeholder}
-
-              {/* <CustomPlaceholder snapshot={snapshot} /> */}
-              <div style={{
-                position: "absolute",
-                top: placeholderProps.clientY,
-                left: placeholderProps.clientX,
-                height: placeholderProps.clientHeight,
-                width: placeholderProps.clientWidth
-              }} />
+                {/* <CustomPlaceholder snapshot={snapshot} /> */}
+                <div style={{
+                  position: "absolute",
+                  top: placeholderProps.clientY,
+                  left: placeholderProps.clientX,
+                  height: placeholderProps.clientHeight,
+                  width: placeholderProps.clientWidth
+                }} />
               </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
       <div className="modal_content_footer">
-          <button variant="contained" className="modal_content_button" onClick={colnmnOrderSave}> 저장 </button>
+        <button variant="contained" className="modal_content_button" onClick={colnmnOrderSave}> 저장 </button>
       </div>
-      </>
+    </>
   )
 };
 

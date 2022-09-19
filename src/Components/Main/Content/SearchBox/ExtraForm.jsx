@@ -25,7 +25,7 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
 
     /* check */
     const [checkedButtons, setCheckedButtons] = useState(['']);
-    const changeHandler = (checked, id, name) => {
+    const changeHandler = (checked, id) => {
         if (id !== '' && checkedButtons.includes('')) {
             /* 전체거래가 선택된 상태에서 전체거래가 아닌 다른 거래건을 체크했을때*/
             if (checked) {
@@ -37,11 +37,11 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
             /* 전체거래가 선택되지 않은 상태에서 전체거래가 아닌 다른 거래건을 체크했을때*/
             if (checked) {
                 setCheckedButtons([...checkedButtons, id]);
-            } else {
+            }  else {
                 setCheckedButtons(checkedButtons.filter(button => button !== id));
             }
         } else if (id === '') {
-            /* 전체거래가 선택되지않고 다른거래건이 체크됐을때 전체거래를 선택하면 전체거래건만 선택값으로 남게*/
+            /* 전체거래가 선택되지않고 다른거래건을 체크됐을때 전체거래를 선택하면 전체거래건만 선택값으로 남게*/
             if (checked) {
                 setCheckedButtons([id]);
             } else {

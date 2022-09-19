@@ -1,33 +1,49 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import Box from '@mui/material/Box';
 import { FaPlusCircle, FaSearch, FaRegPlusSquare } from "react-icons/fa";
 import dayjs from "dayjs";
 import Swal from 'sweetalert2';
+import axios from 'axios';
+import common from 'Common/common';
 import Default from 'Components/Main/Content/SearchBox/Default';
 import Extra from 'Components/Main/Content/SearchBox/Extra';
 import TotalData from 'Components/Main/Content/Sub0201/TotalData_0201';
 import DetailData from 'Components/Main/Content/Sub0201/DetailData_0201';
+import ExcelExport from './ExcelExport';
 import 'Css/searchBox.css';
 
 const Sub_0201 = ({ index, content }) => {
+  /*자식창에 부모 검색 조건을 보내기 위한Ref*/
   const TotalDataRef = useRef();
   const DetailDataRef = useRef();
+  /*검색조건 담는 Ref*/
   const inputRef = useRef([]);
   const inputExRef = useRef([]);
   const multiCheckRef = useRef([]);
+  /*상세검색조건확장축소*/
   const [visibleSearch, setVisibleSearch] = useState(false);
+  /*집계확장축소*/
   const [visibleTotal, setVisibleTotal] = useState(true);
+  const page = content.substr(-4);
   const selTab = useSelector((state) => state.selectTab);
 
-  const uSearch = useSelector((state) => state.uSearch);
-  const page = content.substr(-4);
-  const data = uSearch.filter(a => a[page])[0][page];
-
-  const uDomain = useSelector((state) => state.uDomain);
-  const columns = uDomain.filter(a => a.page === page)
+  const [searchParams, setSearchParams] = useState();
+  useEffect(() => {
+    axios.get(`/api/users/contents/${page}/searchparams`, {
+      headers: {
+        x_auth: sessionStorage.getItem("token")
+      }
+    })
+      .then((res) => {
+        setSearchParams(res.data)
+      }).catch((err) => {
+        common.apiVerify(err);
+      })
+  }, [])
 
   let postData = {};
+  // *검색조건을 누르면
   const handleSubmit = () => {
     let appgb = [];
     let authstat = [];
@@ -91,7 +107,7 @@ const Sub_0201 = ({ index, content }) => {
         }
       }
     }
-
+    //! ref로 가져온 검색조건들을 집계와 상세 컴포넌트에 보내기전 검색조건 확인
     if (postData['SDATE'] === undefined && postData['EDATE'] === undefined) {
       Swal.fire({
         titleText: '승인일자를 입력해주세요',
@@ -100,9 +116,10 @@ const Sub_0201 = ({ index, content }) => {
       })
       return;
     } else {
+      //* 각 컴포넌트로 검색조건을 보내고 함수 실행
       TotalDataRef.current.fetchApi(postData);
       DetailDataRef.current.fetchApi(postData);
-
+      //* 변수초기화
       postData = {};
     }
   }
@@ -110,7 +127,7 @@ const Sub_0201 = ({ index, content }) => {
   return (
     <Box className={`title ${index} ${selTab.selectTab === index ? 'selected' : ''}`} style={{ alignContent: 'baseline' }}>
       <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
-        <Default data={data} inputRef={inputRef} />
+        <Default data={searchParams} inputRef={inputRef} />
         <Box className="btn_case" gridColumn="span 2">
           <button className='extra_btn' onClick={() => { setVisibleSearch(!visibleSearch); }}>
             <FaPlusCircle className='extra_img' onClick={() => { setVisibleSearch(!visibleSearch); }} />상세
@@ -120,19 +137,17 @@ const Sub_0201 = ({ index, content }) => {
           </button>
         </Box>
       </Box>
-      {visibleSearch && <Extra data={data} inputExRef={inputExRef} multiCheckRef={multiCheckRef} />}
+      {visibleSearch && <Extra data={searchParams} inputExRef={inputExRef} multiCheckRef={multiCheckRef} page={page} />}
       <div className='total_form'>
         <div className='total_title'>
           <img alt='' />
           <div>집계</div>
           <FaRegPlusSquare className='total_btn' onClick={() => { setVisibleTotal(!visibleTotal) }} />
         </div>
-        <button className='excel_btn'>
-          엑셀다운로드
-        </button>
+        <ExcelExport inputRef={inputRef} inputExRef={inputExRef} multiCheckRef={multiCheckRef} page={page} />
       </div>
-      <TotalData ref={TotalDataRef} visible={visibleTotal} columns={columns} />
-      <DetailData ref={DetailDataRef} visible={visibleTotal} columns={columns} />
+      <TotalData ref={TotalDataRef} visible={visibleTotal} page={page} />
+      <DetailData ref={DetailDataRef} visible={visibleTotal} page={page} />
     </Box>
   )
 };
