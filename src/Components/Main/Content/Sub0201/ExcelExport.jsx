@@ -60,10 +60,6 @@ const getDetailData = (fetchApi, reqData) => {
 
 const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
     const [progress, fetchApi] = useFetch();
-    // const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    const excelFileExtension = '.xlsx';
-    // !변수화
-    const excelFileName = '상세내역조회';
 
     const [totalcols, setTotalcols] = useState([]);
     const [detailcols, setDetailcols] = useState([]);
@@ -122,9 +118,7 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
         /*멀티체크*/
         for (let k = 0; k < multiCheckRef.current.length; k++) {
             if (multiCheckRef.current[k] && multiCheckRef.current[k] !== undefined && multiCheckRef.current[k] !== null) {
-                console.log('multiCheckRef.current[' + k + ']', multiCheckRef.current[k])
                 if (multiCheckRef.current[k].checked) {
-                    console.log('multiCheckRef.current[' + k + ']Checked', multiCheckRef.current[k].checked.value)
                     if (multiCheckRef.current[k].name === 'DEP_CD') {
                         depcd = [...depcd, multiCheckRef.current[k].value]
                         postData[multiCheckRef.current[k].name] = [...depcd]
@@ -152,9 +146,8 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                 .then((res) => {
                     setTotalcols(res[0]);
                     setTotalData(res[1]);
-                    const cols = res[2].filter(obj => obj.hidden !== 'Y');
-                    console.log(cols)
-                    setDetailcols(res[2]);
+                    const cols = res[2].filter(obj => obj.visiable !== 'N');
+                    setDetailcols(cols);
                     setDetailData(res[3]);
                 })
                 .catch((err) => {
@@ -204,15 +197,86 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     right: { style: 'thin', color: { rgb: 'D2D2D2' } },
                 };
 
-                // 컬럼 설정
+               // 컬럼 설정
                 // header: 엑셀에 표기되는 이름
                 // key: 컬럼을 접근하기 위한 key
                 // hidden: 숨김 여부
                 // width: 컬럼 넓이
-                // let totalColumnDefs = [...totalcols];
-                // sheetOne.columns = totalColumnDefs.map((obj) => {
+                let totalColumnDefs = [...totalcols];
+                sheetOne.columns = totalColumnDefs.map((obj) => {
+                    if (obj.type === 'number') {
+                        totalColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            header: obj.headerName,
+                            width: obj.width / 8,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                numFmt: '#,##0',
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return totalColumnDefs
+                    } else if (obj.field == 'TERM_NM') {
+                        totalColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            header: obj.headerName,
+                            width: obj.width / 10 + 10,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return totalColumnDefs
+                    } else {
+                        totalColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            header: obj.headerName,
+                            width: obj.width / 8,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return totalColumnDefs
+                    }
+                });
+
+                console.log(sheetOne.columns)
+
+                totalData.map((totalItem, index) => {
+                    sheetOne.addRow(totalItem);
+
+                    // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
+                    for (let loop = 1; loop <= sheetOne.columnCount; loop++) {
+                        const col = sheetOne.getRow(index + 2).getCell(loop);
+                        col.border = borderStyle;
+                        col.font = { name: '맑은 고딕', size: 11 };
+
+                        if (loop != 1 && loop != 2) {
+                            col.alignment = { horizontal: 'right' };
+                        }
+                    }
+                });
+
+                sheetOne.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+                    row.eachCell(function (cell, colNumber) {
+                        cell.border = borderStyle;
+                    });
+                });
+
+                // let detailColumnDefs = [...detailcols];
+                // sheetOne.columns = detailColumnDefs.map((obj) => {
                 //     if (obj.type === 'number') {
-                //         totalColumnDefs = {
+                //         detailColumnDefs = {
                 //             ...obj,
                 //             key: obj.field,
                 //             header: obj.headerName,
@@ -225,23 +289,9 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                 //                 alignment: { horizontal: 'center', vertical: 'middle' },
                 //             }
                 //         }
-                //         return totalColumnDefs
-                //     } else if (obj.field == 'TERM_NM') {
-                //         totalColumnDefs = {
-                //             ...obj,
-                //             key: obj.field,
-                //             header: obj.headerName,
-                //             width: obj.width / 10 + 10,
-                //             // 스타일 설정
-                //             style: {
-                //                 // Font 설정
-                //                 font: { name: '맑은 고딕', size: 11 },
-                //                 alignment: { horizontal: 'center', vertical: 'middle' },
-                //             }
-                //         }
-                //         return totalColumnDefs
+                //         return detailColumnDefs
                 //     } else {
-                //         totalColumnDefs = {
+                //         detailColumnDefs = {
                 //             ...obj,
                 //             key: obj.field,
                 //             header: obj.headerName,
@@ -253,12 +303,12 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                 //                 alignment: { horizontal: 'center', vertical: 'middle' },
                 //             }
                 //         }
-                //         return totalColumnDefs
+                //         return detailColumnDefs
                 //     }
                 // });
 
-                // totalData.map((totalItem, index) => {
-                //     sheetOne.addRow(totalItem);
+                // detailData.map((detailItem, index) => {
+                //     sheetOne.addRow(detailItem);
 
                 //     // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
                 //     for (let loop = 1; loop <= sheetOne.columnCount; loop++) {
@@ -278,62 +328,6 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                 //     });
                 // });
 
-                let detailColumnDefs = [...detailcols];
-                sheetOne.columns = detailColumnDefs.map((obj) => {
-                    if (obj.type === 'number') {
-                        detailColumnDefs = {
-                            ...obj,
-                            key: obj.field,
-                            header: obj.headerName,
-                            width: obj.width / 8,
-                            // 스타일 설정
-                            style: {
-                                // Font 설정
-                                font: { name: '맑은 고딕', size: 11 },
-                                numFmt: '#,##0',
-                                alignment: { horizontal: 'center', vertical: 'middle' },
-                            }
-                        }
-                        return detailColumnDefs
-                    } else {
-                        detailColumnDefs = {
-                            ...obj,
-                            key: obj.field,
-                            header: obj.headerName,
-                            width: obj.width / 8,
-                            // 스타일 설정
-                            style: {
-                                // Font 설정
-                                font: { name: '맑은 고딕', size: 11 },
-                                alignment: { horizontal: 'center', vertical: 'middle' },
-                            }
-                        }
-                        return detailColumnDefs
-                    }
-                });
-
-                detailData.map((detailItem, index) => {
-                    sheetOne.addRow(detailItem);
-
-                    // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
-                    for (let loop = 1; loop <= sheetOne.columnCount; loop++) {
-                        const col = sheetOne.getRow(index + 2).getCell(loop);
-                        col.border = borderStyle;
-                        col.font = { name: '맑은 고딕', size: 11 };
-
-                        if (loop != 1 && loop != 2) {
-                            col.alignment = { horizontal: 'right' };
-                        }
-                    }
-                });
-
-
-                sheetOne.eachRow({ includeEmpty: true }, function (row, rowNumber) {
-                    row.eachCell(function (cell, colNumber) {
-                        cell.border = borderStyle;
-                    });
-                });
-
                 sheetOne.spliceRows(1, 0, [], [], []);
 
                 sheetOne.mergeCells('A1:B1');
@@ -345,8 +339,10 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
 
                 workbook.xlsx.writeBuffer().then((data) => {
                     const blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                    console.log(blob)
                     const url = window.URL.createObjectURL(blob);
                     const anchor = document.createElement('a');
+                    console.log(anchor)
                     anchor.href = url;
                     anchor.download = `상세내역조회_${dayjs(new Date()).format('YYYYMMDD')}.xlsx`;
                     anchor.click();
