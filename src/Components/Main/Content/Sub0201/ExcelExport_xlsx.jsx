@@ -2,7 +2,7 @@ import { useState } from 'react';
 import dayjs from "dayjs";
 import Swal from 'sweetalert2';
 import { saveAs } from "file-saver";
-// import * as XLSX from "xlsx";
+import * as XLSX from "xlsx";
 import axios from 'axios';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
@@ -62,7 +62,7 @@ const getDetailData = (fetchApi, reqData) => {
 
 const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
     const [progress, fetchApi] = useFetch();
-    // const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const excelFileExtension = '.xlsx';
     // !변수화
     const excelFileName = '상세내역조회';
