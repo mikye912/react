@@ -4,8 +4,9 @@ import Swal from 'sweetalert2';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 import common from 'Common/common';
-import React from "react";
-import ReactExport from "react-export-excel";
+import ExcelJS from "exceljs";
+import saveAs from "file-saver";
+
 
 const getTotalcols = (fetchApi, page) => {
     return fetchApi.get(`/api/users/contents/${page}/totalcols`, {
@@ -154,63 +155,162 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                 .catch((err) => {
                     console.log(err);
                 });
+
+            try {
+                var ExcelJSWorkbook = new ExcelJS.Workbook();
+                var worksheet = ExcelJSWorkbook.addWorksheet("ExcelJS sheet");
+                // var columns = totalcols.getVisibleColumns();
+
+                worksheet.mergeCells("A2:I2");
+
+                const customCell = worksheet.getCell("A2");
+                customCell.font = {
+                    name: "Comic Sans MS",
+                    family: 4,
+                    size: 20,
+                    underline: true,
+                    bold: true
+                };
+
+                //customCell.value = "Custom header here";
+
+                var headerRow = worksheet.addRow();
+                worksheet.getRow(4).font = { bold: true };
+                //console.log("totalCols : ", totalcols)
+                for (let i = 0; i < totalcols.length; i++) {
+                    console.log(`totalCols${i} : `, totalcols[i])
+                    let currentColumnWidth = totalcols[i].width;
+                    worksheet.getColumn(i + 1).width =
+                        currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
+                    let cell = headerRow.getCell(i + 1);
+                    cell.value = totalcols[i].headerName;
+                }
+
+                // if (this.state.excelFilterEnabled === true) {
+                //     worksheet.autoFilter = {
+                //         from: {
+                //             row: 3,
+                //             column: 1
+                //         },
+                //         to: {
+                //             row: 3,
+                //             column: totalcols.length
+                //         }
+                //     };
+                // }
+
+                // eslint-disable-next-line no-unused-expressions
+                // this.state.excelFilterEnabled === true
+                //     ? (worksheet.views = [{ state: "frozen", ySplit: 3 }])
+                //     : undefined;
+
+                // for (let i = 0; i < totalData.length; i++) {
+                //     var dataRow = worksheet.addRow();
+                //     if (totalData[i].rowType === "data") {
+                //         dataRow.outlineLevel = 1;
+                //     }
+                //     for (let j = 0; j < totalData[i].values.length; j++) {
+                //         let cell = dataRow.getCell(j + 1);
+                //         cell.value = totalData[i].values[j];
+                //     }
+                // }
+                for (let i = 0; i < totalData.length; i++) {
+                    var dataRow = worksheet.addRow();
+                    for (let j = 0; j < Object.keys(totalData[i]).length; j++) {
+                        let cell = dataRow.getCell(j + 1);
+                        cell.value = totalData[i][Object.keys(totalData[i])[j]];
+                    }
+                }
+
+                
+                
+                //worksheet.getCell(`A${rowCount}`).value = "Custom Footer here";
+
+                let detailColumnDefs = [...detailcols];
+                worksheet.columns = detailColumnDefs.map((obj) => {
+                    if (obj.type === 'number') {
+                        detailColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            header: obj.headerName,
+                            width: obj.width / 8,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                numFmt: '#,##0',
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return detailColumnDefs
+                    } else {
+                        detailColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            header: obj.headerName,
+                            width: obj.width / 8,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return detailColumnDefs
+                    }
+                });
+
+                detailData.map((detailItem, index) => {
+                    worksheet.addRow(detailItem);
+
+                    // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
+                    for (let loop = 1; loop <= worksheet.columnCount; loop++) {
+                        const col = worksheet.getRow(index + 2).getCell(loop);
+                        // col.border = borderStyle;
+                        col.font = { name: '맑은 고딕', size: 11 };
+
+                        if (loop != 1 && loop != 2) {
+                            col.alignment = { horizontal: 'right' };
+                        }
+                    }
+                });
+
+                worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+                    row.eachCell(function (cell, colNumber) {
+                        // cell.border = borderStyle;
+                    });
+                });
+
+                worksheet.spliceRows(1, 0, []);
+                
+                const rowCount = worksheet.rowCount;
+                console.log(`rowCount : `,rowCount)
+                worksheet.mergeCells(`A${rowCount}:I${rowCount + 1}`);
+                worksheet.getRow(1).font = { bold: true };
+                worksheet.getCell(`A${rowCount}`).font = {
+                    name: "Comic Sans MS",
+                    family: 4,
+                    size: 20,
+                    underline: true,
+                    bold: true
+                };
+
+                ExcelJSWorkbook.xlsx.writeBuffer().then(function (buffer) {
+                    saveAs(
+                        new Blob([buffer], { type: "application/octet-stream" }),
+                        `상세내역조회_${dayjs(new Date()).format('YYYYMMDD')}.xlsx`
+                    );
+                });
+            } catch (error) {
+                console.error(error);
+            }
         }
     }
 
-    const ExcelFile = ReactExport.ExcelFile;
-    const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-    const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
-    console.log("totalData : ", totalcols)
-
-    let test = [
-        {
-            name: 'name1',
-            value: 'test1'
-        },
-        {
-            name: 'name2',
-            value: 'value2'
-        },
-        {
-            name: 'name3',
-            value: 'value3'
-        },
-        {
-            name: 'name1',
-            value: 'value1'
-        },
-        {
-            name: 'name1',
-            value: 'value1'
-        },
-        {
-            name: 'name1',
-            value: 'value1'
-        },
-    ]
-
-
     return (
-        <ExcelFile
-            element={
-                <button className='excel_btn' onClick={fileDownload}>
-                    엑셀다운로드
-                </button>}>
-            <ExcelSheet data={test} name="sheet1">
-                {/* {totalcols && totalcols.map((obj) => {
-                    return (
-                        <ExcelColumn label={obj.headerName} value={obj.field} />
-                    )
-                })} */}
-                <ExcelColumn label="test1" value="value" />
-                <ExcelColumn label="test2" value="test2" />
-                <ExcelColumn label="test3" value="test3" />
-                <ExcelColumn label="test4" value="test4" />
-                <ExcelColumn label="test5" value="test5" />
-                <ExcelColumn label="test6" value="test6" />
-
-            </ExcelSheet>
-        </ExcelFile>
+        <button className='excel_btn' onClick={fileDownload}>
+            엑셀다운로드
+        </button>
     )
 };
 
