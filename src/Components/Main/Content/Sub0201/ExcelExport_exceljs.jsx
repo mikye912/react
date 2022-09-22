@@ -270,6 +270,8 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                         cell.border = borderStyle;
                     });
                 });
+                
+
 
                 let detailColumnDefs = [...detailcols];
                 sheetOne.columns = detailColumnDefs.map((obj) => {
