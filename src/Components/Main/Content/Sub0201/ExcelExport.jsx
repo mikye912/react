@@ -161,46 +161,51 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                 var worksheet = ExcelJSWorkbook.addWorksheet("ExcelJS sheet");
                 // var columns = totalcols.getVisibleColumns();
 
-                worksheet.mergeCells("A2:I2");
+                // worksheet.mergeCells("A2:I2");
 
-                const customCell = worksheet.getCell("A2");
-                customCell.font = {
-                    name: "Comic Sans MS",
-                    family: 4,
-                    size: 20,
-                    underline: true,
-                    bold: true
+                const borderStyle = {
+                    top: { style: 'thin', color: { rgb: 'D2D2D2' } },
+                    left: { style: 'thin', color: { rgb: 'D2D2D2' } },
+                    bottom: { style: 'thin', color: { rgb: 'D2D2D2' } },
+                    right: { style: 'thin', color: { rgb: 'D2D2D2' } },
                 };
+
+                // const customCell = worksheet.getCell("A2");
+                // customCell.font = {
+                //     name: "Comic Sans MS",
+                //     family: 4,
+                //     size: 20,
+                //     underline: true,
+                //     bold: true
+                // };
 
                 //customCell.value = "Custom header here";
 
-                var headerRow = worksheet.addRow();
-                worksheet.getRow(4).font = { bold: true };
+                let headerRow = worksheet.getCell("A1");
+                worksheet.getRow(1).font = { bold: true };
                 //console.log("totalCols : ", totalcols)
                 for (let i = 0; i < totalcols.length; i++) {
-                    console.log(`totalCols${i} : `, totalcols[i])
                     let currentColumnWidth = totalcols[i].width;
                     worksheet.getColumn(i + 1).width =
                         currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
-                    let cell = headerRow.getCell(i + 1);
-                    cell.value = totalcols[i].headerName;
+                    headerRow.value = totalcols[i].headerName;
                 }
 
-                // if (this.state.excelFilterEnabled === true) {
-                //     worksheet.autoFilter = {
-                //         from: {
-                //             row: 3,
-                //             column: 1
-                //         },
-                //         to: {
-                //             row: 3,
-                //             column: totalcols.length
-                //         }
-                //     };
-                // }
+                if (worksheet.excelFilterEnabled === true) {
+                    worksheet.autoFilter = {
+                        from: {
+                            row: 3,
+                            column: 1
+                        },
+                        to: {
+                            row: 3,
+                            column: totalcols.length
+                        }
+                    };
+                }
 
-                // eslint-disable-next-line no-unused-expressions
-                // this.state.excelFilterEnabled === true
+                //eslint-disable-next-line no-unused-expressions
+                // worksheet.excelFilterEnabled === true
                 //     ? (worksheet.views = [{ state: "frozen", ySplit: 3 }])
                 //     : undefined;
 
@@ -221,11 +226,8 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                         cell.value = totalData[i][Object.keys(totalData[i])[j]];
                     }
                 }
-
-                
                 
                 //worksheet.getCell(`A${rowCount}`).value = "Custom Footer here";
-
                 let detailColumnDefs = [...detailcols];
                 worksheet.columns = detailColumnDefs.map((obj) => {
                     if (obj.type === 'number') {
@@ -266,7 +268,7 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
                     for (let loop = 1; loop <= worksheet.columnCount; loop++) {
                         const col = worksheet.getRow(index + 2).getCell(loop);
-                        // col.border = borderStyle;
+                        col.border = borderStyle;
                         col.font = { name: '맑은 고딕', size: 11 };
 
                         if (loop != 1 && loop != 2) {
@@ -277,14 +279,14 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
 
                 worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
                     row.eachCell(function (cell, colNumber) {
-                        // cell.border = borderStyle;
+                        cell.border = borderStyle;
                     });
                 });
-
-                worksheet.spliceRows(1, 0, []);
                 
                 const rowCount = worksheet.rowCount;
-                console.log(`rowCount : `,rowCount)
+                // 2번째 줄에서 4번째 줄사이 공백 제거
+                //worksheet.spliceRows(2, 4);
+                //worksheet.spliceRows(1, 0, [], [], [], [], [], [], [], [], []);
                 worksheet.mergeCells(`A${rowCount}:I${rowCount + 1}`);
                 worksheet.getRow(1).font = { bold: true };
                 worksheet.getCell(`A${rowCount}`).font = {
