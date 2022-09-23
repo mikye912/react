@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { FaTimes } from "react-icons/fa";
 
-const ModalPortal = ({ children, closePortal }) => {
+const ModalPortal = ({ children, closePortal, title }) => {
   const [mounted, setMounted] = useState(false);
   const ref = useRef(null);
 
@@ -20,11 +20,11 @@ const ModalPortal = ({ children, closePortal }) => {
   if (ref.current && mounted) {
     return createPortal(
       <div className="modal">
-        <div className="modal-background" role="presentation" onClick={closePortal} />
-        <div className="modal-content">
+        <div className="modal_background" role="presentation" onClick={closePortal} />
+        <div className="modal_content">
           <div className="modal_content_header">
-            <div id="modal-title" className="modal_content_title">
-              컬럼 수정
+            <div id="modal_title" className="modal_content_title">
+              {title}
             </div>
             <FaTimes className="modal_content_close" onClick={closePortal} />
           </div>

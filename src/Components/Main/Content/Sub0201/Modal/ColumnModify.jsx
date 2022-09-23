@@ -136,7 +136,7 @@ const ColumnModify = ({ column, page, setColumnlist, closePortal }) => {
 
   return (
     <>
-      <div className="modal_content" style={{ position: 'relative' }}>
+      <div className="modal_contentbox" style={{ position: 'relative' }}>
         {progress === false ? <CircularIndeterminate /> : null}
         <DragDropContext onDragEnd={onDragEnd} onDragUpdate={onDragUpdate}>
           <Droppable droppableId="droppable">

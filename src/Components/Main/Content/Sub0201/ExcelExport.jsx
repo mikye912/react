@@ -181,24 +181,25 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
 
                 //customCell.value = "Custom header here";
 
-                let headerRow = worksheet.getCell("A1");
+                let headerRow = worksheet.addRow();
                 worksheet.getRow(1).font = { bold: true };
                 //console.log("totalCols : ", totalcols)
                 for (let i = 0; i < totalcols.length; i++) {
                     let currentColumnWidth = totalcols[i].width;
                     worksheet.getColumn(i + 1).width =
                         currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
-                    headerRow.value = totalcols[i].headerName;
+                    let cell = headerRow.getCell(i + 1);
+                    cell.value = totalcols[i].headerName;
                 }
 
                 if (worksheet.excelFilterEnabled === true) {
                     worksheet.autoFilter = {
                         from: {
-                            row: 3,
+                            row: 1,
                             column: 1
                         },
                         to: {
-                            row: 3,
+                            row: 1,
                             column: totalcols.length
                         }
                     };
@@ -228,39 +229,40 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                 }
                 
                 //worksheet.getCell(`A${rowCount}`).value = "Custom Footer here";
-                let detailColumnDefs = [...detailcols];
-                worksheet.columns = detailColumnDefs.map((obj) => {
-                    if (obj.type === 'number') {
-                        detailColumnDefs = {
-                            ...obj,
-                            key: obj.field,
-                            header: obj.headerName,
-                            width: obj.width / 8,
-                            // 스타일 설정
-                            style: {
-                                // Font 설정
-                                font: { name: '맑은 고딕', size: 11 },
-                                numFmt: '#,##0',
-                                alignment: { horizontal: 'center', vertical: 'middle' },
-                            }
-                        }
-                        return detailColumnDefs
-                    } else {
-                        detailColumnDefs = {
-                            ...obj,
-                            key: obj.field,
-                            header: obj.headerName,
-                            width: obj.width / 8,
-                            // 스타일 설정
-                            style: {
-                                // Font 설정
-                                font: { name: '맑은 고딕', size: 11 },
-                                alignment: { horizontal: 'center', vertical: 'middle' },
-                            }
-                        }
-                        return detailColumnDefs
-                    }
-                });
+                
+                // let detailColumnDefs = [...detailcols];
+                // worksheet.columns = detailColumnDefs.map((obj) => {
+                //     if (obj.type === 'number') {
+                //         detailColumnDefs = {
+                //             ...obj,
+                //             key: obj.field,
+                //             header: obj.headerName,
+                //             width: obj.width / 8,
+                //             // 스타일 설정
+                //             style: {
+                //                 // Font 설정
+                //                 font: { name: '맑은 고딕', size: 11 },
+                //                 numFmt: '#,##0',
+                //                 alignment: { horizontal: 'center', vertical: 'middle' },
+                //             }
+                //         }
+                //         return detailColumnDefs
+                //     } else {
+                //         detailColumnDefs = {
+                //             ...obj,
+                //             key: obj.field,
+                //             header: obj.headerName,
+                //             width: obj.width / 8,
+                //             // 스타일 설정
+                //             style: {
+                //                 // Font 설정
+                //                 font: { name: '맑은 고딕', size: 11 },
+                //                 alignment: { horizontal: 'center', vertical: 'middle' },
+                //             }
+                //         }
+                //         return detailColumnDefs
+                //     }
+                // });
 
                 detailData.map((detailItem, index) => {
                     worksheet.addRow(detailItem);
