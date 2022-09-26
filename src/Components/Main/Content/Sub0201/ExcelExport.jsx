@@ -7,7 +7,6 @@ import common from 'Common/common';
 import ExcelJS from "exceljs";
 import saveAs from "file-saver";
 
-
 const getTotalcols = (fetchApi, page) => {
     return fetchApi.get(`/api/users/contents/${page}/totalcols`, {
         headers: {
@@ -62,7 +61,6 @@ const getDetailData = (fetchApi, reqData) => {
 
 const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
     const [progress, fetchApi] = useFetch();
-
     const [totalcols, setTotalcols] = useState([]);
     const [detailcols, setDetailcols] = useState([]);
     const [totalData, setTotalData] = useState([]);
@@ -158,9 +156,8 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
 
             try {
                 var ExcelJSWorkbook = new ExcelJS.Workbook();
-                var worksheet = ExcelJSWorkbook.addWorksheet("ExcelJS sheet");
+                var worksheet = ExcelJSWorkbook.addWorksheet("sheet1");
                 // var columns = totalcols.getVisibleColumns();
-
                 // worksheet.mergeCells("A2:I2");
 
                 const borderStyle = {
@@ -170,20 +167,7 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     right: { style: 'thin', color: { rgb: 'D2D2D2' } },
                 };
 
-                // const customCell = worksheet.getCell("A2");
-                // customCell.font = {
-                //     name: "Comic Sans MS",
-                //     family: 4,
-                //     size: 20,
-                //     underline: true,
-                //     bold: true
-                // };
-
-                //customCell.value = "Custom header here";
-
-                let headerRow = worksheet.addRow();
-                worksheet.getRow(1).font = { bold: true };
-                //console.log("totalCols : ", totalcols)
+                let headerRow = worksheet.getRow(4);
                 for (let i = 0; i < totalcols.length; i++) {
                     let currentColumnWidth = totalcols[i].width;
                     worksheet.getColumn(i + 1).width =
@@ -192,34 +176,11 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     cell.value = totalcols[i].headerName;
                 }
 
-                if (worksheet.excelFilterEnabled === true) {
-                    worksheet.autoFilter = {
-                        from: {
-                            row: 1,
-                            column: 1
-                        },
-                        to: {
-                            row: 1,
-                            column: totalcols.length
-                        }
-                    };
-                }
-
                 //eslint-disable-next-line no-unused-expressions
                 // worksheet.excelFilterEnabled === true
                 //     ? (worksheet.views = [{ state: "frozen", ySplit: 3 }])
                 //     : undefined;
 
-                // for (let i = 0; i < totalData.length; i++) {
-                //     var dataRow = worksheet.addRow();
-                //     if (totalData[i].rowType === "data") {
-                //         dataRow.outlineLevel = 1;
-                //     }
-                //     for (let j = 0; j < totalData[i].values.length; j++) {
-                //         let cell = dataRow.getCell(j + 1);
-                //         cell.value = totalData[i].values[j];
-                //     }
-                // }
                 for (let i = 0; i < totalData.length; i++) {
                     var dataRow = worksheet.addRow();
                     for (let j = 0; j < Object.keys(totalData[i]).length; j++) {
@@ -227,42 +188,57 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                         cell.value = totalData[i][Object.keys(totalData[i])[j]];
                     }
                 }
-                
-                //worksheet.getCell(`A${rowCount}`).value = "Custom Footer here";
-                
-                // let detailColumnDefs = [...detailcols];
-                // worksheet.columns = detailColumnDefs.map((obj) => {
-                //     if (obj.type === 'number') {
-                //         detailColumnDefs = {
-                //             ...obj,
-                //             key: obj.field,
-                //             header: obj.headerName,
-                //             width: obj.width / 8,
-                //             // 스타일 설정
-                //             style: {
-                //                 // Font 설정
-                //                 font: { name: '맑은 고딕', size: 11 },
-                //                 numFmt: '#,##0',
-                //                 alignment: { horizontal: 'center', vertical: 'middle' },
-                //             }
-                //         }
-                //         return detailColumnDefs
-                //     } else {
-                //         detailColumnDefs = {
-                //             ...obj,
-                //             key: obj.field,
-                //             header: obj.headerName,
-                //             width: obj.width / 8,
-                //             // 스타일 설정
-                //             style: {
-                //                 // Font 설정
-                //                 font: { name: '맑은 고딕', size: 11 },
-                //                 alignment: { horizontal: 'center', vertical: 'middle' },
-                //             }
-                //         }
-                //         return detailColumnDefs
-                //     }
-                // });
+
+                let detailColumnDefs = [...detailcols];
+                worksheet.columns = detailColumnDefs.map((obj) => {
+                    if (obj.type === 'number') {
+                        detailColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            width: obj.width / 8,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                numFmt: '#,##0',
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return detailColumnDefs
+                    } else {
+                        detailColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            width: obj.width / 8,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return detailColumnDefs
+                    }
+                });
+
+                /*Column headers*/
+                let totalLastRow = worksheet.lastRow.number;
+
+                //worksheet.getRow(totalLastRow + 3).values = ['순번', '승인번호', '사업부', '승인일자', '승인시간', '승인구분', '수납자', '카드사', '금액', '할부', '상태구분', '취소일자', '원승인일자', '카드종류', '카드구분', '가맹점번호', '진료과', '진료구분', '단말기번호', '입금예정일', '매입결과', '매입요청일자', '매입접수일자', '매입응답일'];
+                worksheet.getRow(totalLastRow + 3).values = detailcols.map((obj) =>
+                    obj.headerName,
+                );
+
+                worksheet.autoFilter = {
+                    from: {
+                        row: totalLastRow + 3,
+                        column: 2
+                    },
+                    to: {
+                        row: totalLastRow + 3,
+                        column: detailcols.length
+                    }
+                };
 
                 detailData.map((detailItem, index) => {
                     worksheet.addRow(detailItem);
@@ -270,34 +246,47 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
                     for (let loop = 1; loop <= worksheet.columnCount; loop++) {
                         const col = worksheet.getRow(index + 2).getCell(loop);
-                        col.border = borderStyle;
                         col.font = { name: '맑은 고딕', size: 11 };
-
+                        //col.border = borderStyle
                         if (loop != 1 && loop != 2) {
-                            col.alignment = { horizontal: 'right' };
+                            col.alignment = { horizontal: 'center' };
                         }
                     }
                 });
 
-                worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+                worksheet.eachRow({ includeEmpty: false }, function (row, rowNumber) {
                     row.eachCell(function (cell, colNumber) {
                         cell.border = borderStyle;
                     });
                 });
-                
+
                 const rowCount = worksheet.rowCount;
                 // 2번째 줄에서 4번째 줄사이 공백 제거
                 //worksheet.spliceRows(2, 4);
                 //worksheet.spliceRows(1, 0, [], [], [], [], [], [], [], [], []);
-                worksheet.mergeCells(`A${rowCount}:I${rowCount + 1}`);
-                worksheet.getRow(1).font = { bold: true };
-                worksheet.getCell(`A${rowCount}`).font = {
-                    name: "Comic Sans MS",
+                // worksheet.mergeCells(`A${rowCount}:I${rowCount + 1}`);
+
+                worksheet.getRow(1).font = {
+                    name: "맑은 고딕",
                     family: 4,
-                    size: 20,
-                    underline: true,
+                    size: 12,
                     bold: true
                 };
+
+                worksheet.getRow(2).font = {
+                    name: "맑은 고딕",
+                    family: 4,
+                    size: 12,
+                    bold: true
+                };
+
+                worksheet.mergeCells('A1:C1');
+                worksheet.mergeCells('A2:C2');
+                worksheet.mergeCells(`A${totalLastRow + 2}:B${totalLastRow + 2}`);
+
+                worksheet.getCell("A1").value = "상세내역조회";
+                worksheet.getCell("A2").value = `${postData['SDATE']} ~ ${postData['EDATE']}`;
+                worksheet.getCell(`A${totalLastRow + 2}`).value = "상세내역";
 
                 ExcelJSWorkbook.xlsx.writeBuffer().then(function (buffer) {
                     saveAs(
