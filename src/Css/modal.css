@@ -10,7 +10,7 @@
     height: 100%;
 }
 
-.modal-background {
+.modal_background {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -18,7 +18,7 @@
     opacity: 0.5;
 }
 
-.modal-content {
+.modal_content {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -56,7 +56,7 @@
     height: 520px;
 }
 
-.modal_content {
+.modal_contentbox {
     overflow: auto;
     height: 460px;
 }

@@ -6,7 +6,8 @@ import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 import dayjs from "dayjs";
 import ModalPortal from "./Modal/ColumnModifyModal";
-import ColumnModify from './ColumnModify'
+import ColumnModify from './Modal/ColumnModify'
+import GridDataDetail from './Modal/GridDataDetail'
 import axios from 'axios';
 import 'Css/modal.css';
 import 'Css/agGrid.scss';
@@ -32,12 +33,23 @@ const DetailData = forwardRef((props, ref) => {
 
     //드래그앤드롭 모달창관련
     const [modalOpened, setModalOpened] = useState(false);
-    const handleOpen = () => {
+
+    const columnHandleOpen = () => {
         setModalOpened(true);
     };
 
-    const handleClose = () => {
+    const columnHandleClose = () => {
         setModalOpened(false);
+    };
+
+    const [gridDetail, setGridDetail] = useState(false);
+    const [chooseData, setChooseData] = useState();
+    const gridHandleOpen = () => {
+        setGridDetail(true);
+    };
+
+    const gridHandleClose = () => {
+        setGridDetail(false);
     };
 
     useImperativeHandle(ref, () => ({
@@ -68,7 +80,8 @@ const DetailData = forwardRef((props, ref) => {
     };
 
     //더블클릭예제
-    const onCellClicked = (params) => console.log(params.data.TERM_NM);
+    const onCellClicked = 
+        (params) => {gridHandleOpen(); setChooseData(params.data)};
 
     const dataFormatter = (params) => {
         if (params.colDef.type === 'number') {
@@ -136,16 +149,16 @@ const DetailData = forwardRef((props, ref) => {
                     <img alt='' />
                     <div>상세</div>
                 </div>
-                <div className='detail_column_sort' onClick={handleOpen}>
+                <div className='detail_column_sort' onClick={columnHandleOpen}>
                     컬럼수정
                 </div>
                 {modalOpened && (
-                    <ModalPortal closePortal={handleClose}>
+                    <ModalPortal closePortal={columnHandleClose} title={'컬럼수정'}>
                         <ColumnModify
                             column={columnList}
                             page={props.page}
                             setColumnlist={setColumnlist}
-                            closePortal={handleClose} />
+                            closePortal={columnHandleClose} />
                     </ModalPortal>
                 )}
             </div>
@@ -163,7 +176,7 @@ const DetailData = forwardRef((props, ref) => {
                     animateRows={true} 
                     onFirstDataRendered={() => autoSizeAll(false)}
                     suppressPropertyNamesCheck={true}
-                    // onCellClicked={onCellClicked}
+                    onCellDoubleClicked={onCellClicked}
                     overlayNoRowsTemplate={
                         `<div
                             style={{
@@ -178,6 +191,15 @@ const DetailData = forwardRef((props, ref) => {
                     }
                 />
             </div>
+            {
+                gridDetail && (
+                    <ModalPortal closePortal={gridHandleClose} title={'거래내역상세정보'}>
+                        <GridDataDetail
+                            data={chooseData}
+                            closePortal={columnHandleClose} />
+                    </ModalPortal>
+                )
+            }
         </>
     );
 })

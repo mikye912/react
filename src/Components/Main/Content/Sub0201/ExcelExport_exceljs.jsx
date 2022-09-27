@@ -4,8 +4,7 @@ import Swal from 'sweetalert2';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 import common from 'Common/common';
-import ExcelJS from "exceljs";
-import saveAs from "file-saver";
+import Excel from "exceljs";
 
 const getTotalcols = (fetchApi, page) => {
     return fetchApi.get(`/api/users/contents/${page}/totalcols`, {
@@ -61,6 +60,7 @@ const getDetailData = (fetchApi, reqData) => {
 
 const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
     const [progress, fetchApi] = useFetch();
+
     const [totalcols, setTotalcols] = useState([]);
     const [detailcols, setDetailcols] = useState([]);
     const [totalData, setTotalData] = useState([]);
@@ -155,10 +155,40 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                 });
 
             try {
-                var ExcelJSWorkbook = new ExcelJS.Workbook();
-                var worksheet = ExcelJSWorkbook.addWorksheet("sheet1");
-                // var columns = totalcols.getVisibleColumns();
-                // worksheet.mergeCells("A2:I2");
+                // 엑셀 생성
+                const workbook = new Excel.Workbook();
+
+                // 생성자
+                workbook.creator = '작성자';
+
+                // 최종 수정자
+                workbook.lastModifiedBy = '최종 수정자';
+
+                // 생성일(현재 일자로 처리)
+                workbook.created = new Date();
+
+                // 수정일(현재 일자로 처리)
+                workbook.modified = new Date();
+
+                // addWorksheet() 함수를 사용하여 엑셀 시트를 추가한다.
+                // 엑셀 시트는 순차적으로 생성된다.
+                workbook.addWorksheet('Sheet1');
+
+                // 엑셀 시트를 접근하는 방법은 세 가지 방법이 존재한다.
+                // 1. getWorksheet() 함수에서 시트 명칭 전달
+                const sheetOne = workbook.getWorksheet('Sheet1');
+
+                // 2. getWorksheet() 함수에서 시트 인덱스 전달
+                // const sheetTwo = workbook.getWorksheet(1);
+
+                // 3. 대괄호 표기법
+                // const sheetThree = workbook.worksheets[2];
+
+                // removeWorksheet() 함수를 사용하여 엑셀 시트를 제거한다.
+                // workbook.removeWorksheet(sheetThree.id);
+
+                //필터기능추가
+                // sheetOne.autoFilter = 'A1:G1';
 
                 const borderStyle = {
                     top: { style: 'thin', color: { rgb: 'D2D2D2' } },
@@ -167,34 +197,89 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     right: { style: 'thin', color: { rgb: 'D2D2D2' } },
                 };
 
-                let headerRow = worksheet.getRow(4);
-                for (let i = 0; i < totalcols.length; i++) {
-                    let currentColumnWidth = totalcols[i].width;
-                    worksheet.getColumn(i + 1).width =
-                        currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
-                    let cell = headerRow.getCell(i + 1);
-                    cell.value = totalcols[i].headerName;
-                }
-
-                //eslint-disable-next-line no-unused-expressions
-                // worksheet.excelFilterEnabled === true
-                //     ? (worksheet.views = [{ state: "frozen", ySplit: 3 }])
-                //     : undefined;
-
-                for (let i = 0; i < totalData.length; i++) {
-                    var dataRow = worksheet.addRow();
-                    for (let j = 0; j < Object.keys(totalData[i]).length; j++) {
-                        let cell = dataRow.getCell(j + 1);
-                        cell.value = totalData[i][Object.keys(totalData[i])[j]];
+                // 컬럼 설정
+                // header: 엑셀에 표기되는 이름
+                // key: 컬럼을 접근하기 위한 key
+                // hidden: 숨김 여부
+                // width: 컬럼 넓이
+                let totalColumnDefs = [...totalcols];
+                sheetOne.columns = totalColumnDefs.map((obj) => {
+                    if (obj.type === 'number') {
+                        totalColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            header: obj.headerName,
+                            width: obj.width / 8,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                numFmt: '#,##0',
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return totalColumnDefs
+                    } else if (obj.field == 'TERM_NM') {
+                        totalColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            header: obj.headerName,
+                            width: obj.width / 10 + 10,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return totalColumnDefs
+                    } else {
+                        totalColumnDefs = {
+                            ...obj,
+                            key: obj.field,
+                            header: obj.headerName,
+                            width: obj.width / 8,
+                            // 스타일 설정
+                            style: {
+                                // Font 설정
+                                font: { name: '맑은 고딕', size: 11 },
+                                alignment: { horizontal: 'center', vertical: 'middle' },
+                            }
+                        }
+                        return totalColumnDefs
                     }
-                }
+                });
+
+                totalData.map((totalItem, index) => {
+                    sheetOne.addRow(totalItem);
+
+                    // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
+                    for (let loop = 1; loop <= sheetOne.columnCount; loop++) {
+                        const col = sheetOne.getRow(index + 2).getCell(loop);
+                        col.border = borderStyle;
+                        col.font = { name: '맑은 고딕', size: 11 };
+
+                        if (loop != 1 && loop != 2) {
+                            col.alignment = { horizontal: 'right' };
+                        }
+                    }
+                });
+
+                sheetOne.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+                    row.eachCell(function (cell, colNumber) {
+                        cell.border = borderStyle;
+                    });
+                });
+                
+
 
                 let detailColumnDefs = [...detailcols];
-                worksheet.columns = detailColumnDefs.map((obj) => {
+                sheetOne.columns = detailColumnDefs.map((obj) => {
                     if (obj.type === 'number') {
                         detailColumnDefs = {
                             ...obj,
                             key: obj.field,
+                            header: obj.headerName,
                             width: obj.width / 8,
                             // 스타일 설정
                             style: {
@@ -209,6 +294,7 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                         detailColumnDefs = {
                             ...obj,
                             key: obj.field,
+                            header: obj.headerName,
                             width: obj.width / 8,
                             // 스타일 설정
                             style: {
@@ -221,79 +307,47 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     }
                 });
 
-                /*Column headers*/
-                let totalLastRow = worksheet.lastRow.number;
-
-                //worksheet.getRow(totalLastRow + 3).values = ['순번', '승인번호', '사업부', '승인일자', '승인시간', '승인구분', '수납자', '카드사', '금액', '할부', '상태구분', '취소일자', '원승인일자', '카드종류', '카드구분', '가맹점번호', '진료과', '진료구분', '단말기번호', '입금예정일', '매입결과', '매입요청일자', '매입접수일자', '매입응답일'];
-                worksheet.getRow(totalLastRow + 3).values = detailcols.map((obj) =>
-                    obj.headerName,
-                );
-
-                worksheet.autoFilter = {
-                    from: {
-                        row: totalLastRow + 3,
-                        column: 2
-                    },
-                    to: {
-                        row: totalLastRow + 3,
-                        column: detailcols.length
-                    }
-                };
-
                 detailData.map((detailItem, index) => {
-                    worksheet.addRow(detailItem);
+                    sheetOne.addRow(detailItem);
 
                     // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
-                    for (let loop = 1; loop <= worksheet.columnCount; loop++) {
-                        const col = worksheet.getRow(index + 2).getCell(loop);
+                    for (let loop = 1; loop <= sheetOne.columnCount; loop++) {
+                        const col = sheetOne.getRow(index + 2).getCell(loop);
+                        col.border = borderStyle;
                         col.font = { name: '맑은 고딕', size: 11 };
-                        //col.border = borderStyle
+
                         if (loop != 1 && loop != 2) {
-                            col.alignment = { horizontal: 'center' };
+                            col.alignment = { horizontal: 'right' };
                         }
                     }
                 });
 
-                worksheet.eachRow({ includeEmpty: false }, function (row, rowNumber) {
+                sheetOne.eachRow({ includeEmpty: true }, function (row, rowNumber) {
                     row.eachCell(function (cell, colNumber) {
                         cell.border = borderStyle;
                     });
                 });
 
-                const rowCount = worksheet.rowCount;
-                // 2번째 줄에서 4번째 줄사이 공백 제거
-                //worksheet.spliceRows(2, 4);
-                //worksheet.spliceRows(1, 0, [], [], [], [], [], [], [], [], []);
-                // worksheet.mergeCells(`A${rowCount}:I${rowCount + 1}`);
+                sheetOne.spliceRows(1, 0, [], [], []);
 
-                worksheet.getRow(1).font = {
-                    name: "맑은 고딕",
-                    family: 4,
-                    size: 12,
-                    bold: true
-                };
+                sheetOne.mergeCells('A1:B1');
+                sheetOne.getCell('A1').value = '상세내역조회';
+                sheetOne.mergeCells('A2:B2');
+                sheetOne.getCell('A2').value = `${postData['SDATE']} ~ ${postData['EDATE']}`;
+                sheetOne.mergeCells('A5:B5');
+                sheetOne.getCell('B5').value = '합계';
 
-                worksheet.getRow(2).font = {
-                    name: "맑은 고딕",
-                    family: 4,
-                    size: 12,
-                    bold: true
-                };
-
-                worksheet.mergeCells('A1:C1');
-                worksheet.mergeCells('A2:C2');
-                worksheet.mergeCells(`A${totalLastRow + 2}:B${totalLastRow + 2}`);
-
-                worksheet.getCell("A1").value = "상세내역조회";
-                worksheet.getCell("A2").value = `${postData['SDATE']} ~ ${postData['EDATE']}`;
-                worksheet.getCell(`A${totalLastRow + 2}`).value = "상세내역";
-
-                ExcelJSWorkbook.xlsx.writeBuffer().then(function (buffer) {
-                    saveAs(
-                        new Blob([buffer], { type: "application/octet-stream" }),
-                        `상세내역조회_${dayjs(new Date()).format('YYYYMMDD')}.xlsx`
-                    );
-                });
+                workbook.xlsx.writeBuffer().then((data) => {
+                    const blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                    console.log(blob)
+                    const url = window.URL.createObjectURL(blob);
+                    const anchor = document.createElement('a');
+                    console.log(anchor)
+                    anchor.href = url;
+                    anchor.download = `상세내역조회_${dayjs(new Date()).format('YYYYMMDD')}.xlsx`;
+                    anchor.click();
+                    window.URL.revokeObjectURL(url);
+                })
             } catch (error) {
                 console.error(error);
             }

@@ -6,7 +6,7 @@ import { uAuthSlice } from 'Common/Redux/slice';
 import CircularIndeterminate from "Components/Main/Content/Progress/CircularIndeterminate";
 import hash from 'Common/hashing';
 
-export default function AuthLogin() {
+const AuthLogin = () => {
     const [progress, setProgress] = useState(true);
     const [isCapslock, setIsCapslock] = useState(false);
     const dispatch = useDispatch();
@@ -139,3 +139,5 @@ export default function AuthLogin() {
         </div>
     )
 }
+
+export default AuthLogin;

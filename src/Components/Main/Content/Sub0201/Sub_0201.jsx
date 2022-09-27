@@ -107,6 +107,7 @@ const Sub_0201 = ({ index, content }) => {
         }
       }
     }
+    
     //! ref로 가져온 검색조건들을 집계와 상세 컴포넌트에 보내기전 검색조건 확인
     if (postData['SDATE'] === undefined && postData['EDATE'] === undefined) {
       Swal.fire({
