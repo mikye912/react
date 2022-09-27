@@ -186,49 +186,35 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                         let cell = dataRow.getCell(j + 1);
                         cell.value = totalData[i][Object.keys(totalData[i])[j]];
                         cell.font = { name: '맑은 고딕', size: 11 };
-                        cell.alignment = { horizontal: 'center' };
-                        cell.numFmt = '#,##0'
 
-                        console.log(totalData[i][Object.keys(totalData[i])])
+                        {
+                            Object.keys(totalData[i])[j] === 'ROWNUM' || Object.keys(totalData[i])[j] === 'TERM_NM' ?
+                                cell.alignment = { horizontal: 'center' } :
+                                cell.alignment = { horizontal: 'right' }; cell.numFmt = '#,##0';
+                        }
                     }
                 }
 
                 let detailColumnDefs = [...detailcols];
                 worksheet.columns = detailColumnDefs.map((obj) => {
-                    if (obj.type === 'number') {
-                        detailColumnDefs = {
-                            ...obj,
-                            key: obj.field,
-                            width: obj.width / 8,
-                            // 스타일 설정
-                            style: {
-                                // Font 설정
-                                font: { name: '맑은 고딕', size: 11 },
-                                numFmt: '#,##0',
-                                alignment: { horizontal: 'center', vertical: 'middle' },
-                            }
+                    detailColumnDefs = {
+                        ...obj,
+                        key: obj.field,
+                        width: obj.width / 8,
+                        // 스타일 설정
+                        style: {
+                            // Font 설정
+                            font: { name: '맑은 고딕', size: 11 },
+                            alignment: { horizontal: 'center', vertical: 'middle' },
                         }
-                        return detailColumnDefs
-                    } else {
-                        detailColumnDefs = {
-                            ...obj,
-                            key: obj.field,
-                            width: obj.width / 8,
-                            // 스타일 설정
-                            style: {
-                                // Font 설정
-                                font: { name: '맑은 고딕', size: 11 },
-                                alignment: { horizontal: 'center', vertical: 'middle' },
-                            }
-                        }
-                        return detailColumnDefs
                     }
+                    return detailColumnDefs
                 });
 
                 /*Column headers*/
                 let totalLastRow = worksheet.lastRow.number;
 
-                //worksheet.getRow(totalLastRow + 3).values = ['순번', '승인번호', '사업부', '승인일자', '승인시간', '승인구분', '수납자', '카드사', '금액', '할부', '상태구분', '취소일자', '원승인일자', '카드종류', '카드구분', '가맹점번호', '진료과', '진료구분', '단말기번호', '입금예정일', '매입결과', '매입요청일자', '매입접수일자', '매입응답일'];
+                //worksheet.getRow(totalLastRow + 3).values = [순번,환자진료번호,단말기명,승인번호,사업부,승인일자,승인시간,승인구분,수납자,카드사,카드번호,금액,할부,상태구분,취소일자,원승인일자,카드종류,카드구분,가맹점번호,진료과,진료구분,단말기번호,입금예정일,매입결과,매입요청일자,매입접수일자,매입응답일];
                 worksheet.getRow(totalLastRow + 3).values = detailcols.map((obj) =>
                     obj.headerName,
                 );
@@ -244,14 +230,22 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     }
                 };
 
+                //! 카드번호 숨겨지는 문제, 금액에 오른쪽정렬 확인
                 detailData.map((detailItem, index) => {
                     worksheet.addRow(detailItem);
 
                     // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
                     for (let loop = 1; loop <= worksheet.columnCount; loop++) {
-                        const col = worksheet.getRow(index + 2).getCell(loop);
+                        const col = worksheet.getRow(totalLastRow + 3 + index).getCell(loop);
                         col.font = { name: '맑은 고딕', size: 11 };
-                        //col.border = borderStyle
+                        col.border = borderStyle;
+                        col.numFmt = '#,##0'
+
+                        {
+                            worksheet.getColumnKey !== 'AMOUNT' ?
+                                col.alignment = { horizontal: 'center' } :
+                                col.alignment = { horizontal: 'right' }
+                        }
                     }
                 });
 
@@ -260,12 +254,6 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                         cell.border = borderStyle;
                     });
                 });
-
-                const rowCount = worksheet.rowCount;
-                // 2번째 줄에서 4번째 줄사이 공백 제거
-                //worksheet.spliceRows(2, 4);
-                //worksheet.spliceRows(1, 0, [], [], [], [], [], [], [], [], []);
-                // worksheet.mergeCells(`A${rowCount}:I${rowCount + 1}`);
 
                 worksheet.getRow(1).font = {
                     name: "맑은 고딕",

@@ -15,7 +15,7 @@ import 'Css/agGrid.scss';
 const getDetailData = (fetchApi, reqData) => {
     return fetchApi.get('/api/users/contents/0201/detail', {
         params: {
-            reqData : hash.cryptoEnc(JSON.stringify(reqData))
+            reqData: hash.cryptoEnc(JSON.stringify(reqData))
         }
     }, {})
         .then((res) => {
@@ -61,17 +61,17 @@ const DetailData = forwardRef((props, ref) => {
     }));
 
     useEffect(() => {
-      axios.get(`/api/users/contents/${props.page}/detailcols`, {
-        headers: {
-            x_auth: sessionStorage.getItem("token")
-        }
+        axios.get(`/api/users/contents/${props.page}/detailcols`, {
+            headers: {
+                x_auth: sessionStorage.getItem("token")
+            }
         })
-        .then((res) => {
-            setColumnlist(res.data)
-        }).catch((err) => {
-            common.apiVerify(err);
-        })
-    },[])
+            .then((res) => {
+                setColumnlist(res.data)
+            }).catch((err) => {
+                common.apiVerify(err);
+            })
+    }, [])
 
     const defaultColDef = {
         resizable: true,
@@ -80,8 +80,8 @@ const DetailData = forwardRef((props, ref) => {
     };
 
     //더블클릭예제
-    const onCellClicked = 
-        (params) => {gridHandleOpen(); setChooseData(params.data)};
+    const onCellClicked =
+        (params) => { gridHandleOpen(); setChooseData(params.data) };
 
     const dataFormatter = (params) => {
         if (params.colDef.type === 'number') {
@@ -121,13 +121,13 @@ const DetailData = forwardRef((props, ref) => {
                 valueFormatter: dataFormatter,
                 cellClass: `${obj.align}_cell`
             }
-        } else if (obj.type === 'date') { 
+        } else if (obj.type === 'date') {
             columnDefs = {
                 ...obj,
                 valueFormatter: dataFormatter,
                 cellClass: `${obj.align}_cell`
             }
-        } else if (obj.type === 'time') { 
+        } else if (obj.type === 'time') {
             columnDefs = {
                 ...obj,
                 valueFormatter: dataFormatter,
@@ -170,10 +170,10 @@ const DetailData = forwardRef((props, ref) => {
                 {progress === false ? <CircularIndeterminate /> : null}
                 <AgGridReact
                     ref={gridRef}
-                    rowData={detailData} 
-                    columnDefs={columnDefs.filter(a => a.visiable === 'Y')} 
+                    rowData={detailData}
+                    columnDefs={columnDefs.filter(a => a.visiable === 'Y')}
                     defaultColDef={defaultColDef}
-                    animateRows={true} 
+                    animateRows={true}
                     onFirstDataRendered={() => autoSizeAll(false)}
                     suppressPropertyNamesCheck={true}
                     onCellDoubleClicked={onCellClicked}
