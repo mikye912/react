@@ -20,8 +20,8 @@ const getTotalcols = (fetchApi, page) => {
         })
 }
 
-const getTotalData = (fetchApi, reqData) => {
-    return fetchApi.get('/api/users/contents/0201/total', {
+const getTotalData = (fetchApi, reqData, page) => {
+    return fetchApi.get(`/api/users/contents/${page}/total`, {
         params: {
             reqData: hash.cryptoEnc(JSON.stringify(reqData))
         }
@@ -46,8 +46,8 @@ const getDetailcols = (fetchApi, page) => {
         })
 }
 
-const getDetailData = (fetchApi, reqData) => {
-    return fetchApi.get('/api/users/contents/0201/detail', {
+const getDetailData = (fetchApi, reqData, page) => {
+    return fetchApi.get(`/api/users/contents/${page}/detail`, {
         params: {
             reqData: hash.cryptoEnc(JSON.stringify(reqData))
         }
@@ -140,9 +140,9 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
         } else {
             Promise.all([
                 getTotalcols(fetchApi, page),
-                getTotalData(fetchApi, postData),
+                getTotalData(fetchApi, postData, page),
                 getDetailcols(fetchApi, page),
-                getDetailData(fetchApi, postData)])
+                getDetailData(fetchApi, postData, page)])
                 .then((res) => {
                     setTotalcols(res[0]);
                     setTotalData(res[1]);
@@ -157,8 +157,6 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
             try {
                 var ExcelJSWorkbook = new ExcelJS.Workbook();
                 var worksheet = ExcelJSWorkbook.addWorksheet("sheet1");
-                // var columns = totalcols.getVisibleColumns();
-                // worksheet.mergeCells("A2:I2");
 
                 const borderStyle = {
                     top: { style: 'thin', color: { rgb: 'D2D2D2' } },
@@ -170,10 +168,11 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                 let headerRow = worksheet.getRow(4);
                 for (let i = 0; i < totalcols.length; i++) {
                     let currentColumnWidth = totalcols[i].width;
-                    worksheet.getColumn(i + 1).width =
-                        currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
+                    worksheet.getColumn(i + 1).width = currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
                     let cell = headerRow.getCell(i + 1);
                     cell.value = totalcols[i].headerName;
+                    cell.font = { name: '맑은 고딕', size: 11 };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' }
                 }
 
                 //eslint-disable-next-line no-unused-expressions
@@ -186,6 +185,11 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     for (let j = 0; j < Object.keys(totalData[i]).length; j++) {
                         let cell = dataRow.getCell(j + 1);
                         cell.value = totalData[i][Object.keys(totalData[i])[j]];
+                        cell.font = { name: '맑은 고딕', size: 11 };
+                        cell.alignment = { horizontal: 'center' };
+                        cell.numFmt = '#,##0'
+
+                        console.log(totalData[i][Object.keys(totalData[i])])
                     }
                 }
 
@@ -248,9 +252,6 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                         const col = worksheet.getRow(index + 2).getCell(loop);
                         col.font = { name: '맑은 고딕', size: 11 };
                         //col.border = borderStyle
-                        if (loop != 1 && loop != 2) {
-                            col.alignment = { horizontal: 'center' };
-                        }
                     }
                 });
 
@@ -270,14 +271,16 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     name: "맑은 고딕",
                     family: 4,
                     size: 12,
-                    bold: true
+                    bold: true,
+                    alignment: { horizontal: 'center', vertical: 'middle' }
                 };
 
                 worksheet.getRow(2).font = {
                     name: "맑은 고딕",
                     family: 4,
                     size: 12,
-                    bold: true
+                    bold: true,
+                    alignment: { horizontal: 'center', vertical: 'middle' },
                 };
 
                 worksheet.mergeCells('A1:C1');
