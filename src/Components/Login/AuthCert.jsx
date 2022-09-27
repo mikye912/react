@@ -5,7 +5,7 @@ import CircularIndeterminate from "Components/Main/Content/Progress/CircularInde
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-export default function AuthLogin() {
+const AuthLogin = () => {
     const [progress, setProgress] = useState(true);
     const uAuth = useSelector((state) => state.uAuth)
     const inputRef = useRef();
@@ -98,3 +98,5 @@ export default function AuthLogin() {
         </div>
     )
 }
+
+export default AuthLogin;
