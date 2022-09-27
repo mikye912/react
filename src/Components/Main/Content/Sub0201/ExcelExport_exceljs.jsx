@@ -270,7 +270,7 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                         cell.border = borderStyle;
                     });
                 });
-                
+
 
 
                 let detailColumnDefs = [...detailcols];
