@@ -5,15 +5,15 @@ import common from 'Common/common';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
 import dayjs from "dayjs";
-import ModalPortal from "./Modal/ColumnModifyModal";
-import ColumnModify from './Modal/ColumnModify'
-import GridDataDetail from './Modal/GridDataDetail'
+import ModalPortal from "../Sub0201/Modal/ColumnModifyModal";
+import ColumnModify from '../Sub0201/Modal/ColumnModify'
+import GridDataDetail from '../Sub0201/Modal/GridDataDetail'
 import axios from 'axios';
 import 'Css/modal.css';
 import 'Css/agGrid.scss';
 
-const getDetailData = (fetchApi, reqData) => {
-    return fetchApi.get('/api/users/contents/0201/detail', {
+const getDetailData = (fetchApi, reqData, page) => {
+    return fetchApi.get(`/api/users/contents/${page}/detail`, {
         params: {
             reqData: hash.cryptoEnc(JSON.stringify(reqData))
         }
@@ -54,7 +54,7 @@ const DetailData = forwardRef((props, ref) => {
 
     useImperativeHandle(ref, () => ({
         fetchApi: (postData) => {
-            getDetailData(fetchApi, postData).then((res) => {
+            getDetailData(fetchApi, postData, props.page).then((res) => {
                 setDetailData(res.data);
             })
         }
@@ -144,7 +144,11 @@ const DetailData = forwardRef((props, ref) => {
 
     return (
         <>
-            <div className='detail_form'>
+            <div className='detail_form'
+                style={
+                    props.visible === false ?
+                        { border: 'none', paddingTop: 0 } :
+                        { borderTop: '1px solid #D2D2D2' }}>
                 <div className='detail_title'>
                     <img alt='' />
                     <div>상세</div>

@@ -7,8 +7,8 @@ import useFetch from 'Common/axios';
 import axios from 'axios';
 import 'Css/agGrid.scss';
 
-const getTotalData = (fetchApi, reqData) => {
-    return fetchApi.get('/api/users/contents/0201/total', {
+const getTotalData = (fetchApi, reqData, page) => {
+    return fetchApi.get(`/api/users/contents/${page}/total`, {
         params: {
             reqData: hash.cryptoEnc(JSON.stringify(reqData))
         }
@@ -27,7 +27,7 @@ const TotalData = forwardRef((props, ref) => {
 
     useImperativeHandle(ref, () => ({
         fetchApi: (postData) => {
-            getTotalData(fetchApi, postData).then((res) => {
+            getTotalData(fetchApi, postData, props.page).then((res) => {
                 setTotalData(res.data);
             })
         }
@@ -107,7 +107,9 @@ const TotalData = forwardRef((props, ref) => {
         <div className="ag-theme-custom total_grid"
             style={
                 props.visible === false ?
-                    { height: 0, width: 0 } : { height: 200, width: '99%', position: 'relative' }}
+                    { height: 0, width: 0 } : {
+                        height: `${props.height}`, width: '99%', position: 'relative'
+                    }}
         >
             {progress === false ? <CircularIndeterminate /> : null}
             <AgGridReact
@@ -133,7 +135,7 @@ const TotalData = forwardRef((props, ref) => {
                 }
             // onCellClicked={onCellClicked}
             />
-        </div>
+        </div >
     );
 })
 

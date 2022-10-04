@@ -56,6 +56,7 @@
     color: #0A87D7;
     display: inline-block;
     margin: 0px 15px 0px 0px;
+    
 }
 
 .total_title>img {
@@ -80,7 +81,7 @@
     border-radius: 4px;
     border: none;
     cursor: pointer;
-    margin-right: 31px;
+    margin: 0px 31px 0px 15px;
 
     text-align: center;
     font: normal normal bold 18px/21px Pretendard;
@@ -88,17 +89,12 @@
     color: #FFFFFF;
 }
 
-.total_grid {
-    border-bottom: 1px solid #D2D2D2;
-    padding-bottom: 20px;
-}
-
 .detail_form {
     display: flex;
     justify-content: space-between;
     width: 99%;
     margin-top: 20px;
-    padding: 0px 0px 20px 0px;
+    padding: 20px 0px 20px 0px;
 }
 
 .detail_title>div {

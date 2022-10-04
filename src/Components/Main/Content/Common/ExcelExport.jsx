@@ -59,7 +59,7 @@ const getDetailData = (fetchApi, reqData, page) => {
         })
 }
 
-const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
+const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title }) => {
     const [progress, fetchApi] = useFetch();
     const [totalcols, setTotalcols] = useState([]);
     const [detailcols, setDetailcols] = useState([]);
@@ -108,6 +108,8 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                             authstat = [...authstat, inputExRef.current[j].value]
                             postData[inputExRef.current[j].name] = [...authstat]
                         }
+                    } else if (inputExRef.current[j].type === 'text') {
+                        postData[inputExRef.current[j].name] = inputExRef.current[j].value
                     }
                 } else if (inputExRef.current[j].name !== undefined) {
                     postData[inputExRef.current[j].name] = inputExRef.current[j].value
@@ -165,89 +167,116 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
                     right: { style: 'thin', color: { rgb: 'D2D2D2' } },
                 };
 
-                let headerRow = worksheet.getRow(4);
-                for (let i = 0; i < totalcols.length; i++) {
-                    let currentColumnWidth = totalcols[i].width;
-                    worksheet.getColumn(i + 1).width = currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
-                    let cell = headerRow.getCell(i + 1);
-                    cell.value = totalcols[i].headerName;
-                    cell.font = { name: '맑은 고딕', size: 11 };
-                    cell.alignment = { horizontal: 'center', vertical: 'middle' }
-                }
-
-                //eslint-disable-next-line no-unused-expressions
-                // worksheet.excelFilterEnabled === true
-                //     ? (worksheet.views = [{ state: "frozen", ySplit: 3 }])
-                //     : undefined;
-
-                for (let i = 0; i < totalData.length; i++) {
-                    var dataRow = worksheet.addRow();
-                    for (let j = 0; j < Object.keys(totalData[i]).length; j++) {
-                        let cell = dataRow.getCell(j + 1);
-                        cell.value = totalData[i][Object.keys(totalData[i])[j]];
+                if (totalcols.length > 0) {
+                    let headerRow = worksheet.getRow(4);
+                    for (let i = 0; i < totalcols.length; i++) {
+                        let currentColumnWidth = totalcols[i].width;
+                        worksheet.getColumn(i + 1).width = currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
+                        let cell = headerRow.getCell(i + 1);
+                        cell.value = totalcols[i].headerName;
                         cell.font = { name: '맑은 고딕', size: 11 };
+                        cell.alignment = { horizontal: 'center', vertical: 'middle' }
+                    }
 
-                        {
-                            Object.keys(totalData[i])[j] === 'ROWNUM' || Object.keys(totalData[i])[j] === 'TERM_NM' ?
-                                cell.alignment = { horizontal: 'center' } :
-                                cell.alignment = { horizontal: 'right' }; cell.numFmt = '#,##0';
+                    //eslint-disable-next-line no-unused-expressions
+                    // worksheet.excelFilterEnabled === true
+                    //     ? (worksheet.views = [{ state: "frozen", ySplit: 3 }])
+                    //     : undefined;
+
+                    for (let i = 0; i < totalData.length; i++) {
+                        console.log(totalData)
+                        var dataRow = worksheet.addRow();
+                        for (let j = 0; j < Object.keys(totalData[i]).length; j++) {
+                            let cell = dataRow.getCell(j + 1);
+                            cell.value = totalData[i][Object.keys(totalData[i])[j]];
+                            cell.font = { name: '맑은 고딕', size: 11 };
+
+                            {
+                                cell._column._key === 'ROWNUM' || cell._column._key === 'TERM_NM' ?
+                                    cell.alignment = { horizontal: 'center' } :
+                                    cell.alignment = { horizontal: 'right' }; cell.numFmt = '#,##0';
+                            }
                         }
                     }
                 }
-
-                let detailColumnDefs = [...detailcols];
-                worksheet.columns = detailColumnDefs.map((obj) => {
-                    detailColumnDefs = {
-                        ...obj,
-                        key: obj.field,
-                        width: obj.width / 8,
-                        // 스타일 설정
-                        style: {
-                            // Font 설정
-                            font: { name: '맑은 고딕', size: 11 },
-                            alignment: { horizontal: 'center', vertical: 'middle' },
-                        }
-                    }
-                    return detailColumnDefs
-                });
 
                 /*Column headers*/
                 let totalLastRow = worksheet.lastRow.number;
 
-                //worksheet.getRow(totalLastRow + 3).values = [순번,환자진료번호,단말기명,승인번호,사업부,승인일자,승인시간,승인구분,수납자,카드사,카드번호,금액,할부,상태구분,취소일자,원승인일자,카드종류,카드구분,가맹점번호,진료과,진료구분,단말기번호,입금예정일,매입결과,매입요청일자,매입접수일자,매입응답일];
-                worksheet.getRow(totalLastRow + 3).values = detailcols.map((obj) =>
-                    obj.headerName,
-                );
-
-                worksheet.autoFilter = {
-                    from: {
-                        row: totalLastRow + 3,
-                        column: 2
-                    },
-                    to: {
-                        row: totalLastRow + 3,
-                        column: detailcols.length
-                    }
-                };
-
-                //! 카드번호 숨겨지는 문제, 금액에 오른쪽정렬 확인
-                detailData.map((detailItem, index) => {
-                    worksheet.addRow(detailItem);
-
-                    // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
-                    for (let loop = 1; loop <= worksheet.columnCount; loop++) {
-                        const col = worksheet.getRow(totalLastRow + 3 + index).getCell(loop);
-                        col.font = { name: '맑은 고딕', size: 11 };
-                        col.border = borderStyle;
-                        col.numFmt = '#,##0'
-
+                if (detailcols.length > 0) {
+                    let detailColumnDefs = [...detailcols];
+                    worksheet.columns = detailColumnDefs.map((obj) => {
+                        console.log(obj.field)
                         {
-                            worksheet.getColumnKey !== 'AMOUNT' ?
-                                col.alignment = { horizontal: 'center' } :
-                                col.alignment = { horizontal: 'right' }
+                            obj.field !== 'CARDNO' ?
+                                detailColumnDefs = {
+                                    ...obj,
+                                    key: obj.field,
+                                    width: obj.width / 8,
+                                    style: {
+                                        // Font 설정
+                                        font: { name: '맑은 고딕', size: 11 },
+                                        numFmt: '#,##0',
+                                        alignment: { horizontal: 'center', vertical: 'middle' },
+                                    }
+                                }
+                                : detailColumnDefs = {
+                                    ...obj,
+                                    key: obj.field,
+                                    width: 20,
+                                    style: {
+                                        // Font 설정
+                                        font: { name: '맑은 고딕', size: 11 },
+                                        numFmt: '#,##0',
+                                        alignment: { horizontal: 'center', vertical: 'middle' },
+                                    }
+                                }
+                            return detailColumnDefs
                         }
-                    }
-                });
+                    });
+
+                    worksheet.getRow(totalLastRow + 3).values = detailcols.map((obj) =>
+                        obj.headerName,
+                    );
+
+                    worksheet.autoFilter = {
+                        from: {
+                            row: totalLastRow + 3,
+                            column: 2
+                        },
+                        to: {
+                            row: totalLastRow + 3,
+                            column: detailcols.length
+                        }
+                    };
+
+                    detailData.map((detailItem, index) => {
+                        worksheet.addRow(detailItem);
+
+                        // 추가된 행의 컬럼 설정(헤더와 style이 다를 경우)
+                        for (let loop = 1; loop <= worksheet.columnCount; loop++) {
+                            const col = worksheet.getRow(totalLastRow + 4 + index).getCell(loop);
+
+                            col.border = borderStyle;
+
+                            {
+                                col._column._key !== 'AMOUNT' ?
+                                    col.alignment = { horizontal: 'center' } :
+                                    col.alignment = { horizontal: 'right' }; col.numFmt = '#,##0';
+                            }
+
+                            {
+                                col._column._key === "APPDD" ?
+                                    col.value = dayjs(col.value).format('YYYY-MM-DD') :
+                                    col._column._key === 'APPTM' ?
+                                        col.value = col.value.substr(0, 2) + ':' + col.value.substr(2, 2) + ':' + col.value.substr(4, 2)
+                                        : col.value = col.value
+                            }
+                        }
+                    });
+                }
+
+
 
                 worksheet.eachRow({ includeEmpty: false }, function (row, rowNumber) {
                     row.eachCell(function (cell, colNumber) {
@@ -273,16 +302,20 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page }) => {
 
                 worksheet.mergeCells('A1:C1');
                 worksheet.mergeCells('A2:C2');
-                worksheet.mergeCells(`A${totalLastRow + 2}:B${totalLastRow + 2}`);
 
-                worksheet.getCell("A1").value = "상세내역조회";
+                worksheet.getCell("A1").value = `${title}`;
                 worksheet.getCell("A2").value = `${postData['SDATE']} ~ ${postData['EDATE']}`;
-                worksheet.getCell(`A${totalLastRow + 2}`).value = "상세내역";
+
+                {
+                    detailData.length === 0 ?
+                        worksheet.getCell(`A${totalLastRow + 2}`).value = '' :
+                        worksheet.getCell(`A${totalLastRow + 2}`).value = "상세내역"
+                }
 
                 ExcelJSWorkbook.xlsx.writeBuffer().then(function (buffer) {
                     saveAs(
                         new Blob([buffer], { type: "application/octet-stream" }),
-                        `상세내역조회_${dayjs(new Date()).format('YYYYMMDD')}.xlsx`
+                        `${title}_${dayjs(new Date()).format('YYYYMMDD')}.xlsx`
                     );
                 });
             } catch (error) {

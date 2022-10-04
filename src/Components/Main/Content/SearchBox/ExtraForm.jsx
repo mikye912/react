@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from "react-redux";
-import { TextField, MenuItem }  from '@mui/material';
+import { TextField, MenuItem } from '@mui/material';
 import MultiCheckModal from './MultiCheckModal/MultiCheckModal'
 
 const SearhForm = ({ children, data }) => {
@@ -15,7 +14,6 @@ const SearhForm = ({ children, data }) => {
 }
 
 const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
-    const dispatch = useDispatch();
     const [currency, setCurrency] = useState();
 
     /*select */
@@ -37,7 +35,7 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
             /* 전체거래가 선택되지 않은 상태에서 전체거래가 아닌 다른 거래건을 체크했을때*/
             if (checked) {
                 setCheckedButtons([...checkedButtons, id]);
-            }  else {
+            } else {
                 setCheckedButtons(checkedButtons.filter(button => button !== id));
             }
         } else if (id === '') {
@@ -94,7 +92,7 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
                                             changeHandler(e.currentTarget.checked, e.currentTarget.defaultValue, e.currentTarget.name);
                                         }}
                                         checked={checkedButtons.includes(SUBDATA.VALUE) ? true : false}
-                                        ref={e => inputExRef.current[(i+index)+index] = e}
+                                        ref={e => inputExRef.current[(i + index) + index] = e}
                                     />
                                     {SUBDATA.NAME}
                                 </label>
@@ -107,33 +105,33 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
         )
     } else if (data.TYPE === 'SELECT') {
         try {
-        return (
-            <SearhForm data={data} index={i}>
-                <div className='extra_search_input' autoComplete="off" style={{ padding: '10px' }}>
-                    <TextField
-                        className='select_box'
-                        select
-                        value={currency}
-                        onChange={handleChange}
-                        name={data.FIELD}
-                        defaultValue='all'
-                        ref={e => inputExRef.current[i+1] = e}
-                    >
-                        <MenuItem value='all' className='select_item'>
-                            :: 전체 ::
-                        </MenuItem>
-                        
-                        {data.SUBDATA && data.SUBDATA.map((SUBDATA, index) => {
-                            return (
-                                <MenuItem key={index} value={SUBDATA.VALUE} className='select_item'>
-                                    {SUBDATA.NAME}
-                                </MenuItem>
-                            )
-                        })}
-                         
-                    </TextField>
-                </div>
-            </SearhForm>
+            return (
+                <SearhForm data={data} index={i}>
+                    <div className='extra_search_input' autoComplete="off" style={{ padding: '10px' }}>
+                        <TextField
+                            className='select_box'
+                            select
+                            value={currency}
+                            onChange={handleChange}
+                            name={data.FIELD}
+                            defaultValue='all'
+                            ref={e => inputExRef.current[i + 1] = e}
+                        >
+                            <MenuItem value='all' className='select_item'>
+                                :: 전체 ::
+                            </MenuItem>
+
+                            {data.SUBDATA && data.SUBDATA.map((SUBDATA, index) => {
+                                return (
+                                    <MenuItem key={index} value={SUBDATA.VALUE} className='select_item'>
+                                        {SUBDATA.NAME}
+                                    </MenuItem>
+                                )
+                            })}
+
+                        </TextField>
+                    </div>
+                </SearhForm>
             )
         } catch (error) {
             console.log({ error });
@@ -142,7 +140,7 @@ const ExtraForm = ({ i, data, inputExRef, multiCheckRef }) => {
         return (
             <SearhForm data={data} index={i}>
                 <div className='extra_search_input'>
-                    <input name={data.FIELD} type="text" ref={e => inputExRef.current[i+1] = e} />
+                    <input name={data.FIELD} type="text" ref={e => inputExRef.current[i + 1] = e} />
                 </div>
             </SearhForm>
         );

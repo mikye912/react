@@ -7,9 +7,7 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 import common from 'Common/common';
 import Default from 'Components/Main/Content/SearchBox/Default';
-import Extra from 'Components/Main/Content/SearchBox/Extra';
 import TotalData from 'Components/Main/Content/Common/TotalData';
-import DetailData from 'Components/Main/Content/Common/DetailData';
 import ExcelExport from '../Common/ExcelExport';
 import 'Css/searchBox.css';
 
@@ -118,7 +116,6 @@ const Sub_0201 = ({ index, content }) => {
     } else {
       //* 각 컴포넌트로 검색조건을 보내고 함수 실행
       TotalDataRef.current.fetchApi(postData);
-      DetailDataRef.current.fetchApi(postData);
       //* 변수초기화
       postData = {};
     }
@@ -126,34 +123,28 @@ const Sub_0201 = ({ index, content }) => {
 
   return (
     <Box className={`title ${index} ${selTab.selectTab === index ? 'selected' : ''}`} style={{ alignContent: 'baseline' }}>
-      <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
-        <Default data={searchParams} inputRef={inputRef} inputExRef={inputExRef} multiCheckRef={multiCheckRef} span={`span 8`} />
-        <Box className="btn_case" gridColumn="span 2">
-          <button className='extra_btn' onClick={() => { setVisibleSearch(!visibleSearch); }}>
-            <FaPlusCircle className='extra_img' onClick={() => { setVisibleSearch(!visibleSearch); }} />상세
-          </button>
-          <button className='search_btn' onClick={handleSubmit}>
-            <FaSearch className='search_img' />검색
-          </button>
-        </Box>
+      <Box className="search_box">
+        <Default data={searchParams} inputRef={inputRef} inputExRef={inputExRef} multiCheckRef={multiCheckRef} span={`span 10`} />
       </Box>
-      {visibleSearch && <Extra data={searchParams} inputExRef={inputExRef} multiCheckRef={multiCheckRef} page={page} />}
       <div className='total_form'>
         <div className='total_title'>
           <img alt='' />
           <div>집계</div>
-          <FaRegPlusSquare className='total_btn' onClick={() => { setVisibleTotal(!visibleTotal) }} />
         </div>
-        <ExcelExport
-          inputRef={inputRef}
-          inputExRef={inputExRef}
-          multiCheckRef={multiCheckRef}
-          page={page}
-          title={`상세내역조회`} />
+        <div>
+          <button className='search_btn' onClick={handleSubmit}>
+            <FaSearch className='search_img' />검색
+          </button>
+          <ExcelExport
+            inputRef={inputRef}
+            inputExRef={inputExRef}
+            multiCheckRef={multiCheckRef}
+            page={page}
+            title={`일자별조회`} />
+        </div>
       </div>
-      <TotalData ref={TotalDataRef} visible={visibleTotal} page={page} height={'200px'} />
-      <DetailData ref={DetailDataRef} visible={visibleTotal} page={page} />
-    </Box>
+      <TotalData ref={TotalDataRef} page={page} height={'600px'} />
+    </Box >
   )
 };
 
