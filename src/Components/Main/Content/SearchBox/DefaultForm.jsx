@@ -87,7 +87,7 @@ const DefaultForm = ({ i, data, inputRef, inputExRef, multiCheckRef }) => {
     } else if (data.TYPE === 'MULTICHECK') {
         return (
             <SearhForm data={data} index={i}>
-                <MultiCheckModal data={data} i={i} multiCheckRef={multiCheckRef} />
+                <MultiCheckModal data={data} i={i} multiCheckRef={multiCheckRef} form={'default'} />
             </SearhForm>
         )
     } else if (data.TYPE === 'CHECK') {

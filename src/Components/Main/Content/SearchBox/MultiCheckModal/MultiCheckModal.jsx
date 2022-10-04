@@ -127,7 +127,7 @@ function ConfirmationDialogRaw(props) {
     }
 }
 
-const MultiCheckModal = ({ data, i, multiCheckRef }) => {
+const MultiCheckModal = ({ data, i, multiCheckRef, form }) => {
     const [open, setOpen] = useState(false);
     const [checkedButtons, setCheckedButtons] = useState([]);
 
@@ -143,7 +143,10 @@ const MultiCheckModal = ({ data, i, multiCheckRef }) => {
     };
 
     return (
-        <div className='extra_search_input'>
+        <div className='extra_search_input'
+            style={{
+                background: form === 'default' ? 'none' : '#F5F6F8 0% 0% no-repeat padding-box',
+            }} >
             <ListItem
                 divider
                 aria-haspopup="true"
@@ -164,7 +167,7 @@ const MultiCheckModal = ({ data, i, multiCheckRef }) => {
                 multiCheckRef={multiCheckRef}
                 i={i}
             />
-        </div>
+        </div >
     );
 }
 
