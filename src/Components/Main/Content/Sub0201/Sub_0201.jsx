@@ -13,6 +13,30 @@ import DetailData from 'Components/Main/Content/Common/DetailData';
 import ExcelExport from '../Common/ExcelExport';
 import 'Css/searchBox.css';
 
+const getSearchPams = (page) => {
+  return axios.get(`/api/users/contents/${page}/searchparams`, {
+    headers: {
+      x_auth: sessionStorage.getItem("token")
+    }
+  }).then((res) => {
+    return res.data
+  }).catch((err) => {
+    common.apiVerify(err);
+  })
+}
+
+const getPageCategory = (page) => {
+  return axios.get(`/api/users/contents/${page}/categories`, {
+    headers: {
+      x_auth: sessionStorage.getItem("token")
+    }
+  }).then((res) => {
+    return res.data
+  }).catch((err) => {
+    common.apiVerify(err)
+  })
+}
+
 const Sub_0201 = ({ index, content }) => {
   /*자식창에 부모 검색 조건을 보내기 위한Ref*/
   const TotalDataRef = useRef();
@@ -29,14 +53,13 @@ const Sub_0201 = ({ index, content }) => {
   const selTab = useSelector((state) => state.selectTab);
 
   const [searchParams, setSearchParams] = useState();
+  const [pageCategory, setPageCategory] = useState();
+
   useEffect(() => {
-    axios.get(`/api/users/contents/${page}/searchparams`, {
-      headers: {
-        x_auth: sessionStorage.getItem("token")
-      }
-    })
+    Promise.all([getSearchPams(page), getPageCategory(page)])
       .then((res) => {
-        setSearchParams(res.data)
+        setSearchParams(res[0])
+        setPageCategory(res[1])
       }).catch((err) => {
         common.apiVerify(err);
       })
@@ -118,7 +141,10 @@ const Sub_0201 = ({ index, content }) => {
     } else {
       //* 각 컴포넌트로 검색조건을 보내고 함수 실행
       TotalDataRef.current.fetchApi(postData);
-      DetailDataRef.current.fetchApi(postData);
+      {
+        pageCategory.find(obj => obj.CATEGORY === 'DETAIL') &&
+          DetailDataRef.current.fetchApi(postData)
+      }
       //* 변수초기화
       postData = {};
     }
@@ -149,10 +175,14 @@ const Sub_0201 = ({ index, content }) => {
           inputExRef={inputExRef}
           multiCheckRef={multiCheckRef}
           page={page}
+          pageCategory={pageCategory}
           title={`상세내역조회`} />
       </div>
       <TotalData ref={TotalDataRef} visible={visibleTotal} page={page} height={'200px'} />
-      <DetailData ref={DetailDataRef} visible={visibleTotal} page={page} />
+      {
+        pageCategory && pageCategory.find(obj => obj.CATEGORY === 'DETAIL') &&
+        <DetailData ref={DetailDataRef} visible={visibleTotal} page={page} />
+      }
     </Box>
   )
 };

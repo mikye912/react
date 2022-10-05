@@ -4,6 +4,7 @@ import CircularIndeterminate from "Components/Main/Content/Progress/CircularInde
 import common from 'Common/common';
 import hash from 'Common/hashing';
 import useFetch from 'Common/axios';
+import dayjs from "dayjs";
 import axios from 'axios';
 import 'Css/agGrid.scss';
 
@@ -42,20 +43,25 @@ const TotalData = forwardRef((props, ref) => {
     const onCellClicked = (params) => console.log(params.data.TERM_NM);
 
     const totalValueGetter = (params) => {
-        if (params.data.TERM_NM === '합계') {
+        console.log(params)
+        if (params.data.TERM_NM === '합계' || params.data.PUR_NM === '합계') {
             return '합계'
         }
         return params.data.ROWNUM
     };
 
-    const numberFormatter = (params) => {
-        return Math.floor(params.value)
-            .toString()
-            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    const dataFormatter = (params) => {
+        if (params.colDef.type === 'number') {
+            return Math.floor(params.value)
+                .toString()
+                .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        } else if (params.colDef.type === 'date' && params.value) {
+            return dayjs(params.value).format('YYYY-MM-DD');
+        }
     };
 
     const getRowStyle = params => {
-        if (params.data.TERM_NM === '합계') {
+        if (params.data.TERM_NM === '합계' || params.data.PUR_NM === '합계') {
             return {
                 background: '#DAEFFD 0% 0% no-repeat padding-box',
                 font: 'normal normal bold 14px/16px Pretendard',
@@ -84,15 +90,24 @@ const TotalData = forwardRef((props, ref) => {
         if (obj.field === 'ROWNUM') {
             columnDefs = {
                 ...obj,
-                colSpan: params => params.data.TERM_NM === '합계' ? 2 : 1,
+                colSpan: params =>
+                    params.data.TERM_NM === '합계' ? 2
+                        : params.data.PUR_NM === '합계' ? 3
+                            : 1,
                 valueGetter: totalValueGetter
             }
             return columnDefs;
         } else if (obj.type === 'number') {
             columnDefs = {
                 ...obj,
-                valueFormatter: numberFormatter,
+                valueFormatter: dataFormatter,
                 cellClass: `${obj.align}_cell`
+            }
+        } else if (obj.type === 'date') {
+            columnDefs = {
+                ...obj,
+                valueFormatter: dataFormatter,
+                cellClass: `${obj.align}_cell`,
             }
         } else {
             columnDefs = {

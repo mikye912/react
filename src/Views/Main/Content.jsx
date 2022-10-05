@@ -3,6 +3,7 @@ import ErrorPage from "Components/Main/Content/ErrorPage";
 import Sub_0000 from "Components/Main/Content/Sub0000/Sub_0000";
 import Sub_0201 from "Components/Main/Content/Sub0201/Sub_0201";
 import Sub_0202 from "Components/Main/Content/Sub0202/Sub_0202";
+import Sub_0203 from "Components/Main/Content/Sub0203/Sub_0203";
 import { useDispatch, useSelector } from "react-redux";
 
 const Content = () => {
@@ -34,6 +35,10 @@ const Content = () => {
               case "sub_0202":
                 return (
                   <Sub_0202 key={content.index} index={content.index} content={content.path} />
+                )
+              case "sub_0203":
+                return (
+                  <Sub_0203 key={content.index} index={content.index} content={content.path} />
                 )
               default:
                 return (

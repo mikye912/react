@@ -165,7 +165,7 @@ const Sub_0201 = ({ index, content }) => {
             multiCheckRef={multiCheckRef}
             page={page}
             pageCategory={pageCategory}
-            title={`일자별조회`} />
+            title={`수납자별조회`} />
         </div>
       </div>
       <TotalData ref={TotalDataRef} page={page} height={'600px'} />

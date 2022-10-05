@@ -59,7 +59,7 @@ const getDetailData = (fetchApi, reqData, page) => {
         })
 }
 
-const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title }) => {
+const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title, pageCategory }) => {
     const [progress, fetchApi] = useFetch();
     const [totalcols, setTotalcols] = useState([]);
     const [detailcols, setDetailcols] = useState([]);
@@ -140,21 +140,34 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title }) => {
             })
             return;
         } else {
-            Promise.all([
-                getTotalcols(fetchApi, page),
-                getTotalData(fetchApi, postData, page),
-                getDetailcols(fetchApi, page),
-                getDetailData(fetchApi, postData, page)])
-                .then((res) => {
-                    setTotalcols(res[0]);
-                    setTotalData(res[1]);
-                    const cols = res[2].filter(obj => obj.visiable !== 'N');
-                    setDetailcols(cols);
-                    setDetailData(res[3]);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            {
+                pageCategory.find(obj => obj.CATEGORY === 'DETAIL') ?
+                    Promise.all([
+                        getTotalcols(fetchApi, page),
+                        getTotalData(fetchApi, postData, page),
+                        getDetailcols(fetchApi, page),
+                        getDetailData(fetchApi, postData, page)])
+                        .then((res) => {
+                            setTotalcols(res[0]);
+                            setTotalData(res[1]);
+                            const cols = res[2].filter(obj => obj.visiable !== 'N');
+                            setDetailcols(cols);
+                            setDetailData(res[3]);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                    : Promise.all([
+                        getTotalcols(fetchApi, page),
+                        getTotalData(fetchApi, postData, page)])
+                        .then((res) => {
+                            setTotalcols(res[0]);
+                            setTotalData(res[1]);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+            }
 
             try {
                 var ExcelJSWorkbook = new ExcelJS.Workbook();
@@ -167,35 +180,36 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title }) => {
                     right: { style: 'thin', color: { rgb: 'D2D2D2' } },
                 };
 
-                if (totalcols.length > 0) {
-                    let headerRow = worksheet.getRow(4);
-                    for (let i = 0; i < totalcols.length; i++) {
-                        let currentColumnWidth = totalcols[i].width;
-                        worksheet.getColumn(i + 1).width = currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
-                        let cell = headerRow.getCell(i + 1);
-                        cell.value = totalcols[i].headerName;
+                let headerRow = worksheet.getRow(4);
+                for (let i = 0; i < totalcols.length; i++) {
+                    let currentColumnWidth = totalcols[i].width;
+                    worksheet.getColumn(i + 1).width = currentColumnWidth !== undefined ? currentColumnWidth / 8 : 20;
+                    let cell = headerRow.getCell(i + 1);
+                    cell.value = totalcols[i].headerName;
+                    cell.font = { name: '맑은 고딕', size: 11 };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' }
+                }
+
+                //eslint-disable-next-line no-unused-expressions
+                // worksheet.excelFilterEnabled === true
+                //     ? (worksheet.views = [{ state: "frozen", ySplit: 3 }])
+                //     : undefined;
+
+                for (let i = 0; i < totalData.length; i++) {
+                    var dataRow = worksheet.addRow();
+                    for (let j = 0; j < Object.keys(totalData[i]).length; j++) {
+                        let cell = dataRow.getCell(j + 1);
+                        cell.value = totalData[i][Object.keys(totalData[i])[j]];
                         cell.font = { name: '맑은 고딕', size: 11 };
-                        cell.alignment = { horizontal: 'center', vertical: 'middle' }
-                    }
+                        cell.border = borderStyle;
+                        cell.alignment = { horizontal: 'center' };
 
-                    //eslint-disable-next-line no-unused-expressions
-                    // worksheet.excelFilterEnabled === true
-                    //     ? (worksheet.views = [{ state: "frozen", ySplit: 3 }])
-                    //     : undefined;
-
-                    for (let i = 0; i < totalData.length; i++) {
-                        console.log(totalData)
-                        var dataRow = worksheet.addRow();
-                        for (let j = 0; j < Object.keys(totalData[i]).length; j++) {
-                            let cell = dataRow.getCell(j + 1);
-                            cell.value = totalData[i][Object.keys(totalData[i])[j]];
-                            cell.font = { name: '맑은 고딕', size: 11 };
-
-                            {
-                                cell._column._key === 'ROWNUM' || cell._column._key === 'TERM_NM' ?
-                                    cell.alignment = { horizontal: 'center' } :
-                                    cell.alignment = { horizontal: 'right' }; cell.numFmt = '#,##0';
-                            }
+                        {
+                            headerRow.getCell(j + 1).text.trim() === '순번' || headerRow.getCell(j + 1).text.trim() === '카드사' || headerRow.getCell(j + 1).text.trim() === '단말기' ?
+                                cell.alignment = { horizontal: 'center' }
+                                : headerRow.getCell(j + 1).text.trim() === '승인일자' && cell.value ?
+                                    cell.value = dayjs(cell.value).format('YYYY-MM-DD')
+                                    : cell.alignment = { horizontal: 'right' }; cell.numFmt = '#,##0';
                         }
                     }
                 }
@@ -206,7 +220,6 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title }) => {
                 if (detailcols.length > 0) {
                     let detailColumnDefs = [...detailcols];
                     worksheet.columns = detailColumnDefs.map((obj) => {
-                        console.log(obj.field)
                         {
                             obj.field !== 'CARDNO' ?
                                 detailColumnDefs = {
@@ -276,11 +289,17 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title }) => {
                     });
                 }
 
-
-
                 worksheet.eachRow({ includeEmpty: false }, function (row, rowNumber) {
                     row.eachCell(function (cell, colNumber) {
                         cell.border = borderStyle;
+
+                        console.log(cell.value)
+
+                        // {
+                        //     cell.text.trim() === '' &&
+                        //         // worksheet.mergeCells(`${cell._address - 1}:${cell._address}`)
+
+                        // }
                     });
                 });
 
