@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 import common from 'Common/common';
 import Default from 'Components/Main/Content/SearchBox/Default';
+import Extra from 'Components/Main/Content/SearchBox/Extra';
 import TotalData from 'Components/Main/Content/Common/TotalData';
 import DetailData from 'Components/Main/Content/Common/DetailData';
 import ExcelExport from '../Common/ExcelExport';
@@ -44,6 +45,10 @@ const Sub_0201 = ({ index, content }) => {
   const inputRef = useRef([]);
   const inputExRef = useRef([]);
   const multiCheckRef = useRef([]);
+  /*상세검색조건확장축소*/
+  const [visibleSearch, setVisibleSearch] = useState(false);
+  /*집계확장축소*/
+  const [visibleTotal, setVisibleTotal] = useState(true);
   const page = content.substr(-4);
   const selTab = useSelector((state) => state.selectTab);
 
@@ -148,32 +153,37 @@ const Sub_0201 = ({ index, content }) => {
   return (
     <Box className={`title ${index} ${selTab.selectTab === index ? 'selected' : ''}`} style={{ alignContent: 'baseline' }}>
       <Box className="search_box" display="grid" gridTemplateColumns="repeat(10, 1fr)">
-        <Default data={searchParams} inputRef={inputRef} inputExRef={inputExRef} multiCheckRef={multiCheckRef} span={`span 10`} />
+        <Default data={searchParams} inputRef={inputRef} inputExRef={inputExRef} multiCheckRef={multiCheckRef} span={`span 8`} />
+        <Box className="btn_case" gridColumn="span 2">
+          <button className='extra_btn' onClick={() => { setVisibleSearch(!visibleSearch); }}>
+            <FaPlusCircle className='extra_img' onClick={() => { setVisibleSearch(!visibleSearch); }} />상세
+          </button>
+          <button className='search_btn' onClick={handleSubmit}>
+            <FaSearch className='search_img' />검색
+          </button>
+        </Box>
       </Box>
+      {visibleSearch && <Extra data={searchParams} inputExRef={inputExRef} multiCheckRef={multiCheckRef} page={page} />}
       <div className='total_form'>
         <div className='total_title'>
           <img alt='' />
           <div>집계</div>
+          <FaRegPlusSquare className='total_btn' onClick={() => { setVisibleTotal(!visibleTotal) }} />
         </div>
-        <div>
-          <button className='search_btn' onClick={handleSubmit}>
-            <FaSearch className='search_img' />검색
-          </button>
-          <ExcelExport
-            inputRef={inputRef}
-            inputExRef={inputExRef}
-            multiCheckRef={multiCheckRef}
-            page={page}
-            pageCategory={pageCategory}
-            title={`수납자별조회`} />
-        </div>
+        <ExcelExport
+          inputRef={inputRef}
+          inputExRef={inputExRef}
+          multiCheckRef={multiCheckRef}
+          page={page}
+          pageCategory={pageCategory}
+          title={`상세내역조회`} />
       </div>
-      <TotalData ref={TotalDataRef} page={page} height={'600px'} />
+      <TotalData ref={TotalDataRef} visible={visibleTotal} page={page} height={'200px'} />
       {
         pageCategory && pageCategory.find(obj => obj.CATEGORY === 'DETAIL') &&
-        <DetailData ref={DetailDataRef} page={page} />
+        <DetailData ref={DetailDataRef} visible={visibleTotal} page={page} />
       }
-    </Box >
+    </Box>
   )
 };
 

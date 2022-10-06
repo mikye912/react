@@ -43,9 +43,10 @@ const TotalData = forwardRef((props, ref) => {
     const onCellClicked = (params) => console.log(params.data.TERM_NM);
 
     const totalValueGetter = (params) => {
-        console.log(params)
         if (params.data.TERM_NM === '합계' || params.data.PUR_NM === '합계') {
             return '합계'
+        } else if (params.data.TERM_NM === '소계' || params.data.PUR_NM === '소계') {
+            return dayjs(params.data.APPDD).format('YYYY-MM-DD');
         }
         return params.data.ROWNUM
     };
@@ -66,6 +67,12 @@ const TotalData = forwardRef((props, ref) => {
                 background: '#DAEFFD 0% 0% no-repeat padding-box',
                 font: 'normal normal bold 14px/16px Pretendard',
                 color: '#0885D7'
+            };
+        } else if (params.data.TERM_NM === '소계' || params.data.PUR_NM === '소계') {
+            return {
+                background: '#D9D9D9 0% 0% no-repeat padding-box',
+                font: 'normal normal 500 14px/16px Pretendard',
+                color: 'black'
             };
         }
     };
@@ -93,6 +100,7 @@ const TotalData = forwardRef((props, ref) => {
                 colSpan: params =>
                     params.data.TERM_NM === '합계' ? 2
                         : params.data.PUR_NM === '합계' ? 3
+                            : params.data.PUR_NM === '소계' ? 2
                             : 1,
                 valueGetter: totalValueGetter
             }

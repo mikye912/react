@@ -168,7 +168,7 @@ const Sub_0201 = ({ index, content }) => {
             title={`일자별조회`} />
         </div>
       </div>
-      <TotalData ref={TotalDataRef} page={page} height={'600px'} />
+      <TotalData ref={TotalDataRef} page={page} height={'570px'} />
       {
         pageCategory && pageCategory.find(obj => obj.CATEGORY === 'DETAIL') &&
         <DetailData ref={DetailDataRef} page={page} />
