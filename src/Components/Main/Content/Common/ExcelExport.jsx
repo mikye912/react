@@ -255,7 +255,7 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title, pageCat
                     worksheet.autoFilter = {
                         from: {
                             row: totalLastRow + 3,
-                            column: 2
+                            column: 1
                         },
                         to: {
                             row: totalLastRow + 3,
@@ -279,9 +279,9 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title, pageCat
                             }
 
                             {
-                                col._column._key === "APPDD" ?
+                                col._column._key === "APPDD" && col.value ?
                                     col.value = dayjs(col.value).format('YYYY-MM-DD') :
-                                    col._column._key === 'APPTM' ?
+                                    col._column._key === 'APPTM' && col.value ?
                                         col.value = col.value.substr(0, 2) + ':' + col.value.substr(2, 2) + ':' + col.value.substr(4, 2)
                                         : col.value = col.value
                             }
@@ -292,14 +292,6 @@ const ExcelExport = ({ inputRef, inputExRef, multiCheckRef, page, title, pageCat
                 worksheet.eachRow({ includeEmpty: false }, function (row, rowNumber) {
                     row.eachCell(function (cell, colNumber) {
                         cell.border = borderStyle;
-
-                        console.log(cell.value)
-
-                        // {
-                        //     cell.text.trim() === '' &&
-                        //         // worksheet.mergeCells(`${cell._address - 1}:${cell._address}`)
-
-                        // }
                     });
                 });
 

@@ -99,6 +99,22 @@ const DetailData = forwardRef((props, ref) => {
         }
     };
 
+    const getRowStyle = params => {
+        if (params.data.ADD_CASHER === '합계') {
+            return {
+                background: '#DAEFFD 0% 0% no-repeat padding-box',
+                font: 'normal normal bold 14px/16px Pretendard',
+                color: '#0885D7'
+            };
+        } else if (params.data.ADD_CASHER === '소계') {
+            return {
+                background: '#D9D9D9 0% 0% no-repeat padding-box',
+                font: 'normal normal 500 14px/16px Pretendard',
+                color: 'black'
+            };
+        }
+    };
+
     // * db에서 가져오는 컬럼 width값이 auto일 경우만 자동맞춤으로 사이즈 조절
     // * skipHeader가 true면 헤더의 텍스트 길이를 무시하고 사이즈 조절
     const autoSizeAll = useCallback((skipHeader) => {
@@ -181,13 +197,14 @@ const DetailData = forwardRef((props, ref) => {
                     onFirstDataRendered={() => autoSizeAll(false)}
                     suppressPropertyNamesCheck={true}
                     onCellDoubleClicked={onCellClicked}
+                    getRowStyle={getRowStyle}
                     overlayNoRowsTemplate={
                         `<div
                             style={{
                         height: '100%',
                         width: '100%',
                         alignItems: "center",
-                        justifyContent: "center",wjd
+                        justifyContent: "center",
                         verticalAlgin:'center'
                     }}>
                         조회된 데이터가 없습니다.
